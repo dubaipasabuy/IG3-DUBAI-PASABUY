@@ -164,8 +164,7 @@
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const csv = await res.text();
         const parsed = parseCSV(csv);
-        allProducts = parsed.filter(p => { const price = parseFloat(p.final_price_php); return price && price > 300; });
-        if (allProducts.length === 0) allProducts = parsed.filter(p => p.name && p.name.trim());
+       allProducts = parsed.filter(p => p.name && p.name.trim());
         populateCategories();
         applyFilters();
         document.getElementById('loading').classList.add('hidden');
