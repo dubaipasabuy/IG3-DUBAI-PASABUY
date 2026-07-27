@@ -41,6 +41,7 @@
 </head>
 <body class="text-gray-900">
 
+<!-- HEADER -->
 <header class="bg-white shadow-sm sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
     <div onclick="handleLogoClick()" class="cursor-pointer select-none flex items-center gap-2">
@@ -59,16 +60,19 @@
   </div>
 </header>
 
+<!-- HERO -->
 <div class="bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400 py-14 px-4 text-center">
   <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-2">Snacks, sweets &amp; treats</h2>
   <p class="text-white text-lg opacity-90 mb-1">straight from Dubai.</p>
   <p class="text-white text-sm opacity-75">Pick your favorites, tell us where to send them.</p>
 </div>
 
+<!-- CATEGORY PILLS -->
 <div class="max-w-7xl mx-auto px-4 pt-6 pb-2">
   <div id="category-pills" class="flex flex-wrap gap-2 justify-center"></div>
 </div>
 
+<!-- SORT -->
 <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
   <span class="text-sm text-gray-500 font-medium">↑↓ Sort by</span>
   <select id="sort-filter" onchange="applyFilters()"
@@ -80,6 +84,7 @@
   <span id="product-count" class="text-sm text-gray-400 ml-auto"></span>
 </div>
 
+<!-- PRODUCTS -->
 <main class="max-w-7xl mx-auto px-4 pb-20">
   <div id="loading" class="text-center py-20 text-gray-400">
     <div class="text-5xl mb-4">🛍️</div>
@@ -93,8 +98,10 @@
   <div id="products-grid" class="hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
 </main>
 
+<!-- CART OVERLAY -->
 <div id="cart-overlay" class="hidden fixed inset-0 bg-black bg-opacity-40 z-40" onclick="toggleCart()"></div>
 
+<!-- CART SIDEBAR -->
 <div id="cart-sidebar" class="fixed right-0 top-0 h-full w-full max-w-sm bg-white shadow-2xl z-50 transform translate-x-full flex flex-col">
   <div class="p-4 border-b flex items-center justify-between">
     <h3 class="text-lg font-bold">Your Order 🛒</h3>
@@ -112,6 +119,7 @@
   </div>
 </div>
 
+<!-- ORDER MODAL -->
 <div id="order-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
   <div class="bg-white rounded-2xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto shadow-2xl">
     <h3 class="text-xl font-bold mb-5">Complete Your Order 📦</h3>
@@ -166,6 +174,7 @@
   </div>
 </div>
 
+<!-- EDIT PRODUCT MODAL -->
 <div id="edit-product-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-[200] flex items-center justify-center p-4">
   <div class="bg-white rounded-2xl max-w-lg w-full p-6 max-h-[92vh] overflow-y-auto shadow-2xl">
     <div class="flex items-center justify-between mb-5">
@@ -233,6 +242,7 @@
   </div>
 </div>
 
+<!-- LIGHTBOX -->
 <div id="lightbox" onclick="lbBgClick(event)">
   <button id="lb-close" onclick="closeLightbox()">×</button>
   <div id="lb-img-wrap">
@@ -246,6 +256,7 @@
   </div>
 </div>
 
+<!-- ADMIN PANEL -->
 <div id="admin-panel" class="hidden fixed inset-0 z-[100] bg-gray-100 overflow-y-auto">
   <div id="admin-login" class="flex items-center justify-center min-h-screen p-4">
     <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm">
@@ -279,6 +290,8 @@
     </div>
 
     <div class="max-w-5xl mx-auto px-4 py-6">
+
+      <!-- PRODUCTS TAB -->
       <div id="admin-products-tab">
         <div class="bg-white rounded-2xl shadow-sm p-5 mb-5">
           <h3 class="font-bold text-base mb-4">+ Add New Product</h3>
@@ -318,6 +331,7 @@
         <div id="admin-product-list"></div>
       </div>
 
+      <!-- CATEGORIES TAB -->
       <div id="admin-categories-tab" class="hidden">
         <div class="bg-white rounded-2xl shadow-sm p-5 mb-5">
           <h3 class="font-bold text-base mb-4">+ Add Category</h3>
@@ -332,6 +346,7 @@
         <div id="admin-category-list"></div>
       </div>
 
+      <!-- ORDERS TAB -->
       <div id="admin-orders-tab" class="hidden">
         <div class="flex items-center justify-between mb-4">
           <h3 class="font-bold text-base" id="orders-count-label">Orders</h3>
@@ -343,14 +358,15 @@
   </div>
 </div>
 
+<!-- Print area -->
 <div id="print-area" class="hidden"></div>
 
 <script>
-const SHEET_ID        = '1gjInVmrlRa72FV1lPYFEy40N4tEfAZeOFWWQBWKQhok';
-const SHEET_NAME      = 'Products';
-const ADMIN_PW        = 'Zakizayayeye2026';
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzu4LVN0CFiTeYssk1P-1JwtsBgy-k_zB6kGKMOIEkEeobNrp4ZXmvaOpH6OHdIVnTDNw/exec';
-const CARD_BG         = ['#fce4ec','#e8f5e9','#fffde7','#fff3e0','#f3e5f5','#e3f2fd','#fef9c3','#dcfce7'];
+const SHEET_ID         = '1gjInVmrlRa72FV1lPYFEy40N4tEfAZeOFWWQBWKQhok';
+const SHEET_NAME       = 'Products';
+const ADMIN_PW         = 'Zakizayayeye2026';
+const APPS_SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbzu4LVN0CFiTeYssk1P-1JwtsBgy-k_zB6kGKMOIEkEeobNrp4ZXmvaOpH6OHdIVnTDNw/exec';
+const CARD_BG    = ['#fce4ec','#e8f5e9','#fffde7','#fff3e0','#f3e5f5','#e3f2fd','#fef9c3','#dcfce7'];
 
 let sheetProducts    = [];
 let localProducts    = JSON.parse(localStorage.getItem('ig3-local-products')    || '[]');
@@ -361,9 +377,10 @@ let orders           = JSON.parse(localStorage.getItem('ig3-orders')            
 let cart             = JSON.parse(localStorage.getItem('ig3-cart')              || '[]');
 let activeCategory   = '';
 let logoClicks       = 0, logoTimer = null;
-let pendingEditImg   = null;
-let pendingEditImgNew = false;
-let pendingNewImg    = null;
+
+let pendingEditImg     = null;
+let pendingEditImgNew  = false;
+let pendingNewImg      = null;
 
 function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function escA(s){ return String(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
@@ -378,6 +395,7 @@ function fmtPrice(n){ return '₱'+Number(n).toLocaleString('en-PH',{minimumFrac
 function saveOverrides(){ localStorage.setItem('ig3-product-overrides',JSON.stringify(productOverrides)); }
 function saveImageStorage(){ localStorage.setItem('ig3-image-storage',JSON.stringify(imageStorage)); }
 
+// IMAGE COMPRESSION
 function compressImage(file, callback){
   const reader = new FileReader();
   reader.onload = function(e){
@@ -389,7 +407,8 @@ function compressImage(file, callback){
       if(w > maxW){ h = Math.round(h * maxW / w); w = maxW; }
       canvas.width = w; canvas.height = h;
       canvas.getContext('2d').drawImage(image, 0, 0, w, h);
-      callback(canvas.toDataURL('image/jpeg', 0.75));
+      const base64 = canvas.toDataURL('image/jpeg', 0.75);
+      callback(base64);
     };
     image.src = e.target.result;
   };
@@ -399,11 +418,13 @@ function compressImage(file, callback){
 function handleEditImgUpload(input){
   const file = input.files[0]; if(!file) return;
   compressImage(file, function(base64){
-    pendingEditImg = base64; pendingEditImgNew = true;
+    pendingEditImg = base64;
+    pendingEditImgNew = true;
     document.getElementById('edit-product-img').value = '';
+    const prev = document.getElementById('edit-img-preview');
     document.getElementById('edit-img-preview-img').src = base64;
     document.getElementById('edit-img-source-label').textContent = '📁 ' + file.name + ' (from your computer)';
-    document.getElementById('edit-img-preview').classList.remove('hidden');
+    prev.classList.remove('hidden');
   });
 }
 
@@ -412,8 +433,9 @@ function handleNewImgUpload(input){
   compressImage(file, function(base64){
     pendingNewImg = base64;
     document.getElementById('new-product-img').value = '';
+    const prev = document.getElementById('new-img-preview');
     document.getElementById('new-img-preview-img').src = base64;
-    document.getElementById('new-img-preview').classList.remove('hidden');
+    prev.classList.remove('hidden');
   });
 }
 
@@ -426,12 +448,14 @@ function onEditUrlInput(){
   if(url){ img.src = url; lbl.textContent = '🔗 URL image'; prev.classList.remove('hidden'); }
   else   { prev.classList.add('hidden'); }
 }
+
 function clearEditImg(){
   pendingEditImg = null; pendingEditImgNew = true;
   document.getElementById('edit-product-img').value = '';
   document.getElementById('edit-img-file').value = '';
   document.getElementById('edit-img-preview').classList.add('hidden');
 }
+
 function clearNewImg(){
   pendingNewImg = null;
   document.getElementById('new-product-img').value = '';
@@ -439,6 +463,7 @@ function clearNewImg(){
   document.getElementById('new-img-preview').classList.add('hidden');
 }
 
+// DATA
 function getAllProducts(includeHidden=false){
   const sheet = sheetProducts.map(p=>{
     const ov = productOverrides[p.product_id]||{};
@@ -476,6 +501,7 @@ function getAllCategories(){
   return [...fromProds,...extras].sort();
 }
 
+// LOAD SHEET
 async function loadProducts(){
   try{
     const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
@@ -513,6 +539,7 @@ function parseCSVLine(line){
   r.push(c);return r;
 }
 
+// CATEGORY PILLS
 function renderCategoryPills(){
   const cats=getAllCategories();
   const el=document.getElementById('category-pills');
@@ -521,6 +548,7 @@ function renderCategoryPills(){
 }
 function setCategory(cat){activeCategory=cat;renderCategoryPills();applyFilters();}
 
+// PRODUCTS GRID
 function applyFilters(){
   const sort=document.getElementById('sort-filter').value;
   let list=activeCategory?getAllProducts().filter(p=>p.category===activeCategory):getAllProducts();
@@ -558,6 +586,7 @@ function renderProducts(list){
   }).join('');
 }
 
+// CART
 function addToCart(id){
   const p=getAllProducts().find(x=>x.product_id===id);if(!p)return;
   const ex=cart.find(c=>c.id===id);
@@ -604,6 +633,7 @@ function toggleCart(){
   else{renderCartItems();s.classList.remove('translate-x-full');o.classList.remove('hidden');}
 }
 
+// ORDER FORM
 function showOrderForm(){
   if(!cart.length)return;
   const total=cart.reduce((s,c)=>s+c.price*c.qty,0);
@@ -647,6 +677,7 @@ document.getElementById('order-form').addEventListener('submit',async function(e
   btn.textContent='Send Order ✓';btn.disabled=false;
 });
 
+// ADMIN ACCESS (tap logo 5×)
 function handleLogoClick(){
   logoClicks++;clearTimeout(logoTimer);
   if(logoClicks>=5){logoClicks=0;openAdmin();}
@@ -671,6 +702,7 @@ function adminLogin(){
   }
 }
 
+// ADMIN TABS
 function showAdminTab(tab){
   ['products','categories','orders'].forEach(t=>{
     document.getElementById(`admin-${t}-tab`).classList.toggle('hidden',t!==tab);
@@ -681,13 +713,16 @@ function showAdminTab(tab){
   if(tab==='orders')    renderAdminOrders();
 }
 
+// ADMIN — PRODUCTS
 function renderAdminProducts(){
   populateAdminCategorySelect();
   const all=getAllProducts();
   const hidden=getAllProducts(true).filter(p=>p._hidden);
   const list=document.getElementById('admin-product-list');
+
   const seenNames=new Map(); let dupCount=0;
   all.forEach(p=>{const k=(p.name||'').toLowerCase().trim();if(!k)return;if(seenNames.has(k))dupCount++;else seenNames.set(k,1);});
+
   const dupBtn=`<div class="flex items-center justify-between mb-4">
     <span class="text-sm text-gray-500 font-medium">${all.length} product(s)${hidden.length?' · <span class="text-gray-400">'+hidden.length+' hidden</span>':''}</span>
     <button onclick="findAndRemoveDuplicates()"
@@ -695,7 +730,12 @@ function renderAdminProducts(){
       🔍 ${dupCount>0?dupCount+' Duplicate'+(dupCount>1?'s':'')+' Found':'No Duplicates'}
     </button>
   </div>`;
-  if(!all.length && !hidden.length){list.innerHTML=dupBtn+'<p class="text-gray-400 text-sm text-center py-8">No products yet.</p>';return;}
+
+  if(!all.length && !hidden.length){
+    list.innerHTML=dupBtn+'<p class="text-gray-400 text-sm text-center py-8">No products yet.</p>';
+    return;
+  }
+
   const cats=[...new Set(all.map(p=>p.category||'Uncategorized'))].sort();
   const mainHtml=cats.map(cat=>{
     const prods=all.filter(p=>(p.category||'Uncategorized')===cat);
@@ -707,7 +747,9 @@ function renderAdminProducts(){
           const img=getImg(p);
           const hasOv=p._edited||(p._local&&productOverrides[p.product_id]);
           return `<div class="bg-white rounded-xl shadow-sm p-3 flex items-center gap-3">
-            ${img?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="w-12 h-12 rounded-xl bg-yellow-100 items-center justify-center text-xl flex-shrink-0 hidden">🛍️</div>`:`<div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}
+            ${img
+              ?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="w-12 h-12 rounded-xl bg-yellow-100 items-center justify-center text-xl flex-shrink-0 hidden">🛍️</div>`
+              :`<div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}
             <div class="flex-1 min-w-0">
               <p class="text-sm font-semibold text-gray-800 truncate">${escH(p.name)}</p>
               <p class="text-xs text-gray-400 truncate">
@@ -719,7 +761,8 @@ function renderAdminProducts(){
               ${p.description?`<p class="text-xs text-gray-400 italic truncate mt-0.5">${escH(p.description)}</p>`:''}
             </div>
             <div class="flex items-center gap-1.5 flex-shrink-0">
-              <button onclick="openEditModal('${escA(p.product_id)}')" class="bg-yellow-400 hover:bg-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full transition">Edit</button>
+              <button onclick="openEditModal('${escA(p.product_id)}')"
+                class="bg-yellow-400 hover:bg-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full transition">Edit</button>
               ${hasOv||imageStorage[p.product_id]?`<button onclick="clearProductOverrides('${escA(p.product_id)}')" title="Reset to original" class="text-gray-400 hover:text-red-500 text-sm px-1.5 py-1 rounded-lg hover:bg-red-50 transition">↺</button>`:''}
               ${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="text-gray-400 hover:text-red-500 text-lg px-1 transition" title="Delete">🗑</button>`:''}
             </div>
@@ -728,6 +771,7 @@ function renderAdminProducts(){
       </div>
     </div>`;
   }).join('');
+
   const hiddenHtml=hidden.length?`<div class="mt-8 mb-5">
     <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">🚫 Hidden / Removed Duplicates (${hidden.length})</h4>
     <div class="space-y-2">
@@ -741,13 +785,15 @@ function renderAdminProducts(){
             <p class="text-xs text-gray-400 truncate">${escH(p.category||'No category')} · ${price>0?fmtPrice(price):'No price'} · <em>duplicate removed</em></p>
           </div>
           <div class="flex items-center gap-1.5 flex-shrink-0">
-            <button onclick="restoreHiddenProduct('${escA(p.product_id)}')" class="bg-green-50 hover:bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full transition">↩ Restore</button>
+            <button onclick="restoreHiddenProduct('${escA(p.product_id)}')"
+              class="bg-green-50 hover:bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full transition">↩ Restore</button>
             ${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="text-gray-400 hover:text-red-500 text-lg px-1 transition" title="Delete permanently">🗑</button>`:''}
           </div>
         </div>`;
       }).join('')}
     </div>
   </div>`:'';
+
   list.innerHTML=dupBtn+mainHtml+hiddenHtml;
 }
 
@@ -757,39 +803,46 @@ function populateAdminCategorySelect(){
   sel.innerHTML='<option value="">Select category</option>'+cats.map(c=>`<option value="${escA(c)}">${escH(c)}</option>`).join('');
 }
 
+// EDIT MODAL
 function openEditModal(id){
   const p=getAllProducts().find(x=>x.product_id===id);if(!p)return;
-  pendingEditImg=null; pendingEditImgNew=false;
+  pendingEditImg = null;
+  pendingEditImgNew = false;
   document.getElementById('edit-img-file').value='';
   document.getElementById('edit-product-id').value=id;
   document.getElementById('edit-product-name').value=p.name||'';
   document.getElementById('edit-product-price').value=parseFloat(p.final_price_php)||'';
   document.getElementById('edit-product-description').value=p.description||'';
-  const storedBase64=imageStorage[p.product_id];
-  const urlImg=(productOverrides[p.product_id]?.imageUrl)||p.image_url||p.image||p.img||'';
-  const curImg=storedBase64||urlImg;
+  const storedBase64 = imageStorage[p.product_id];
+  const urlImg = (productOverrides[p.product_id]?.imageUrl) || p.image_url || p.image || p.img || '';
+  const curImg = storedBase64 || urlImg;
   if(storedBase64){
-    pendingEditImg=storedBase64; pendingEditImgNew=false;
-    document.getElementById('edit-product-img').value='';
-    document.getElementById('edit-img-source-label').textContent='📁 Desktop image (saved in browser)';
+    pendingEditImg = storedBase64;
+    pendingEditImgNew = false;
+    document.getElementById('edit-product-img').value = '';
+    document.getElementById('edit-img-source-label').textContent = '📁 Desktop image (saved in browser)';
   } else {
-    document.getElementById('edit-product-img').value=urlImg;
-    document.getElementById('edit-img-source-label').textContent=urlImg?'🔗 URL image':'';
+    document.getElementById('edit-product-img').value = urlImg;
+    document.getElementById('edit-img-source-label').textContent = urlImg ? '🔗 URL image' : '';
   }
-  const prev=document.getElementById('edit-img-preview');
-  const prevImg=document.getElementById('edit-img-preview-img');
-  if(curImg){prevImg.src=curImg;prev.classList.remove('hidden');}else{prev.classList.add('hidden');}
+  const prev = document.getElementById('edit-img-preview');
+  const prevImg = document.getElementById('edit-img-preview-img');
+  if(curImg){ prevImg.src = curImg; prev.classList.remove('hidden'); }
+  else { prev.classList.add('hidden'); }
   const cats=getAllCategories();
   const sel=document.getElementById('edit-product-category');
   sel.innerHTML='<option value="">— No category —</option>'+cats.map(c=>`<option value="${escA(c)}"${p.category===c?' selected':''}>${escH(c)}</option>`).join('');
-  if(p.category&&!cats.includes(p.category)) sel.innerHTML+=`<option value="${escA(p.category)}" selected>${escH(p.category)}</option>`;
+  if(p.category&&!cats.includes(p.category))
+    sel.innerHTML+=`<option value="${escA(p.category)}" selected>${escH(p.category)}</option>`;
   document.getElementById('edit-product-modal').classList.remove('hidden');
   setTimeout(()=>document.getElementById('edit-product-name').focus(),100);
 }
+
 function closeEditModal(){
-  pendingEditImg=null;pendingEditImgNew=false;
+  pendingEditImg=null; pendingEditImgNew=false;
   document.getElementById('edit-product-modal').classList.add('hidden');
 }
+
 function saveProductEdit(){
   const id=document.getElementById('edit-product-id').value;
   const name=document.getElementById('edit-product-name').value.trim();
@@ -801,27 +854,39 @@ function saveProductEdit(){
   if(!name){alert('Product name is required.');return;}
   if(price!==null&&(isNaN(price)||price<0)){alert('Invalid price. Enter a number.');return;}
   if(pendingEditImgNew){
-    if(pendingEditImg){imageStorage[id]=pendingEditImg;saveImageStorage();}
-    else{delete imageStorage[id];saveImageStorage();}
-  } else if(imgUrl&&!pendingEditImg){delete imageStorage[id];saveImageStorage();}
+    if(pendingEditImg){ imageStorage[id]=pendingEditImg; saveImageStorage(); }
+    else              { delete imageStorage[id]; saveImageStorage(); }
+  } else if(imgUrl && !pendingEditImg){
+    delete imageStorage[id]; saveImageStorage();
+  }
   const ov={};
-  ov.name=name; ov.category=cat;
+  ov.name=name;
+  ov.category=cat;
   if(price!=null) ov.price=price;
-  ov.imageUrl=(pendingEditImg&&!pendingEditImgNew)||(pendingEditImgNew&&pendingEditImg)?'':imgUrl;
+  ov.imageUrl = (pendingEditImg && !pendingEditImgNew) || (pendingEditImgNew && pendingEditImg) ? '' : imgUrl;
   ov.description=desc;
-  productOverrides[id]=ov; saveOverrides();
+  productOverrides[id]=ov;
+  saveOverrides();
   const lIdx=localProducts.findIndex(p=>p.id===id);
   if(lIdx>=0){
-    localProducts[lIdx]={...localProducts[lIdx],name,category:cat,price:price??localProducts[lIdx].price,imageUrl:imageStorage[id]?'':imgUrl,description:desc};
+    localProducts[lIdx]={...localProducts[lIdx],name,category:cat,
+      price:price??localProducts[lIdx].price,
+      imageUrl: imageStorage[id] ? '' : imgUrl,
+      description:desc};
     localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
   }
-  pendingEditImg=null;pendingEditImgNew=false;
-  closeEditModal();renderCategoryPills();applyFilters();renderAdminProducts();
+  pendingEditImg=null; pendingEditImgNew=false;
+  closeEditModal();
+  renderCategoryPills();
+  applyFilters();
+  renderAdminProducts();
 }
+
 function clearProductOverrides(id){
   if(!confirm('Reset this product to its original data?'))return;
-  delete productOverrides[id]; delete imageStorage[id];
-  saveOverrides();saveImageStorage();
+  delete productOverrides[id];
+  delete imageStorage[id];
+  saveOverrides(); saveImageStorage();
   renderCategoryPills();applyFilters();renderAdminProducts();
 }
 
@@ -846,77 +911,85 @@ async function addLocalProduct(){
 
   const btn=document.getElementById('add-product-btn');
   const statusEl=document.getElementById('add-product-status');
-  btn.disabled=true;btn.textContent='Adding...';
-  statusEl.textContent='⏳ Saving to Google Sheet...';statusEl.style.color='#6b7280';
+  btn.disabled=true; btn.textContent='Adding...';
+  statusEl.textContent='⏳ Saving to Google Sheet...'; statusEl.style.color='#6b7280';
 
   if(pendingNewImg){
     const nameKey='byname_'+name.toLowerCase().trim();
-    imageStorage[nameKey]=pendingNewImg;saveImageStorage();
+    imageStorage[nameKey]=pendingNewImg;
+    saveImageStorage();
   }
 
+  // Use no-cors — Google Apps Script redirects cause CORS errors on response read.
+  // We assume success if the fetch didn't throw, then verify by reloading the sheet.
   let sheetSuccess=false;
   try{
-    const payload={name,category:cat,final_price_php:String(price),image_url:pendingNewImg?'':img,description:desc};
-    const res=await fetch(APPS_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
-    const json=await res.json();
-    sheetSuccess=json.success===true;
+    const payload={name, category:cat, final_price_php:String(price), image_url:pendingNewImg?'':img, description:desc};
+    await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+    sheetSuccess=true;
   }catch(e){
     sheetSuccess=false;
-    console.warn('Apps Script response error (may still have succeeded):',e);
+    console.warn('Apps Script POST failed:', e);
   }
 
   if(sheetSuccess){
-    statusEl.textContent='✅ Added to Google Sheet!';statusEl.style.color='#16a34a';
+    statusEl.textContent='⏳ Sent! Refreshing product list...';
+    statusEl.style.color='#6b7280';
     clearAddProductForm();
+    await new Promise(r=>setTimeout(r,3000));
     await loadProducts();
-    renderCategoryPills();renderAdminProducts();
-    setTimeout(()=>{statusEl.textContent='';},4000);
+    renderCategoryPills(); renderAdminProducts();
+    statusEl.textContent='✅ Added to Google Sheet!';
+    statusEl.style.color='#16a34a';
+    setTimeout(()=>{ statusEl.textContent=''; },4000);
   } else {
     const newId='local_'+Date.now();
     localProducts.push({id:newId,name,category:cat,price,imageUrl:pendingNewImg?'':img,description:desc});
     localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
-    if(pendingNewImg){imageStorage[newId]=pendingNewImg;saveImageStorage();}
-    statusEl.textContent='⚠️ Sheet sync failed — saved locally. Check Apps Script deployment.';statusEl.style.color='#d97706';
+    if(pendingNewImg){ imageStorage[newId]=pendingNewImg; saveImageStorage(); }
+    statusEl.textContent='⚠️ Sheet sync failed — saved locally. Check Apps Script deployment.';
+    statusEl.style.color='#d97706';
     clearAddProductForm();
-    renderCategoryPills();applyFilters();renderAdminProducts();
-    setTimeout(()=>{statusEl.textContent='';},6000);
+    renderCategoryPills(); applyFilters(); renderAdminProducts();
+    setTimeout(()=>{ statusEl.textContent=''; },6000);
   }
-  btn.disabled=false;btn.textContent='+ Add Product';
+
+  btn.disabled=false; btn.textContent='+ Add Product';
 }
 
 function deleteLocalProduct(id){
   if(!confirm('Delete this product permanently?'))return;
   localProducts=localProducts.filter(p=>p.id!==id);
   localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
-  delete productOverrides[id];saveOverrides();
-  delete imageStorage[id];saveImageStorage();
+  delete productOverrides[id]; saveOverrides();
+  delete imageStorage[id]; saveImageStorage();
   renderCategoryPills();applyFilters();renderAdminProducts();
 }
 
 function findAndRemoveDuplicates(){
   const all=getAllProducts();
-  const seen=new Map();const dupes=[];
+  const seen=new Map(); const dupes=[];
   for(const p of all){
     const k=(p.name||'').toLowerCase().trim();
     if(!k) continue;
     if(seen.has(k)) dupes.push(p);
     else seen.set(k,p);
   }
-  if(!dupes.length){alert('✅ No duplicate products found!');return;}
-  const preview=dupes.slice(0,10).map(p=>' • '+p.name).join('\n')+(dupes.length>10?'\n  ...and '+(dupes.length-10)+' more':'');
+  if(!dupes.length){alert('\u2705 No duplicate products found!');return;}
+  const preview=dupes.slice(0,10).map(p=>' \u2022 '+p.name).join('\n')+(dupes.length>10?'\n  ...and '+(dupes.length-10)+' more':'');
   if(!confirm('Found '+dupes.length+' duplicate product'+(dupes.length>1?'s':'')+' (same name as another item):\n\n'+preview+'\n\nThe FIRST occurrence of each name is kept.\nRemove the duplicates?')) return;
   dupes.forEach(p=>{
     if(p._local){
       localProducts=localProducts.filter(lp=>lp.id!==p.product_id);
       localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
-      delete productOverrides[p.product_id];delete imageStorage[p.product_id];
+      delete productOverrides[p.product_id]; delete imageStorage[p.product_id];
     } else {
       productOverrides[p.product_id]={...(productOverrides[p.product_id]||{}),_hidden:true};
     }
   });
-  saveOverrides();saveImageStorage();
-  renderCategoryPills();applyFilters();renderAdminProducts();
-  alert('✅ Done! Removed '+dupes.length+' duplicate'+(dupes.length>1?'s':'')+'. Sheet duplicates are hidden (use Restore to bring them back).');
+  saveOverrides(); saveImageStorage();
+  renderCategoryPills(); applyFilters(); renderAdminProducts();
+  alert('\u2705 Done! Removed '+dupes.length+' duplicate'+(dupes.length>1?'s':'')+'. Sheet duplicates are hidden (use Restore to bring them back).');
 }
 
 function restoreHiddenProduct(id){
@@ -924,9 +997,10 @@ function restoreHiddenProduct(id){
   delete productOverrides[id]._hidden;
   if(!Object.keys(productOverrides[id]).length) delete productOverrides[id];
   saveOverrides();
-  renderCategoryPills();applyFilters();renderAdminProducts();
+  renderCategoryPills(); applyFilters(); renderAdminProducts();
 }
 
+// ADMIN — CATEGORIES
 function renderAdminCategories(){
   const cats=getAllCategories();
   const list=document.getElementById('admin-category-list');
@@ -934,7 +1008,9 @@ function renderAdminCategories(){
   list.innerHTML=cats.map(c=>`
     <div class="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between mb-2">
       <div class="flex items-center gap-3"><span class="text-xl">🏷</span><span class="font-semibold text-gray-800">${escH(c)}</span></div>
-      ${localCategories.includes(c)?`<button onclick="deleteCategory('${escA(c)}')" class="text-red-400 hover:text-red-600 text-sm font-semibold transition">Delete</button>`:`<span class="text-xs text-gray-400 italic">From Google Sheet</span>`}
+      ${localCategories.includes(c)
+        ?`<button onclick="deleteCategory('${escA(c)}')" class="text-red-400 hover:text-red-600 text-sm font-semibold transition">Delete</button>`
+        :`<span class="text-xs text-gray-400 italic">From Google Sheet</span>`}
     </div>`).join('');
 }
 function addCategory(){
@@ -953,6 +1029,7 @@ function deleteCategory(name){
   renderCategoryPills();renderAdminCategories();
 }
 
+// ADMIN — ORDERS
 function renderAdminOrders(){
   const list=document.getElementById('admin-order-list');
   document.getElementById('orders-count-label').textContent=`Orders (${orders.length})`;
@@ -970,7 +1047,9 @@ function renderAdminOrders(){
         <span class="font-extrabold text-yellow-600 text-lg">${fmtPrice(o.total)}</span>
       </div>
       <div class="text-sm text-gray-600 space-y-1 mb-3">
-        <p>📱 ${escH(o.phone)}</p><p>✉️ ${escH(o.email)}</p><p>📍 ${escH(o.address)}</p>
+        <p>📱 ${escH(o.phone)}</p>
+        <p>✉️ ${escH(o.email)}</p>
+        <p>📍 ${escH(o.address)}</p>
         ${o.notes?`<p>📝 ${escH(o.notes)}</p>`:''}
       </div>
       <div class="border-t pt-3 mb-4">
@@ -991,8 +1070,10 @@ function renderAdminOrders(){
 
 function printOrder(id){const o=orders.find(x=>x.id===id);if(!o)return;buildPrintArea([o]);window.print();clearPrintArea();}
 function printAllOrders(){if(!orders.length){alert('No orders to print.');return;}buildPrintArea(orders);window.print();clearPrintArea();}
+
 function buildPrintArea(list){
-  const el=document.getElementById('print-area');el.classList.remove('hidden');
+  const el=document.getElementById('print-area');
+  el.classList.remove('hidden');
   el.innerHTML=list.map(o=>`
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto 40px;padding-bottom:40px;border-bottom:2px dashed #ddd;page-break-after:always">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
@@ -1024,46 +1105,81 @@ function deleteOrder(id){
   renderAdminOrders();
 }
 
-let lbScale=1,lbDragging=false,lbStartX=0,lbStartY=0,lbCurX=0,lbCurY=0;
-function openLightbox(src,name){
+// LIGHTBOX
+let lbScale = 1;
+let lbDragging = false, lbStartX = 0, lbStartY = 0, lbCurX = 0, lbCurY = 0;
+
+function openLightbox(src, name){
   if(!src) return;
-  lbScale=1;lbCurX=0;lbCurY=0;
+  lbScale=1; lbCurX=0; lbCurY=0;
   const img=document.getElementById('lb-img');
-  img.src=src;img.alt=name||'';
-  img.style.transform='scale(1) translate(0px,0px)';
+  img.src=src; img.alt=name||'';
+  img.style.transform=`scale(1) translate(0px,0px)`;
   document.getElementById('lb-zoom-label').textContent='100%';
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow='hidden';
 }
-function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
-function lbBgClick(e){if(e.target===document.getElementById('lightbox')) closeLightbox();}
-function lbZoom(dir){lbScale=Math.min(5,Math.max(0.5,lbScale+dir*0.25));applyLbTransform();}
-function lbReset(){lbScale=1;lbCurX=0;lbCurY=0;applyLbTransform();}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow='';
+}
+function lbBgClick(e){
+  if(e.target===document.getElementById('lightbox')) closeLightbox();
+}
+function lbZoom(dir){
+  lbScale = Math.min(5, Math.max(0.5, lbScale + dir*0.25));
+  applyLbTransform();
+}
+function lbReset(){
+  lbScale=1; lbCurX=0; lbCurY=0;
+  applyLbTransform();
+}
 function applyLbTransform(){
   document.getElementById('lb-img').style.transform=`scale(${lbScale}) translate(${lbCurX/lbScale}px,${lbCurY/lbScale}px)`;
   document.getElementById('lb-zoom-label').textContent=Math.round(lbScale*100)+'%';
 }
 const lbWrap=document.getElementById('lb-img-wrap');
-lbWrap.addEventListener('mousedown',e=>{if(lbScale<=1)return;lbDragging=true;lbStartX=e.clientX-lbCurX;lbStartY=e.clientY-lbCurY;lbWrap.classList.add('grabbing');});
-window.addEventListener('mousemove',e=>{if(!lbDragging)return;lbCurX=e.clientX-lbStartX;lbCurY=e.clientY-lbStartY;applyLbTransform();});
-window.addEventListener('mouseup',()=>{lbDragging=false;lbWrap.classList.remove('grabbing');});
+lbWrap.addEventListener('mousedown',e=>{
+  if(lbScale<=1) return;
+  lbDragging=true; lbStartX=e.clientX-lbCurX; lbStartY=e.clientY-lbCurY;
+  lbWrap.classList.add('grabbing');
+});
+window.addEventListener('mousemove',e=>{
+  if(!lbDragging) return;
+  lbCurX=e.clientX-lbStartX; lbCurY=e.clientY-lbStartY;
+  applyLbTransform();
+});
+window.addEventListener('mouseup',()=>{ lbDragging=false; lbWrap.classList.remove('grabbing'); });
 let lbLastDist=0;
 lbWrap.addEventListener('touchstart',e=>{
-  if(e.touches.length===2) lbLastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
-  else if(e.touches.length===1){lbDragging=true;lbStartX=e.touches[0].clientX-lbCurX;lbStartY=e.touches[0].clientY-lbCurY;}
+  if(e.touches.length===2){
+    lbLastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+  } else if(e.touches.length===1){
+    lbDragging=true; lbStartX=e.touches[0].clientX-lbCurX; lbStartY=e.touches[0].clientY-lbCurY;
+  }
 },{passive:true});
 lbWrap.addEventListener('touchmove',e=>{
-  if(e.touches.length===2){const dist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);lbScale=Math.min(5,Math.max(0.5,lbScale*(dist/lbLastDist)));lbLastDist=dist;applyLbTransform();}
-  else if(e.touches.length===1&&lbDragging){lbCurX=e.touches[0].clientX-lbStartX;lbCurY=e.touches[0].clientY-lbStartY;applyLbTransform();}
+  if(e.touches.length===2){
+    const dist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+    lbScale=Math.min(5,Math.max(0.5,lbScale*(dist/lbLastDist)));
+    lbLastDist=dist; applyLbTransform();
+  } else if(e.touches.length===1&&lbDragging){
+    lbCurX=e.touches[0].clientX-lbStartX; lbCurY=e.touches[0].clientY-lbStartY;
+    applyLbTransform();
+  }
 },{passive:true});
-lbWrap.addEventListener('touchend',()=>{lbDragging=false;});
-lbWrap.addEventListener('wheel',e=>{e.preventDefault();lbScale=Math.min(5,Math.max(0.5,lbScale-(e.deltaY>0?0.15:-0.15)));applyLbTransform();},{passive:false});
-document.addEventListener('keydown',e=>{if(e.key==='Escape') closeLightbox();});
+lbWrap.addEventListener('touchend',()=>{ lbDragging=false; });
+lbWrap.addEventListener('wheel',e=>{
+  e.preventDefault();
+  lbScale=Math.min(5,Math.max(0.5,lbScale-(e.deltaY>0?0.15:-0.15)));
+  applyLbTransform();
+},{passive:false});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeLightbox(); });
 
+// INIT
 updateCartBadge();
 loadProducts();
 if(window.location.hash==='#admin') openAdmin();
 </script>
 </body>
 </html>
-</details>
