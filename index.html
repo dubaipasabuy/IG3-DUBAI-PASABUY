@@ -383,10 +383,9 @@ let cart             = JSON.parse(localStorage.getItem('ig3-cart')              
 let activeCategory   = '';
 let logoClicks       = 0, logoTimer = null;
 
-// Temp state for image uploads (cleared when modals open/close)
-let pendingEditImg     = null;  // base64 string from file upload in edit modal
-let pendingEditImgNew  = false; // true only when user just picked a new file (vs pre-loaded existing)
-let pendingNewImg      = null;  // base64 for add-product form
+let pendingEditImg     = null;
+let pendingEditImgNew  = false;
+let pendingNewImg      = null;
 
 function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function escA(s){ return String(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
@@ -394,6 +393,7 @@ function getImg(p){
   if(imageStorage[p.product_id]) return imageStorage[p.product_id];
   return p.image_url||p.image||p.img||p.photo||p.thumbnail||p.picture||'';
 }
+function parsePrice(v){ if(v===null||v===undefined||v==='') return 0; var s=String(v).replace(/[₱,\s]/g,'').trim(); var n=parseFloat(s); return isNaN(n)?0:n; }
 function fmtPrice(n){ return '₱'+Number(n).toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function saveOverrides(){ localStorage.setItem('ig3-product-overrides',JSON.stringify(productOverrides)); }
 function saveImageStorage(){ localStorage.setItem('ig3-image-storage',JSON.stringify(imageStorage)); }
@@ -443,7 +443,6 @@ function handleNewImgUpload(input){
 }
 
 function onEditUrlInput(){
-  // If user types a URL, discard any pending file upload
   if(pendingEditImgNew){ pendingEditImg = null; pendingEditImgNew = false; }
   const url = document.getElementById('edit-product-img').value.trim();
   const prev = document.getElementById('edit-img-preview');
@@ -454,7 +453,7 @@ function onEditUrlInput(){
 }
 
 function clearEditImg(){
-  pendingEditImg = null; pendingEditImgNew = true; // mark as "clear" on save
+  pendingEditImg = null; pendingEditImgNew = true;
   document.getElementById('edit-product-img').value = '';
   document.getElementById('edit-img-file').value = '';
   document.getElementById('edit-img-preview').classList.add('hidden');
@@ -468,17 +467,18 @@ function clearNewImg(){
 }
 
 // ── DATA ──────────────────────────────────────────────────────
-function getAllProducts(){
+function getAllProducts(includeHidden=false){
   const sheet = sheetProducts.map(p=>{
     const ov = productOverrides[p.product_id]||{};
     return {
       ...p,
       name:            ov.name      !== undefined ? ov.name      : p.name,
       category:        ov.category  !== undefined ? ov.category  : (p.category||''),
-      final_price_php: ov.price     != null       ? String(ov.price) : p.final_price_php,
+      final_price_php: ov.price     != null       ? String(ov.price) : (p.final_price_php||''),
       image_url:       ov.imageUrl  !== undefined ? ov.imageUrl  : (p.image_url||''),
       description:     ov.description!==undefined ? ov.description:(p.description||''),
-      _edited: Object.keys(ov).length>0
+      _hidden:         !!ov._hidden,
+      _edited: Object.keys(ov).filter(k=>k!=='_hidden').length>0
     };
   });
   const local = localProducts.map(p=>{
@@ -487,13 +487,15 @@ function getAllProducts(){
       product_id:      p.id,
       name:            ov.name      !== undefined ? ov.name      : p.name,
       category:        ov.category  !== undefined ? ov.category  : (p.category||''),
-      final_price_php: ov.price     != null       ? String(ov.price) : String(p.price||0),
+      final_price_php: ov.price     != null       ? String(ov.price) : String(p.price||''),
       image_url:       ov.imageUrl  !== undefined ? ov.imageUrl  : (p.imageUrl||''),
       description:     ov.description!==undefined ? ov.description:(p.description||''),
+      _hidden:         !!ov._hidden,
       _local: true
     };
   });
-  return [...sheet, ...local];
+  const all=[...sheet,...local];
+  return includeHidden ? all : all.filter(p=>!p._hidden);
 }
 
 function getAllCategories(){
@@ -533,7 +535,7 @@ function parseCSV(text){
 function parseCSVLine(line){
   const r=[];let c='',q=false;
   for(let i=0;i<line.length;i++){
-    if(line[i]==='\"'){if(q&&line[i+1]==='\"'){c+='\"';i++;}else q=!q;}
+    if(line[i]==='"'){if(q&&line[i+1]==='"'){c+='"';i++;}else q=!q;}
     else if(line[i]===','&&!q){r.push(c);c='';}
     else c+=line[i];
   }
@@ -553,8 +555,8 @@ function setCategory(cat){activeCategory=cat;renderCategoryPills();applyFilters(
 function applyFilters(){
   const sort=document.getElementById('sort-filter').value;
   let list=activeCategory?getAllProducts().filter(p=>p.category===activeCategory):getAllProducts();
-  if(sort==='price_asc') list.sort((a,b)=>(parseFloat(a.final_price_php)||0)-(parseFloat(b.final_price_php)||0));
-  else if(sort==='price_desc') list.sort((a,b)=>(parseFloat(b.final_price_php)||0)-(parseFloat(a.final_price_php)||0));
+  if(sort==='price_asc') list.sort((a,b)=>parsePrice(a.final_price_php)-parsePrice(b.final_price_php));
+  else if(sort==='price_desc') list.sort((a,b)=>parsePrice(b.final_price_php)-parsePrice(a.final_price_php));
   else list.sort((a,b)=>(a.name||'').localeCompare(b.name||''));
   renderProducts(list);
   document.getElementById('product-count').textContent=list.length+' items';
@@ -564,7 +566,7 @@ function renderProducts(list){
   const grid=document.getElementById('products-grid');
   if(!list.length){grid.innerHTML='<div class="col-span-full text-center py-16 text-gray-400"><div class="text-4xl mb-3">🔍</div><p>No products found</p></div>';return;}
   grid.innerHTML=list.map((p,i)=>{
-    const price=parseFloat(p.final_price_php)||0;
+    const price=parsePrice(p.final_price_php);
     const img=getImg(p);
     const bg=CARD_BG[i%CARD_BG.length];
     const desc=p.description||'';
@@ -591,7 +593,7 @@ function renderProducts(list){
 function addToCart(id){
   const p=getAllProducts().find(x=>x.product_id===id);if(!p)return;
   const ex=cart.find(c=>c.id===id);
-  if(ex) ex.qty++;else cart.push({id,name:p.name,price:parseFloat(p.final_price_php),qty:1});
+  if(ex) ex.qty++;else cart.push({id,name:p.name,price:parsePrice(p.final_price_php),qty:1});
   saveCart();updateCartBadge();
   const btn=event&&event.target;
   if(btn){btn.textContent='✓';setTimeout(()=>btn.textContent='+ Add',800);}
@@ -718,16 +720,33 @@ function showAdminTab(tab){
 function renderAdminProducts(){
   populateAdminCategorySelect();
   const all=getAllProducts();
+  const hidden=getAllProducts(true).filter(p=>p._hidden);
   const list=document.getElementById('admin-product-list');
-  if(!all.length){list.innerHTML='<p class="text-gray-400 text-sm text-center py-8">No products yet.</p>';return;}
+
+  const seenNames=new Map(); let dupCount=0;
+  all.forEach(p=>{const k=(p.name||'').toLowerCase().trim();if(!k)return;if(seenNames.has(k))dupCount++;else seenNames.set(k,1);});
+
+  const dupBtn=`<div class="flex items-center justify-between mb-4">
+    <span class="text-sm text-gray-500 font-medium">${all.length} product(s)${hidden.length?' · <span class="text-gray-400">'+hidden.length+' hidden</span>':''}</span>
+    <button onclick="findAndRemoveDuplicates()"
+      class="flex items-center gap-1.5 ${dupCount>0?'bg-red-50 hover:bg-red-100 text-red-600 border border-red-200':'bg-gray-100 hover:bg-gray-200 text-gray-500 border border-gray-200'} font-semibold px-4 py-2 rounded-xl text-sm transition">
+      🔍 ${dupCount>0?dupCount+' Duplicate'+(dupCount>1?'s':'')+' Found':'No Duplicates'}
+    </button>
+  </div>`;
+
+  if(!all.length && !hidden.length){
+    list.innerHTML=dupBtn+'<p class="text-gray-400 text-sm text-center py-8">No products yet.</p>';
+    return;
+  }
+
   const cats=[...new Set(all.map(p=>p.category||'Uncategorized'))].sort();
-  list.innerHTML=cats.map(cat=>{
+  const mainHtml=cats.map(cat=>{
     const prods=all.filter(p=>(p.category||'Uncategorized')===cat);
     return `<div class="mb-5">
       <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">${escH(cat)}</h4>
       <div class="space-y-2">
         ${prods.map(p=>{
-          const price=parseFloat(p.final_price_php)||0;
+          const price=parsePrice(p.final_price_php);
           const img=getImg(p);
           const hasOv=p._edited||(p._local&&productOverrides[p.product_id]);
           return `<div class="bg-white rounded-xl shadow-sm p-3 flex items-center gap-3">
@@ -755,6 +774,30 @@ function renderAdminProducts(){
       </div>
     </div>`;
   }).join('');
+
+  const hiddenHtml=hidden.length?`<div class="mt-8 mb-5">
+    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">🚫 Hidden / Removed Duplicates (${hidden.length})</h4>
+    <div class="space-y-2">
+      ${hidden.map(p=>{
+        const price=parsePrice(p.final_price_php);
+        const img=getImg(p);
+        return `<div class="bg-gray-50 rounded-xl shadow-sm p-3 flex items-center gap-3 opacity-60">
+          ${img?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none'">`:`<div class="w-12 h-12 rounded-xl bg-gray-200 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-gray-400 truncate line-through">${escH(p.name)}</p>
+            <p class="text-xs text-gray-400 truncate">${escH(p.category||'No category')} · ${price>0?fmtPrice(price):'No price'} · <em>duplicate removed</em></p>
+          </div>
+          <div class="flex items-center gap-1.5 flex-shrink-0">
+            <button onclick="restoreHiddenProduct('${escA(p.product_id)}')"
+              class="bg-green-50 hover:bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full transition">↩ Restore</button>
+            ${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="text-gray-400 hover:text-red-500 text-lg px-1 transition" title="Delete permanently">🗑</button>`:''}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`:'';
+
+  list.innerHTML=dupBtn+mainHtml+hiddenHtml;
 }
 
 function populateAdminCategorySelect(){
@@ -766,24 +809,17 @@ function populateAdminCategorySelect(){
 // ── EDIT MODAL ────────────────────────────────────────────────
 function openEditModal(id){
   const p=getAllProducts().find(x=>x.product_id===id);if(!p)return;
-
-  // Reset upload state
   pendingEditImg = null;
   pendingEditImgNew = false;
   document.getElementById('edit-img-file').value='';
-
   document.getElementById('edit-product-id').value=id;
   document.getElementById('edit-product-name').value=p.name||'';
   document.getElementById('edit-product-price').value=parseFloat(p.final_price_php)||'';
   document.getElementById('edit-product-description').value=p.description||'';
-
-  // Image: prefer stored base64, then URL override, then sheet URL
   const storedBase64 = imageStorage[p.product_id];
   const urlImg = (productOverrides[p.product_id]?.imageUrl) || p.image_url || p.image || p.img || '';
   const curImg = storedBase64 || urlImg;
-
   if(storedBase64){
-    // Pre-load existing base64 so it persists on save if user doesn't change it
     pendingEditImg = storedBase64;
     pendingEditImgNew = false;
     document.getElementById('edit-product-img').value = '';
@@ -792,19 +828,15 @@ function openEditModal(id){
     document.getElementById('edit-product-img').value = urlImg;
     document.getElementById('edit-img-source-label').textContent = urlImg ? '🔗 URL image' : '';
   }
-
   const prev = document.getElementById('edit-img-preview');
   const prevImg = document.getElementById('edit-img-preview-img');
   if(curImg){ prevImg.src = curImg; prev.classList.remove('hidden'); }
   else { prev.classList.add('hidden'); }
-
-  // Populate category select
   const cats=getAllCategories();
   const sel=document.getElementById('edit-product-category');
   sel.innerHTML='<option value="">— No category —</option>'+cats.map(c=>`<option value="${escA(c)}"${p.category===c?' selected':''}>${escH(c)}</option>`).join('');
   if(p.category&&!cats.includes(p.category))
     sel.innerHTML+=`<option value="${escA(p.category)}" selected>${escH(p.category)}</option>`;
-
   document.getElementById('edit-product-modal').classList.remove('hidden');
   setTimeout(()=>document.getElementById('edit-product-name').focus(),100);
 }
@@ -822,35 +854,22 @@ function saveProductEdit(){
   const price=priceVal!==''?parseFloat(priceVal):null;
   const imgUrl=document.getElementById('edit-product-img').value.trim();
   const desc=document.getElementById('edit-product-description').value.trim();
-
   if(!name){alert('Product name is required.');return;}
   if(price!==null&&(isNaN(price)||price<0)){alert('Invalid price. Enter a number.');return;}
-
-  // Handle image storage:
-  // - pendingEditImgNew=true + pendingEditImg: new file uploaded → store base64
-  // - pendingEditImgNew=true + !pendingEditImg: user clicked "Remove image" → clear base64
-  // - imgUrl set: use URL → remove any stored base64
-  // - pendingEditImgNew=false + pendingEditImg: no change → keep existing base64
   if(pendingEditImgNew){
     if(pendingEditImg){ imageStorage[id]=pendingEditImg; saveImageStorage(); }
     else              { delete imageStorage[id]; saveImageStorage(); }
   } else if(imgUrl && !pendingEditImg){
-    // URL provided → remove stored image
     delete imageStorage[id]; saveImageStorage();
   }
-  // else: pendingEditImgNew=false, pendingEditImg=existing base64 → no change needed
-
   const ov={};
   ov.name=name;
   ov.category=cat;
   if(price!=null) ov.price=price;
-  // Only store imageUrl in overrides if not using base64
   ov.imageUrl = (pendingEditImg && !pendingEditImgNew) || (pendingEditImgNew && pendingEditImg) ? '' : imgUrl;
   ov.description=desc;
   productOverrides[id]=ov;
   saveOverrides();
-
-  // Also update localProducts base data if it's a local product
   const lIdx=localProducts.findIndex(p=>p.id===id);
   if(lIdx>=0){
     localProducts[lIdx]={...localProducts[lIdx],name,category:cat,
@@ -859,7 +878,6 @@ function saveProductEdit(){
       description:desc};
     localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
   }
-
   pendingEditImg=null; pendingEditImgNew=false;
   closeEditModal();
   renderCategoryPills();
@@ -904,6 +922,40 @@ function deleteLocalProduct(id){
   delete productOverrides[id]; saveOverrides();
   delete imageStorage[id]; saveImageStorage();
   renderCategoryPills();applyFilters();renderAdminProducts();
+}
+
+function findAndRemoveDuplicates(){
+  const all=getAllProducts();
+  const seen=new Map(); const dupes=[];
+  for(const p of all){
+    const k=(p.name||'').toLowerCase().trim();
+    if(!k) continue;
+    if(seen.has(k)) dupes.push(p);
+    else seen.set(k,p);
+  }
+  if(!dupes.length){alert('✅ No duplicate products found!');return;}
+  const preview=dupes.slice(0,10).map(p=>' • '+p.name).join('\n')+(dupes.length>10?'\n  ...and '+(dupes.length-10)+' more':'');
+  if(!confirm('Found '+dupes.length+' duplicate product'+(dupes.length>1?'s':'')+' (same name as another item):\n\n'+preview+'\n\nThe FIRST occurrence of each name is kept.\nRemove the duplicates?')) return;
+  dupes.forEach(p=>{
+    if(p._local){
+      localProducts=localProducts.filter(lp=>lp.id!==p.product_id);
+      localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
+      delete productOverrides[p.product_id]; delete imageStorage[p.product_id];
+    } else {
+      productOverrides[p.product_id]={...(productOverrides[p.product_id]||{}),_hidden:true};
+    }
+  });
+  saveOverrides(); saveImageStorage();
+  renderCategoryPills(); applyFilters(); renderAdminProducts();
+  alert('✅ Done! Removed '+dupes.length+' duplicate'+(dupes.length>1?'s':'')+'. Sheet duplicates are hidden (use Restore to bring them back).');
+}
+
+function restoreHiddenProduct(id){
+  if(!productOverrides[id]) return;
+  delete productOverrides[id]._hidden;
+  if(!Object.keys(productOverrides[id]).length) delete productOverrides[id];
+  saveOverrides();
+  renderCategoryPills(); applyFilters(); renderAdminProducts();
 }
 
 // ── ADMIN — CATEGORIES ────────────────────────────────────────
@@ -1044,7 +1096,6 @@ function applyLbTransform(){
   document.getElementById('lb-img').style.transform=`scale(${lbScale}) translate(${lbCurX/lbScale}px,${lbCurY/lbScale}px)`;
   document.getElementById('lb-zoom-label').textContent=Math.round(lbScale*100)+'%';
 }
-// Mouse drag
 const lbWrap=document.getElementById('lb-img-wrap');
 lbWrap.addEventListener('mousedown',e=>{
   if(lbScale<=1) return;
@@ -1057,7 +1108,6 @@ window.addEventListener('mousemove',e=>{
   applyLbTransform();
 });
 window.addEventListener('mouseup',()=>{ lbDragging=false; lbWrap.classList.remove('grabbing'); });
-// Touch pinch-zoom + drag
 let lbLastDist=0;
 lbWrap.addEventListener('touchstart',e=>{
   if(e.touches.length===2){
@@ -1077,13 +1127,11 @@ lbWrap.addEventListener('touchmove',e=>{
   }
 },{passive:true});
 lbWrap.addEventListener('touchend',()=>{ lbDragging=false; });
-// Scroll wheel zoom
 lbWrap.addEventListener('wheel',e=>{
   e.preventDefault();
   lbScale=Math.min(5,Math.max(0.5,lbScale-(e.deltaY>0?0.15:-0.15)));
   applyLbTransform();
 },{passive:false});
-// Keyboard ESC
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeLightbox(); });
 
 // ── INIT ──────────────────────────────────────────────────────
@@ -1093,3 +1141,4 @@ if(window.location.hash==='#admin') openAdmin();
 </script>
 </body>
 </html>
+</details>
