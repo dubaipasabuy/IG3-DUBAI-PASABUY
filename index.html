@@ -7,326 +7,704 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; background: #f9fafb; }
+    body { font-family: 'Inter', sans-serif; background: #fef6ee; }
     .product-card { transition: transform 0.15s ease, box-shadow 0.15s ease; }
-    .product-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    .product-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.12); }
     #cart-sidebar { transition: transform 0.3s ease; }
+    .cat-pill { transition: all 0.15s ease; }
+    .cat-pill.active { background: #1a1a1a !important; color: #fff !important; border-color: #1a1a1a !important; }
+    .admin-tab { border-bottom: 2px solid transparent; transition: all 0.15s; }
+    .admin-tab.active { border-bottom-color: #f59e0b; color: #92400e; font-weight: 700; }
+    @media print {
+      body > *:not(#print-area) { display: none !important; }
+      #print-area { display: block !important; padding: 32px; }
+    }
+    .line-clamp-2 { display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
   </style>
 </head>
 <body class="text-gray-900">
 
-  <!-- HEADER -->
-  <header class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div>
-        <h1 class="text-lg font-extrabold tracking-tight">🇦🇪 IG3 Dubai Pasabuy</h1>
-        <p class="text-xs text-gray-400">Packed Fresh from Dubai</p>
+<!-- ===== HEADER ===== -->
+<header class="bg-white shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div onclick="handleLogoClick()" class="cursor-pointer select-none">
+      <h1 class="text-lg font-extrabold tracking-tight">🇦🇪 IG3 Dubai Pasabuy</h1>
+      <p class="text-xs text-gray-400">Packed Fresh from Dubai</p>
+    </div>
+    <button onclick="toggleCart()" class="relative bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-4 py-2 rounded-full flex items-center gap-2 text-sm transition">
+      🛒 Cart
+      <span id="cart-count" class="bg-red-500 text-white text-xs rounded-full px-1.5 hidden">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<div class="bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400 py-14 px-4 text-center">
+  <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-2">Snacks, sweets &amp; treats</h2>
+  <p class="text-white text-lg opacity-90 mb-1">straight from Dubai.</p>
+  <p class="text-white text-sm opacity-75">Pick your favorites, tell us where to send them.</p>
+</div>
+
+<!-- ===== CATEGORY PILLS ===== -->
+<div class="max-w-7xl mx-auto px-4 pt-6 pb-2">
+  <div id="category-pills" class="flex flex-wrap gap-2 justify-center"></div>
+</div>
+
+<!-- ===== SORT ===== -->
+<div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
+  <span class="text-sm text-gray-500 font-medium">↑↓ Sort by</span>
+  <select id="sort-filter" onchange="applyFilters()"
+    class="border border-gray-300 rounded-full px-4 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400">
+    <option value="name">Featured</option>
+    <option value="price_asc">Price: Low → High</option>
+    <option value="price_desc">Price: High → Low</option>
+  </select>
+  <span id="product-count" class="text-sm text-gray-400 ml-auto"></span>
+</div>
+
+<!-- ===== PRODUCTS ===== -->
+<main class="max-w-7xl mx-auto px-4 pb-20">
+  <div id="loading" class="text-center py-20 text-gray-400">
+    <div class="text-5xl mb-4">🛍️</div>
+    <p class="text-lg font-medium">Loading the shelves...</p>
+  </div>
+  <div id="error-msg" class="hidden text-center py-20">
+    <div class="text-5xl mb-4">⚠️</div>
+    <p class="text-red-500 font-medium">Could not load products.</p>
+    <p class="text-gray-500 text-sm mt-2">Make sure the Google Sheet is shared as <strong>Anyone with the link → Viewer</strong>.</p>
+  </div>
+  <div id="products-grid" class="hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+</main>
+
+<!-- ===== CART OVERLAY ===== -->
+<div id="cart-overlay" class="hidden fixed inset-0 bg-black bg-opacity-40 z-40" onclick="toggleCart()"></div>
+
+<!-- ===== CART SIDEBAR ===== -->
+<div id="cart-sidebar" class="fixed right-0 top-0 h-full w-full max-w-sm bg-white shadow-2xl z-50 transform translate-x-full flex flex-col">
+  <div class="p-4 border-b flex items-center justify-between">
+    <h3 class="text-lg font-bold">Your Order 🛒</h3>
+    <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-700 text-2xl leading-none">&times;</button>
+  </div>
+  <div id="cart-items" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
+  <div class="p-4 border-t bg-gray-50">
+    <div class="flex justify-between font-bold text-lg mb-3">
+      <span>Total</span>
+      <span id="cart-total" class="text-yellow-600">₱0</span>
+    </div>
+    <button onclick="showOrderForm()" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition text-sm">
+      Place Order →
+    </button>
+  </div>
+</div>
+
+<!-- ===== ORDER MODAL ===== -->
+<div id="order-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto shadow-2xl">
+    <h3 class="text-xl font-bold mb-5">Complete Your Order 📦</h3>
+    <form id="order-form" action="https://formspree.io/f/xykrlbbg" method="POST">
+      <input type="hidden" name="_subject" value="New Order — IG3 Dubai Pasabuy">
+      <input type="hidden" name="order_items" id="form-order-items">
+      <input type="hidden" name="order_total" id="form-order-total">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
+          <input type="text" name="name" id="order-name" required placeholder="Juan dela Cruz"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Email *</label>
+          <input type="email" name="email" id="order-email" required placeholder="juan@email.com"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Phone / WhatsApp *</label>
+          <input type="tel" name="phone" id="order-phone" required placeholder="+63 912 345 6789"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Delivery Address *</label>
+          <textarea name="address" id="order-address" rows="3" required placeholder="House No., Street, Barangay, City, Province"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Notes (optional)</label>
+          <textarea name="notes" id="order-notes" rows="2" placeholder="Special instructions, preferred contact time, etc."
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></textarea>
+        </div>
+        <div class="bg-yellow-50 rounded-xl p-4 border border-yellow-200">
+          <p class="text-sm font-bold text-gray-800 mb-2">Order Summary</p>
+          <div id="modal-order-summary" class="text-sm text-gray-600 space-y-1"></div>
+        </div>
       </div>
-      <button onclick="toggleCart()" class="relative bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-4 py-2 rounded-full flex items-center gap-2 text-sm transition">
-        🛒 Cart
-        <span id="cart-count" class="bg-red-500 text-white text-xs rounded-full px-1.5 hidden">0</span>
-      </button>
-    </div>
-  </header>
-
-  <!-- HERO -->
-  <div class="bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400 py-14 px-4 text-center">
-    <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-2">Snacks, sweets &amp; treats</h2>
-    <p class="text-white text-lg opacity-90 mb-1">straight from Dubai.</p>
-    <p class="text-white text-sm opacity-75">Pick your favorites, tell us where to send them.</p>
-  </div>
-
-  <!-- FILTERS -->
-  <div class="max-w-7xl mx-auto px-4 py-5">
-    <div class="flex flex-wrap gap-3 items-center">
-      <select id="category-filter" onchange="applyFilters()"
-        class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400">
-        <option value="">All Categories</option>
-      </select>
-      <select id="sort-filter" onchange="applyFilters()"
-        class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400">
-        <option value="name">Sort by Name</option>
-        <option value="price_asc">Price: Low → High</option>
-        <option value="price_desc">Price: High → Low</option>
-      </select>
-      <span id="product-count" class="text-sm text-gray-400 ml-auto"></span>
-    </div>
-  </div>
-
-  <!-- PRODUCTS -->
-  <main class="max-w-7xl mx-auto px-4 pb-16">
-    <div id="loading" class="text-center py-20 text-gray-400">
-      <div class="text-5xl mb-4">🛍️</div>
-      <p class="text-lg font-medium">Loading the shelves...</p>
-    </div>
-    <div id="error-msg" class="hidden text-center py-20">
-      <div class="text-5xl mb-4">⚠️</div>
-      <p class="text-red-500 font-medium">Could not load products.</p>
-      <p class="text-gray-500 text-sm mt-2">Make sure the Google Sheet is shared as <strong>Anyone with the link → Viewer</strong>.</p>
-    </div>
-    <div id="products-grid" class="hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
-  </main>
-
-  <!-- CART OVERLAY -->
-  <div id="cart-overlay" class="hidden fixed inset-0 bg-black bg-opacity-40 z-40" onclick="toggleCart()"></div>
-
-  <!-- CART SIDEBAR -->
-  <div id="cart-sidebar" class="fixed right-0 top-0 h-full w-full max-w-sm bg-white shadow-2xl z-50 transform translate-x-full flex flex-col">
-    <div class="p-4 border-b flex items-center justify-between">
-      <h3 class="text-lg font-bold">Your Order 🛒</h3>
-      <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-700 text-2xl leading-none">&times;</button>
-    </div>
-    <div id="cart-items" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
-    <div class="p-4 border-t bg-gray-50">
-      <div class="flex justify-between font-bold text-lg mb-3">
-        <span>Total</span>
-        <span id="cart-total" class="text-yellow-600">₱0</span>
+      <div class="flex gap-3 mt-6">
+        <button type="button" onclick="closeOrderForm()"
+          class="flex-1 border border-gray-300 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-50 transition text-sm">Cancel</button>
+        <button type="submit" id="submit-btn"
+          class="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition text-sm">Send Order ✓</button>
       </div>
-      <button onclick="showOrderForm()"
-        class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition text-sm">
-        Place Order →
-      </button>
+    </form>
+    <div id="order-success" class="hidden text-center py-8">
+      <div class="text-5xl mb-4">🎉</div>
+      <h4 class="text-xl font-bold text-gray-800 mb-2">Order Sent!</h4>
+      <p class="text-gray-500 text-sm">We'll contact you soon to confirm your order.</p>
+      <button onclick="closeOrderForm()" class="mt-6 bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-2 rounded-xl transition">Continue Shopping</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADMIN PANEL ===== -->
+<div id="admin-panel" class="hidden fixed inset-0 z-[100] bg-gray-100 overflow-y-auto">
+
+  <!-- Admin Login -->
+  <div id="admin-login" class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm">
+      <div class="text-center mb-6">
+        <div class="text-4xl mb-2">🛠</div>
+        <h2 class="text-2xl font-extrabold">Admin Panel</h2>
+        <p class="text-gray-400 text-sm">IG3 Dubai Pasabuy</p>
+      </div>
+      <div class="space-y-3">
+        <input type="password" id="admin-pass-input" placeholder="Enter password"
+          class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          onkeydown="if(event.key==='Enter') adminLogin()">
+        <p id="admin-login-error" class="hidden text-red-500 text-sm text-center">Incorrect password. Try again.</p>
+        <button onclick="adminLogin()" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition">Login</button>
+        <button onclick="closeAdmin()" class="w-full border border-gray-300 text-gray-600 py-3 rounded-xl hover:bg-gray-50 transition text-sm">← Back to Shop</button>
+      </div>
     </div>
   </div>
 
-  <!-- ORDER FORM MODAL -->
-  <div id="order-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto shadow-2xl">
-      <h3 class="text-xl font-bold mb-5">Complete Your Order 📦</h3>
-      <form id="order-form" action="https://formspree.io/f/xykrlbbg" method="POST">
-        <input type="hidden" name="_subject" value="New Order — IG3 Dubai Pasabuy">
-        <input type="hidden" name="order_items" id="form-order-items">
-        <input type="hidden" name="order_total" id="form-order-total">
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
-            <input type="text" name="name" required placeholder="Juan dela Cruz"
-              class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
+  <!-- Admin Dashboard -->
+  <div id="admin-dashboard" class="hidden">
+    <div class="bg-white shadow-sm sticky top-0 z-10">
+      <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+        <h2 class="font-extrabold text-base">🛠 Admin Panel — IG3 Dubai Pasabuy</h2>
+        <button onclick="closeAdmin()" class="text-sm font-semibold text-gray-500 hover:text-gray-900 transition">✕ Exit Admin</button>
+      </div>
+      <div class="max-w-5xl mx-auto px-4 flex gap-6 border-t overflow-x-auto">
+        <button onclick="showAdminTab('products')" id="tab-products" class="admin-tab py-3 text-sm font-semibold text-gray-500 whitespace-nowrap active">📦 Products</button>
+        <button onclick="showAdminTab('categories')" id="tab-categories" class="admin-tab py-3 text-sm font-semibold text-gray-500 whitespace-nowrap">🏷 Categories</button>
+        <button onclick="showAdminTab('orders')" id="tab-orders" class="admin-tab py-3 text-sm font-semibold text-gray-500 whitespace-nowrap">📋 Orders</button>
+      </div>
+    </div>
+
+    <div class="max-w-5xl mx-auto px-4 py-6">
+
+      <!-- PRODUCTS TAB -->
+      <div id="admin-products-tab">
+        <div class="bg-white rounded-2xl shadow-sm p-5 mb-5">
+          <h3 class="font-bold text-base mb-4">+ Add New Product</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input type="text" id="new-product-name" placeholder="Product name *"
+              class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            <select id="new-product-category"
+              class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
+              <option value="">Select category</option>
+            </select>
+            <input type="number" id="new-product-price" placeholder="Price in ₱ *" min="0" step="0.01"
+              class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            <input type="url" id="new-product-img" placeholder="Image URL (optional)"
+              class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
           </div>
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1">Email *</label>
-            <input type="email" name="email" required placeholder="juan@email.com"
-              class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1">Phone / WhatsApp *</label>
-            <input type="tel" name="phone" required placeholder="+63 912 345 6789"
-              class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1">Delivery Address *</label>
-            <textarea name="address" rows="3" required placeholder="House No., Street, Barangay, City, Province"
-              class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></textarea>
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1">Notes (optional)</label>
-            <textarea name="notes" rows="2" placeholder="Special instructions, preferred contact time, etc."
-              class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></textarea>
-          </div>
-          <div class="bg-yellow-50 rounded-xl p-4 border border-yellow-200">
-            <p class="text-sm font-bold text-gray-800 mb-2">Order Summary</p>
-            <div id="modal-order-summary" class="text-sm text-gray-600 space-y-1"></div>
+          <button onclick="addLocalProduct()"
+            class="mt-4 bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-2.5 rounded-xl text-sm transition">+ Add Product</button>
+        </div>
+        <div id="admin-product-list"></div>
+      </div>
+
+      <!-- CATEGORIES TAB -->
+      <div id="admin-categories-tab" class="hidden">
+        <div class="bg-white rounded-2xl shadow-sm p-5 mb-5">
+          <h3 class="font-bold text-base mb-4">+ Add Category</h3>
+          <div class="flex gap-3">
+            <input type="text" id="new-category-name" placeholder="Category name *"
+              class="flex-1 border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              onkeydown="if(event.key==='Enter') addCategory()">
+            <button onclick="addCategory()"
+              class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-2.5 rounded-xl text-sm transition whitespace-nowrap">+ Add</button>
           </div>
         </div>
-        <div class="flex gap-3 mt-6">
-          <button type="button" onclick="closeOrderForm()"
-            class="flex-1 border border-gray-300 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-50 transition text-sm">
-            Cancel
-          </button>
-          <button type="submit" id="submit-btn"
-            class="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition text-sm">
-            Send Order ✓
-          </button>
-        </div>
-      </form>
-      <div id="order-success" class="hidden text-center py-8">
-        <div class="text-5xl mb-4">🎉</div>
-        <h4 class="text-xl font-bold text-gray-800 mb-2">Order Sent!</h4>
-        <p class="text-gray-500 text-sm">We'll contact you soon to confirm your order.</p>
-        <button onclick="closeOrderForm()" class="mt-6 bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-2 rounded-xl transition">
-          Continue Shopping
-        </button>
+        <div id="admin-category-list"></div>
       </div>
+
+      <!-- ORDERS TAB -->
+      <div id="admin-orders-tab" class="hidden">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-base" id="orders-count-label">Orders</h3>
+          <button onclick="printAllOrders()" class="bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold px-4 py-2 rounded-xl text-sm transition">🖨 Print All</button>
+        </div>
+        <div id="admin-order-list"></div>
+      </div>
+
     </div>
   </div>
+</div>
 
-  <script>
-    const SHEET_ID = '1gjInVmrlRa72FV1lPYFEy40N4tEfAZeOFWWQBWKQhok';
-    const SHEET_NAME = 'Products';
+<!-- Print area -->
+<div id="print-area" class="hidden"></div>
 
-    let allProducts = [];
-    let cart = JSON.parse(localStorage.getItem('ig3-cart') || '[]');
+<script>
+const SHEET_ID   = '1gjInVmrlRa72FV1lPYFEy40N4tEfAZeOFWWQBWKQhok';
+const SHEET_NAME = 'Products';
+const ADMIN_PW   = 'Zakizayayeye2026';
+const CARD_BG    = ['#fce4ec','#e8f5e9','#fffde7','#fff3e0','#f3e5f5','#e3f2fd','#fef9c3','#dcfce7'];
 
-    async function loadProducts() {
-      try {
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
-        const res = await fetch(url);
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const csv = await res.text();
-        const parsed = parseCSV(csv);
-       allProducts = parsed.filter(p => p.name && p.name.trim());
-        populateCategories();
-        applyFilters();
-        document.getElementById('loading').classList.add('hidden');
-        document.getElementById('products-grid').classList.remove('hidden');
-      } catch (e) {
-        console.error('Load error:', e);
-        document.getElementById('loading').classList.add('hidden');
-        document.getElementById('error-msg').classList.remove('hidden');
-      }
-    }
+let sheetProducts   = [];
+let localProducts   = JSON.parse(localStorage.getItem('ig3-local-products')   || '[]');
+let localCategories = JSON.parse(localStorage.getItem('ig3-local-categories') || '[]');
+let priceOverrides  = JSON.parse(localStorage.getItem('ig3-price-overrides')  || '{}');
+let orders          = JSON.parse(localStorage.getItem('ig3-orders')           || '[]');
+let cart            = JSON.parse(localStorage.getItem('ig3-cart')             || '[]');
+let activeCategory  = '';
+let logoClicks      = 0, logoTimer = null;
 
-    function parseCSV(text) {
-      const lines = text.trim().split('\n');
-      if (lines.length < 2) return [];
-      const headers = parseCSVLine(lines[0]).map(h => h.trim().replace(/^"|"$/g, '').toLowerCase().replace(/\s+/g, '_'));
-      return lines.slice(1).filter(l => l.trim()).map(line => {
-        const vals = parseCSVLine(line);
-        const obj = {};
-        headers.forEach((h, i) => { obj[h] = (vals[i] || '').replace(/^"|"$/g, '').trim(); });
-        return obj;
-      });
-    }
+function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escA(s){ return String(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+function getImg(p){ return p.image_url||p.image||p.img||p.photo||p.thumbnail||p.picture||''; }
+function fmtPrice(n){ return '₱'+Number(n).toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 
-    function parseCSVLine(line) {
-      const result = []; let cur = ''; let inQ = false;
-      for (let i = 0; i < line.length; i++) {
-        if (line[i] === '"') {
-          if (inQ && line[i+1] === '"') { cur += '"'; i++; } else inQ = !inQ;
-        } else if (line[i] === ',' && !inQ) { result.push(cur); cur = ''; }
-        else cur += line[i];
-      }
-      result.push(cur); return result;
-    }
+function getAllProducts(){
+  const local = localProducts.map(p=>({
+    product_id: p.id, name: p.name, category: p.category||'',
+    final_price_php: String(p.price||0), image_url: p.imageUrl||'', _local: true
+  }));
+  return [...sheetProducts, ...local];
+}
 
-    function populateCategories() {
-      const cats = [...new Set(allProducts.map(p => p.category).filter(Boolean))].sort();
-      const sel = document.getElementById('category-filter');
-      cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o); });
-    }
+function getAllCategories(){
+  const fromProds = [...new Set(getAllProducts().map(p=>p.category).filter(Boolean))].sort();
+  const extras    = localCategories.filter(c=>!fromProds.includes(c));
+  return [...fromProds, ...extras].sort();
+}
 
-    function applyFilters() {
-      const cat = document.getElementById('category-filter').value;
-      const sort = document.getElementById('sort-filter').value;
-      let list = cat ? allProducts.filter(p => p.category === cat) : [...allProducts];
-      if (sort === 'price_asc') list.sort((a, b) => (parseFloat(a.final_price_php)||0) - (parseFloat(b.final_price_php)||0));
-      else if (sort === 'price_desc') list.sort((a, b) => (parseFloat(b.final_price_php)||0) - (parseFloat(a.final_price_php)||0));
-      else list.sort((a, b) => a.name.localeCompare(b.name));
-      renderProducts(list);
-      document.getElementById('product-count').textContent = list.length + ' items';
-    }
-
-    function getImg(p) { return p.image_url || p.image || p.img || p.photo || p.thumbnail || p.picture || ''; }
-
-    function renderProducts(list) {
-      const grid = document.getElementById('products-grid');
-      if (list.length === 0) { grid.innerHTML = '<div class="col-span-full text-center py-16 text-gray-400"><div class="text-4xl mb-3">🔍</div><p>No products found</p></div>'; return; }
-      grid.innerHTML = list.map(p => {
-        const price = parseFloat(p.final_price_php) || 0;
-        const img = getImg(p);
-        return `<div class="product-card bg-white rounded-2xl shadow-sm overflow-hidden flex flex-col">
-          ${img ? `<img src="${img}" alt="${escHtml(p.name)}" class="w-full h-36 object-cover" loading="lazy" onerror="this.style.display='none'">` : ''}
-          <div class="no-img w-full h-36 bg-gradient-to-br from-yellow-100 to-orange-100 items-center justify-center text-4xl ${img ? 'hidden' : 'flex'}">🛍️</div>
-          <div class="p-3 flex flex-col flex-1">
-            ${p.category ? `<p class="text-xs text-gray-400 mb-1 uppercase tracking-wide">${escHtml(p.category)}</p>` : ''}
-            <p class="text-xs font-medium text-gray-800 flex-1 leading-snug">${escHtml(p.name)}</p>
-            <div class="mt-3 flex items-center justify-between gap-1">
-              <span class="text-base font-extrabold text-yellow-600">${price > 0 ? '₱' + price.toLocaleString() : '<span class="text-gray-300 text-xs">TBA</span>'}</span>
-              ${price > 0 ? `<button onclick="addToCart('${escAttr(p.product_id)}')" class="bg-yellow-400 hover:bg-yellow-500 text-black text-xs font-bold px-2.5 py-1.5 rounded-full transition">+ Add</button>` : ''}
-            </div>
-          </div>
-        </div>`;
-      }).join('');
-    }
-
-    function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-    function escAttr(s) { return String(s).replace(/'/g,"\\'"); }
-
-    function addToCart(id) {
-      const p = allProducts.find(x => x.product_id === id);
-      if (!p) return;
-      const existing = cart.find(c => c.id === id);
-      if (existing) existing.qty++; else cart.push({ id, name: p.name, price: parseFloat(p.final_price_php), qty: 1 });
-      saveCart(); updateCartBadge();
-      const btn = event && event.target;
-      if (btn) { btn.textContent = '✓'; setTimeout(() => btn.textContent = '+ Add', 800); }
-    }
-
-    function removeFromCart(id) { cart = cart.filter(c => c.id !== id); saveCart(); updateCartBadge(); renderCartItems(); }
-
-    function changeQty(id, delta) {
-      const item = cart.find(c => c.id === id);
-      if (!item) return;
-      item.qty += delta;
-      if (item.qty <= 0) cart = cart.filter(c => c.id !== id);
-      saveCart(); updateCartBadge(); renderCartItems();
-    }
-
-    function saveCart() { localStorage.setItem('ig3-cart', JSON.stringify(cart)); }
-
-    function updateCartBadge() {
-      const count = cart.reduce((s, c) => s + c.qty, 0);
-      const total = cart.reduce((s, c) => s + c.price * c.qty, 0);
-      const badge = document.getElementById('cart-count');
-      badge.textContent = count;
-      badge.classList.toggle('hidden', count === 0);
-      document.getElementById('cart-total').textContent = '₱' + total.toLocaleString();
-    }
-
-    function renderCartItems() {
-      const el = document.getElementById('cart-items');
-      if (cart.length === 0) { el.innerHTML = '<div class="text-center py-10 text-gray-400"><div class="text-4xl mb-3">🛒</div><p>Your cart is empty</p></div>'; return; }
-      el.innerHTML = cart.map(c => `<div class="flex items-start gap-3 bg-gray-50 rounded-xl p-3">
-        <div class="flex-1 min-w-0"><p class="text-xs font-semibold text-gray-800 leading-snug">${escHtml(c.name)}</p><p class="text-sm font-bold text-yellow-600 mt-0.5">₱${c.price.toLocaleString()}</p></div>
-        <div class="flex items-center gap-1 flex-shrink-0">
-          <button onclick="changeQty('${escAttr(c.id)}', -1)" class="w-6 h-6 rounded-full bg-gray-200 hover:bg-gray-300 text-sm font-bold flex items-center justify-center">−</button>
-          <span class="text-sm font-bold w-5 text-center">${c.qty}</span>
-          <button onclick="changeQty('${escAttr(c.id)}', 1)" class="w-6 h-6 rounded-full bg-gray-200 hover:bg-gray-300 text-sm font-bold flex items-center justify-center">+</button>
-          <button onclick="removeFromCart('${escAttr(c.id)}')" class="text-red-400 hover:text-red-600 ml-1 text-lg leading-none">&times;</button>
-        </div>
-      </div>`).join('');
-    }
-
-    function toggleCart() {
-      const sidebar = document.getElementById('cart-sidebar');
-      const overlay = document.getElementById('cart-overlay');
-      const open = !sidebar.classList.contains('translate-x-full');
-      if (open) { sidebar.classList.add('translate-x-full'); overlay.classList.add('hidden'); }
-      else { renderCartItems(); sidebar.classList.remove('translate-x-full'); overlay.classList.remove('hidden'); }
-    }
-
-    function showOrderForm() {
-      if (cart.length === 0) return;
-      const total = cart.reduce((s, c) => s + c.price * c.qty, 0);
-      document.getElementById('form-order-items').value = cart.map(c => `${c.name} x${c.qty} = ₱${(c.price*c.qty).toLocaleString()}`).join('\n');
-      document.getElementById('form-order-total').value = '₱' + total.toLocaleString();
-      document.getElementById('modal-order-summary').innerHTML =
-        cart.map(c => `<div class="flex justify-between"><span class="flex-1 mr-2 truncate">${escHtml(c.name)} ×${c.qty}</span><span class="font-semibold">₱${(c.price*c.qty).toLocaleString()}</span></div>`).join('')
-        + `<div class="flex justify-between font-bold border-t border-yellow-300 mt-2 pt-2 text-gray-800"><span>Total</span><span>₱${total.toLocaleString()}</span></div>`;
-      document.getElementById('order-form').classList.remove('hidden');
-      document.getElementById('order-success').classList.add('hidden');
-      document.getElementById('order-modal').classList.remove('hidden');
-    }
-
-    function closeOrderForm() { document.getElementById('order-modal').classList.add('hidden'); }
-
-    document.getElementById('order-form').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const btn = document.getElementById('submit-btn');
-      btn.textContent = 'Sending...'; btn.disabled = true;
-      try {
-        const res = await fetch(this.action, { method: 'POST', body: new FormData(this), headers: { Accept: 'application/json' } });
-        if (res.ok) {
-          cart = []; saveCart(); updateCartBadge();
-          document.getElementById('order-form').classList.add('hidden');
-          document.getElementById('order-success').classList.remove('hidden');
-        } else { alert('Something went wrong. Please try again.'); }
-      } catch { alert('Network error. Please try again.'); }
-      btn.textContent = 'Send Order ✓'; btn.disabled = false;
+async function loadProducts(){
+  try{
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const csv = await res.text();
+    sheetProducts = parseCSV(csv).filter(p=>p.name&&p.name.trim());
+    sheetProducts = sheetProducts.map(p=>{
+      const ov = priceOverrides[p.product_id];
+      return ov!=null ? {...p, final_price_php: String(ov)} : p;
     });
+    renderCategoryPills();
+    applyFilters();
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('products-grid').classList.remove('hidden');
+  }catch(e){
+    console.error(e);
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('error-msg').classList.remove('hidden');
+  }
+}
 
-    updateCartBadge();
-    loadProducts();
-  </script>
+function parseCSV(text){
+  const lines=text.trim().split('\n');
+  if(lines.length<2) return [];
+  const headers=parseCSVLine(lines[0]).map(h=>h.trim().replace(/^"|"$/g,'').toLowerCase().replace(/\s+/g,'_'));
+  return lines.slice(1).filter(l=>l.trim()).map(line=>{
+    const vals=parseCSVLine(line), obj={};
+    headers.forEach((h,i)=>{ obj[h]=(vals[i]||'').replace(/^"|"$/g,'').trim(); });
+    return obj;
+  });
+}
+function parseCSVLine(line){
+  const r=[];let c='',q=false;
+  for(let i=0;i<line.length;i++){
+    if(line[i]==='"'){ if(q&&line[i+1]==='"'){c+='"';i++;}else q=!q; }
+    else if(line[i]===','&&!q){r.push(c);c='';}
+    else c+=line[i];
+  }
+  r.push(c);return r;
+}
+
+function renderCategoryPills(){
+  const cats=getAllCategories();
+  const el=document.getElementById('category-pills');
+  el.innerHTML=`<button class="cat-pill border border-gray-400 rounded-full px-5 py-1.5 text-sm font-semibold bg-white ${activeCategory===''?'active':''}" onclick="setCategory('')">All</button>`
+    +cats.map(c=>`<button class="cat-pill border border-gray-400 rounded-full px-5 py-1.5 text-sm font-semibold bg-white ${activeCategory===c?'active':''}" onclick="setCategory('${escA(c)}')">${escH(c)}</button>`).join('');
+}
+
+function setCategory(cat){
+  activeCategory=cat;
+  renderCategoryPills();
+  applyFilters();
+}
+
+function applyFilters(){
+  const sort=document.getElementById('sort-filter').value;
+  let list=activeCategory ? getAllProducts().filter(p=>p.category===activeCategory) : getAllProducts();
+  if(sort==='price_asc') list.sort((a,b)=>(parseFloat(a.final_price_php)||0)-(parseFloat(b.final_price_php)||0));
+  else if(sort==='price_desc') list.sort((a,b)=>(parseFloat(b.final_price_php)||0)-(parseFloat(a.final_price_php)||0));
+  else list.sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+  renderProducts(list);
+  document.getElementById('product-count').textContent=list.length+' items';
+}
+
+function renderProducts(list){
+  const grid=document.getElementById('products-grid');
+  if(!list.length){
+    grid.innerHTML='<div class="col-span-full text-center py-16 text-gray-400"><div class="text-4xl mb-3">🔍</div><p>No products found</p></div>';
+    return;
+  }
+  grid.innerHTML=list.map((p,i)=>{
+    const price=parseFloat(p.final_price_php)||0;
+    const img=getImg(p);
+    const bg=CARD_BG[i%CARD_BG.length];
+    return `<div class="product-card rounded-2xl overflow-hidden flex flex-col cursor-pointer" style="background:${bg}">
+      ${img ? `<img src="${escH(img)}" alt="${escH(p.name)}" class="w-full h-40 object-cover" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ''}
+      <div style="background:${bg};display:${img?'none':'flex'}" class="w-full h-40 items-center justify-center text-5xl">🛍️</div>
+      <div class="p-3 flex flex-col flex-1">
+        ${p.category?`<p class="text-xs text-gray-500 mb-1">${escH(p.category)}</p>`:''}
+        <p class="text-sm font-bold text-gray-900 flex-1 leading-snug line-clamp-2">${escH(p.name)}</p>
+        <div class="mt-3 flex items-center justify-between gap-1">
+          <span class="text-base font-extrabold text-gray-900">${price>0?fmtPrice(price):'<span class="text-gray-400 text-xs font-normal">TBA</span>'}</span>
+          ${price>0?`<button onclick="addToCart('${escA(p.product_id)}')" class="bg-gray-900 hover:bg-gray-700 text-white text-xs font-bold px-3 py-1.5 rounded-full transition">+ Add</button>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function addToCart(id){
+  const p=getAllProducts().find(x=>x.product_id===id);
+  if(!p)return;
+  const ex=cart.find(c=>c.id===id);
+  if(ex) ex.qty++;
+  else cart.push({id,name:p.name,price:parseFloat(p.final_price_php),qty:1});
+  saveCart();updateCartBadge();
+  const btn=event&&event.target;
+  if(btn){btn.textContent='✓';setTimeout(()=>btn.textContent='+ Add',800);}
+}
+function removeFromCart(id){cart=cart.filter(c=>c.id!==id);saveCart();updateCartBadge();renderCartItems();}
+function changeQty(id,d){
+  const it=cart.find(c=>c.id===id);if(!it)return;
+  it.qty+=d;if(it.qty<=0)cart=cart.filter(c=>c.id!==id);
+  saveCart();updateCartBadge();renderCartItems();
+}
+function saveCart(){localStorage.setItem('ig3-cart',JSON.stringify(cart));}
+function updateCartBadge(){
+  const count=cart.reduce((s,c)=>s+c.qty,0);
+  const total=cart.reduce((s,c)=>s+c.price*c.qty,0);
+  const b=document.getElementById('cart-count');
+  b.textContent=count;b.classList.toggle('hidden',count===0);
+  document.getElementById('cart-total').textContent=fmtPrice(total);
+}
+function renderCartItems(){
+  const el=document.getElementById('cart-items');
+  if(!cart.length){el.innerHTML='<div class="text-center py-10 text-gray-400"><div class="text-4xl mb-3">🛒</div><p>Your cart is empty</p></div>';return;}
+  el.innerHTML=cart.map(c=>`
+    <div class="flex items-start gap-3 bg-gray-50 rounded-xl p-3">
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-semibold text-gray-800 leading-snug">${escH(c.name)}</p>
+        <p class="text-sm font-bold text-yellow-600 mt-0.5">${fmtPrice(c.price)}</p>
+      </div>
+      <div class="flex items-center gap-1 flex-shrink-0">
+        <button onclick="changeQty('${escA(c.id)}',-1)" class="w-6 h-6 rounded-full bg-gray-200 hover:bg-gray-300 text-sm font-bold flex items-center justify-center">−</button>
+        <span class="text-sm font-bold w-5 text-center">${c.qty}</span>
+        <button onclick="changeQty('${escA(c.id)}',1)" class="w-6 h-6 rounded-full bg-gray-200 hover:bg-gray-300 text-sm font-bold flex items-center justify-center">+</button>
+        <button onclick="removeFromCart('${escA(c.id)}')" class="text-red-400 hover:text-red-600 ml-1 text-xl leading-none">&times;</button>
+      </div>
+    </div>`).join('');
+}
+function toggleCart(){
+  const s=document.getElementById('cart-sidebar'),o=document.getElementById('cart-overlay');
+  const open=!s.classList.contains('translate-x-full');
+  if(open){s.classList.add('translate-x-full');o.classList.add('hidden');}
+  else{renderCartItems();s.classList.remove('translate-x-full');o.classList.remove('hidden');}
+}
+
+function showOrderForm(){
+  if(!cart.length)return;
+  const total=cart.reduce((s,c)=>s+c.price*c.qty,0);
+  document.getElementById('form-order-items').value=cart.map(c=>`${c.name} x${c.qty} = ${fmtPrice(c.price*c.qty)}`).join('\n');
+  document.getElementById('form-order-total').value=fmtPrice(total);
+  document.getElementById('modal-order-summary').innerHTML=
+    cart.map(c=>`<div class="flex justify-between"><span class="flex-1 mr-2 truncate">${escH(c.name)} ×${c.qty}</span><span class="font-semibold">${fmtPrice(c.price*c.qty)}</span></div>`).join('')
+    +`<div class="flex justify-between font-bold border-t border-yellow-300 mt-2 pt-2 text-gray-800"><span>Total</span><span>${fmtPrice(total)}</span></div>`;
+  document.getElementById('order-form').classList.remove('hidden');
+  document.getElementById('order-success').classList.add('hidden');
+  document.getElementById('order-modal').classList.remove('hidden');
+}
+function closeOrderForm(){document.getElementById('order-modal').classList.add('hidden');}
+
+document.getElementById('order-form').addEventListener('submit',async function(e){
+  e.preventDefault();
+  const btn=document.getElementById('submit-btn');
+  btn.textContent='Sending...';btn.disabled=true;
+  try{
+    const fd=new FormData(this);
+    const res=await fetch(this.action,{method:'POST',body:fd,headers:{Accept:'application/json'}});
+    if(res.ok){
+      const order={
+        id:Date.now().toString(),
+        date:new Date().toLocaleString('en-PH',{timeZone:'Asia/Manila',dateStyle:'medium',timeStyle:'short'}),
+        name:document.getElementById('order-name').value,
+        email:document.getElementById('order-email').value,
+        phone:document.getElementById('order-phone').value,
+        address:document.getElementById('order-address').value,
+        notes:document.getElementById('order-notes').value,
+        items:[...cart],
+        total:cart.reduce((s,c)=>s+c.price*c.qty,0)
+      };
+      orders.unshift(order);
+      localStorage.setItem('ig3-orders',JSON.stringify(orders));
+      cart=[];saveCart();updateCartBadge();
+      document.getElementById('order-form').classList.add('hidden');
+      document.getElementById('order-success').classList.remove('hidden');
+    }else{alert('Something went wrong. Please try again.');}
+  }catch{alert('Network error. Please try again.');}
+  btn.textContent='Send Order ✓';btn.disabled=false;
+});
+
+function handleLogoClick(){
+  logoClicks++;clearTimeout(logoTimer);
+  if(logoClicks>=5){logoClicks=0;openAdmin();}
+  else logoTimer=setTimeout(()=>logoClicks=0,2000);
+}
+function openAdmin(){
+  document.getElementById('admin-panel').classList.remove('hidden');
+  document.getElementById('admin-login').classList.remove('hidden');
+  document.getElementById('admin-dashboard').classList.add('hidden');
+  document.getElementById('admin-pass-input').value='';
+  document.getElementById('admin-login-error').classList.add('hidden');
+  setTimeout(()=>document.getElementById('admin-pass-input').focus(),100);
+}
+function closeAdmin(){document.getElementById('admin-panel').classList.add('hidden');}
+function adminLogin(){
+  if(document.getElementById('admin-pass-input').value===ADMIN_PW){
+    document.getElementById('admin-login').classList.add('hidden');
+    document.getElementById('admin-dashboard').classList.remove('hidden');
+    showAdminTab('products');
+  }else{
+    document.getElementById('admin-login-error').classList.remove('hidden');
+  }
+}
+
+function showAdminTab(tab){
+  ['products','categories','orders'].forEach(t=>{
+    document.getElementById(`admin-${t}-tab`).classList.toggle('hidden',t!==tab);
+    document.getElementById(`tab-${t}`).classList.toggle('active',t===tab);
+  });
+  if(tab==='products')  renderAdminProducts();
+  if(tab==='categories')renderAdminCategories();
+  if(tab==='orders')    renderAdminOrders();
+}
+
+function renderAdminProducts(){
+  populateAdminCategorySelect();
+  const all=getAllProducts();
+  const list=document.getElementById('admin-product-list');
+  if(!all.length){list.innerHTML='<p class="text-gray-400 text-sm text-center py-8">No products yet.</p>';return;}
+  const cats=[...new Set(all.map(p=>p.category||'Uncategorized'))].sort();
+  list.innerHTML=cats.map(cat=>{
+    const prods=all.filter(p=>(p.category||'Uncategorized')===cat);
+    return `<div class="mb-5">
+      <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">${escH(cat)}</h4>
+      <div class="space-y-2">
+        ${prods.map(p=>{
+          const price=parseFloat(p.final_price_php)||0;
+          const img=getImg(p);
+          const hasOverride=priceOverrides[p.product_id]!=null;
+          return `<div class="bg-white rounded-xl shadow-sm p-3 flex items-center gap-3">
+            ${img?`<img src="${escH(img)}" class="w-10 h-10 rounded-lg object-cover flex-shrink-0">`:`<div class="w-10 h-10 rounded-lg bg-yellow-100 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-gray-800 truncate">${escH(p.name)}</p>
+              <p class="text-xs text-gray-400">${escH(p.category||'')} · ${price>0?fmtPrice(price)+' /each':'No price'}${hasOverride?' (manual)':''}${p._local?' (added)':''}</p>
+            </div>
+            <div class="flex items-center gap-1 flex-shrink-0">
+              <button onclick="editProductPrice('${escA(p.product_id)}',${price})" class="p-1.5 rounded-lg hover:bg-yellow-50 text-gray-400 hover:text-yellow-600 transition" title="Edit price">✏️</button>
+              ${hasOverride?`<button onclick="clearPriceOverride('${escA(p.product_id)}')" class="p-1.5 rounded-lg hover:bg-red-50 text-gray-300 hover:text-red-400 transition text-xs" title="Clear manual price">↺</button>`:''}
+              ${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="p-1.5 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition" title="Delete">🗑️</button>`:''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function populateAdminCategorySelect(){
+  const sel=document.getElementById('new-product-category');
+  const cats=getAllCategories();
+  sel.innerHTML='<option value="">Select category</option>'+cats.map(c=>`<option value="${escA(c)}">${escH(c)}</option>`).join('');
+}
+
+function editProductPrice(id,current){
+  const np=prompt(`Set manual price (₱) for this product:\nCurrent: ${current>0?fmtPrice(current):'No price'}`,current>0?current:'');
+  if(np===null)return;
+  const price=parseFloat(np);
+  if(isNaN(price)||price<0){alert('Invalid price. Enter a number.');return;}
+  priceOverrides[id]=price;
+  localStorage.setItem('ig3-price-overrides',JSON.stringify(priceOverrides));
+  sheetProducts=sheetProducts.map(p=>p.product_id===id?{...p,final_price_php:String(price)}:p);
+  applyFilters();renderAdminProducts();
+}
+
+function clearPriceOverride(id){
+  if(!confirm('Remove manual price override? The n8n-synced price will be used instead.'))return;
+  delete priceOverrides[id];
+  localStorage.setItem('ig3-price-overrides',JSON.stringify(priceOverrides));
+  loadProducts().then(()=>renderAdminProducts());
+}
+
+function addLocalProduct(){
+  const name=document.getElementById('new-product-name').value.trim();
+  const cat=document.getElementById('new-product-category').value;
+  const price=parseFloat(document.getElementById('new-product-price').value);
+  const img=document.getElementById('new-product-img').value.trim();
+  if(!name){alert('Product name is required.');return;}
+  if(isNaN(price)||price<=0){alert('A valid price is required.');return;}
+  localProducts.push({id:'local_'+Date.now(),name,category:cat,price,imageUrl:img});
+  localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
+  document.getElementById('new-product-name').value='';
+  document.getElementById('new-product-price').value='';
+  document.getElementById('new-product-img').value='';
+  renderCategoryPills();applyFilters();renderAdminProducts();
+}
+
+function deleteLocalProduct(id){
+  if(!confirm('Delete this product?'))return;
+  localProducts=localProducts.filter(p=>p.id!==id);
+  localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
+  renderCategoryPills();applyFilters();renderAdminProducts();
+}
+
+function renderAdminCategories(){
+  const cats=getAllCategories();
+  const list=document.getElementById('admin-category-list');
+  if(!cats.length){list.innerHTML='<p class="text-gray-400 text-sm text-center py-8">No categories yet. Add one above.</p>';return;}
+  list.innerHTML=cats.map(c=>`
+    <div class="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="text-xl">🏷</span>
+        <span class="font-semibold text-gray-800">${escH(c)}</span>
+      </div>
+      ${localCategories.includes(c)
+        ?`<button onclick="deleteCategory('${escA(c)}')" class="text-red-400 hover:text-red-600 text-sm font-semibold transition">Delete</button>`
+        :`<span class="text-xs text-gray-400 italic">From Google Sheet</span>`}
+    </div>`).join('');
+}
+
+function addCategory(){
+  const name=document.getElementById('new-category-name').value.trim();
+  if(!name){alert('Category name is required.');return;}
+  if(getAllCategories().includes(name)){alert('This category already exists.');return;}
+  localCategories.push(name);
+  localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));
+  document.getElementById('new-category-name').value='';
+  renderCategoryPills();renderAdminCategories();populateAdminCategorySelect();
+}
+
+function deleteCategory(name){
+  if(!confirm(`Delete category "${name}"?\nProducts in this category will not be deleted.`))return;
+  localCategories=localCategories.filter(c=>c!==name);
+  localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));
+  renderCategoryPills();renderAdminCategories();
+}
+
+function renderAdminOrders(){
+  const list=document.getElementById('admin-order-list');
+  document.getElementById('orders-count-label').textContent=`Orders (${orders.length})`;
+  if(!orders.length){
+    list.innerHTML='<div class="text-center py-16 text-gray-400"><div class="text-5xl mb-4">📋</div><p>No orders yet.</p><p class="text-sm mt-1">Orders placed on the site will appear here.</p></div>';
+    return;
+  }
+  list.innerHTML=orders.map(o=>`
+    <div class="bg-white rounded-2xl shadow-sm p-5 mb-4">
+      <div class="flex items-start justify-between mb-3">
+        <div>
+          <h4 class="font-bold text-gray-900 text-base">${escH(o.name)}</h4>
+          <p class="text-xs text-gray-400">${escH(o.date)} · #${o.id.slice(-8)}</p>
+        </div>
+        <span class="font-extrabold text-yellow-600 text-lg">${fmtPrice(o.total)}</span>
+      </div>
+      <div class="text-sm text-gray-600 space-y-1 mb-3">
+        <p>📱 ${escH(o.phone)}</p>
+        <p>✉️ ${escH(o.email)}</p>
+        <p>📍 ${escH(o.address)}</p>
+        ${o.notes?`<p>📝 ${escH(o.notes)}</p>`:''}
+      </div>
+      <div class="border-t pt-3 mb-4">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">Items Ordered</p>
+        <div class="space-y-1">
+          ${o.items.map(i=>`<div class="flex justify-between text-sm">
+            <span class="text-gray-700 flex-1 truncate mr-2">${escH(i.name)} <span class="text-gray-400">×${i.qty}</span></span>
+            <span class="font-semibold text-gray-800">${fmtPrice(i.price*i.qty)}</span>
+          </div>`).join('')}
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="printOrder('${o.id}')" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold py-2.5 rounded-xl text-sm transition">🖨 Print</button>
+        <button onclick="deleteOrder('${o.id}')" class="flex-1 bg-red-50 hover:bg-red-100 text-red-600 font-bold py-2.5 rounded-xl text-sm transition">🗑 Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+function printOrder(id){
+  const o=orders.find(x=>x.id===id);if(!o)return;
+  buildPrintArea([o]);window.print();clearPrintArea();
+}
+function printAllOrders(){
+  if(!orders.length){alert('No orders to print.');return;}
+  buildPrintArea(orders);window.print();clearPrintArea();
+}
+function buildPrintArea(list){
+  const el=document.getElementById('print-area');
+  el.classList.remove('hidden');
+  el.innerHTML=list.map(o=>`
+    <div style="font-family:sans-serif;max-width:600px;margin:0 auto 40px;padding-bottom:40px;border-bottom:2px dashed #ddd;page-break-after:always">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+        <div>
+          <h1 style="font-size:18px;font-weight:900;margin:0">IG3 Dubai Pasabuy</h1>
+          <p style="color:#888;font-size:11px;margin:2px 0 0">Packed Fresh from Dubai</p>
+        </div>
+        <div style="text-align:right">
+          <p style="font-size:11px;color:#888;margin:0">Order #${o.id.slice(-8)}</p>
+          <p style="font-size:11px;color:#888;margin:0">${escH(o.date)}</p>
+        </div>
+      </div>
+      <hr style="margin:12px 0">
+      <h2 style="font-size:13px;font-weight:700;margin:0 0 8px;color:#555">CUSTOMER DETAILS</h2>
+      <p style="font-size:13px;margin:3px 0"><strong>Name:</strong> ${escH(o.name)}</p>
+      <p style="font-size:13px;margin:3px 0"><strong>Phone:</strong> ${escH(o.phone)}</p>
+      <p style="font-size:13px;margin:3px 0"><strong>Email:</strong> ${escH(o.email)}</p>
+      <p style="font-size:13px;margin:3px 0"><strong>Address:</strong> ${escH(o.address)}</p>
+      ${o.notes?`<p style="font-size:13px;margin:3px 0"><strong>Notes:</strong> ${escH(o.notes)}</p>`:''}
+      <h2 style="font-size:13px;font-weight:700;margin:16px 0 8px;color:#555">ORDER ITEMS</h2>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <tr style="border-bottom:2px solid #eee">
+          <th style="text-align:left;padding:5px 0">Item</th>
+          <th style="text-align:center;width:40px">Qty</th>
+          <th style="text-align:right;width:90px">Amount</th>
+        </tr>
+        ${o.items.map(i=>`<tr style="border-bottom:1px solid #f0f0f0">
+          <td style="padding:5px 0">${escH(i.name)}</td>
+          <td style="text-align:center">${i.qty}</td>
+          <td style="text-align:right">${fmtPrice(i.price*i.qty)}</td>
+        </tr>`).join('')}
+        <tr>
+          <td colspan="2" style="padding-top:10px;font-weight:900;font-size:14px">TOTAL</td>
+          <td style="padding-top:10px;font-weight:900;font-size:14px;text-align:right">${fmtPrice(o.total)}</td>
+        </tr>
+      </table>
+      <hr style="margin-top:20px">
+      <p style="font-size:11px;color:#aaa;text-align:center;margin-top:10px">Thank you for ordering! We'll be in touch shortly.</p>
+    </div>`).join('');
+}
+function clearPrintArea(){const el=document.getElementById('print-area');el.classList.add('hidden');el.innerHTML='';}
+
+function deleteOrder(id){
+  if(!confirm('Delete this order? This cannot be undone.'))return;
+  orders=orders.filter(o=>o.id!==id);
+  localStorage.setItem('ig3-orders',JSON.stringify(orders));
+  renderAdminOrders();
+}
+
+updateCartBadge();
+loadProducts();
+if(window.location.hash==='#admin') openAdmin();
+</script>
 </body>
 </html>
