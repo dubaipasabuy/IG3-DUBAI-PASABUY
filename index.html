@@ -27,10 +27,15 @@
 <!-- ===== HEADER ===== -->
 <header class="bg-white shadow-sm sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-    <div onclick="handleLogoClick()" class="cursor-pointer select-none">
-      <h1 class="text-lg font-extrabold tracking-tight">🇦🇪 IG3 Dubai Pasabuy</h1>
-      <p class="text-xs text-gray-400">Packed Fresh from Dubai</p>
-    </div>
+   <div onclick="handleLogoClick()" class="cursor-pointer select-none flex items-center gap-2">
+  <img src="https://raw.githubusercontent.com/owencelestino19-arch/IG3-DUBAI-PASABUY/main/logo.jpg"
+       alt="IG3 Dubai Pasabuy" class="h-12 w-12 rounded-full object-cover"
+       onerror="this.style.display='none'">
+  <div>
+    <h1 class="text-base font-extrabold tracking-tight leading-tight" style="color:#22c55e;">IG3 Dubai Pasabuy</h1>
+    <p class="text-xs" style="color:#7c3aed;">DUBAI PASABUY</p>
+  </div>
+</div>
     <button onclick="toggleCart()" class="relative bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-4 py-2 rounded-full flex items-center gap-2 text-sm transition">
       🛒 Cart
       <span id="cart-count" class="bg-red-500 text-white text-xs rounded-full px-1.5 hidden">0</span>
