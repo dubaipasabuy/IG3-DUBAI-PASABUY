@@ -23,6 +23,9 @@
     .prod-img-wrap { background:#fff; cursor:zoom-in; overflow:hidden; }
     .prod-img-wrap img { object-fit:contain; width:100%; height:160px; display:block; transition:transform 0.2s; }
     .prod-img-wrap:hover img { transform:scale(1.06); }
+    .no-img-placeholder { height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f3f4f6;color:#9ca3af;gap:8px; }
+    .no-img-placeholder .noimg-icon { font-size:2.5rem;opacity:0.4; }
+    .no-img-placeholder .noimg-label { font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase; }
     #lightbox { position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.85);display:none;flex-direction:column;align-items:center;justify-content:center; }
     #lightbox.open { display:flex; }
     #lb-img-wrap { position:relative;overflow:hidden;max-width:90vw;max-height:80vh;background:#fff;border-radius:16px;display:flex;align-items:center;justify-content:center;cursor:grab; }
@@ -41,13 +44,11 @@
 </head>
 <body class="text-gray-900">
 
-<!-- HEADER -->
 <header class="bg-white shadow-sm sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
     <div onclick="handleLogoClick()" class="cursor-pointer select-none flex items-center gap-2">
       <img src="https://raw.githubusercontent.com/owencelestino19-arch/IG3-DUBAI-PASABUY/main/logo.jpg"
-           alt="IG3 Dubai Pasabuy" class="h-12 w-12 rounded-full object-cover"
-           onerror="this.style.display='none'">
+           alt="IG3 Dubai Pasabuy" class="h-12 w-12 rounded-full object-cover" onerror="this.style.display='none'">
       <div>
         <h1 class="text-base font-extrabold tracking-tight leading-tight" style="color:#22c55e;">IG3 Dubai Pasabuy</h1>
         <p class="text-xs" style="color:#7c3aed;">DUBAI PASABUY</p>
@@ -60,19 +61,16 @@
   </div>
 </header>
 
-<!-- HERO -->
 <div class="bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400 py-14 px-4 text-center">
   <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-2">Snacks, sweets &amp; treats</h2>
   <p class="text-white text-lg opacity-90 mb-1">straight from Dubai.</p>
   <p class="text-white text-sm opacity-75">Pick your favorites, tell us where to send them.</p>
 </div>
 
-<!-- CATEGORY PILLS -->
 <div class="max-w-7xl mx-auto px-4 pt-6 pb-2">
   <div id="category-pills" class="flex flex-wrap gap-2 justify-center"></div>
 </div>
 
-<!-- SORT -->
 <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
   <span class="text-sm text-gray-500 font-medium">↑↓ Sort by</span>
   <select id="sort-filter" onchange="applyFilters()"
@@ -84,7 +82,6 @@
   <span id="product-count" class="text-sm text-gray-400 ml-auto"></span>
 </div>
 
-<!-- PRODUCTS -->
 <main class="max-w-7xl mx-auto px-4 pb-20">
   <div id="loading" class="text-center py-20 text-gray-400">
     <div class="text-5xl mb-4">🛍️</div>
@@ -98,10 +95,8 @@
   <div id="products-grid" class="hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
 </main>
 
-<!-- CART OVERLAY -->
 <div id="cart-overlay" class="hidden fixed inset-0 bg-black bg-opacity-40 z-40" onclick="toggleCart()"></div>
 
-<!-- CART SIDEBAR -->
 <div id="cart-sidebar" class="fixed right-0 top-0 h-full w-full max-w-sm bg-white shadow-2xl z-50 transform translate-x-full flex flex-col">
   <div class="p-4 border-b flex items-center justify-between">
     <h3 class="text-lg font-bold">Your Order 🛒</h3>
@@ -113,13 +108,10 @@
       <span>Total</span>
       <span id="cart-total" class="text-yellow-600">₱0</span>
     </div>
-    <button onclick="showOrderForm()" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition text-sm">
-      Place Order →
-    </button>
+    <button onclick="showOrderForm()" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition text-sm">Place Order →</button>
   </div>
 </div>
 
-<!-- ORDER MODAL -->
 <div id="order-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
   <div class="bg-white rounded-2xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto shadow-2xl">
     <h3 class="text-xl font-bold mb-5">Complete Your Order 📦</h3>
@@ -128,41 +120,24 @@
       <input type="hidden" name="order_items" id="form-order-items">
       <input type="hidden" name="order_total" id="form-order-total">
       <div class="space-y-4">
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
-          <input type="text" name="name" id="order-name" required placeholder="Juan dela Cruz"
-            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
-        </div>
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1">Email *</label>
-          <input type="email" name="email" id="order-email" required placeholder="juan@email.com"
-            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
-        </div>
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1">Phone / WhatsApp *</label>
-          <input type="tel" name="phone" id="order-phone" required placeholder="+63 912 345 6789"
-            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
-        </div>
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1">Delivery Address *</label>
-          <textarea name="address" id="order-address" rows="3" required placeholder="House No., Street, Barangay, City, Province"
-            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></textarea>
-        </div>
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1">Notes (optional)</label>
-          <textarea name="notes" id="order-notes" rows="2" placeholder="Special instructions, preferred contact time, etc."
-            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></textarea>
-        </div>
+        <div><label class="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
+          <input type="text" name="name" id="order-name" required placeholder="Juan dela Cruz" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></div>
+        <div><label class="block text-sm font-semibold text-gray-700 mb-1">Email *</label>
+          <input type="email" name="email" id="order-email" required placeholder="juan@email.com" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></div>
+        <div><label class="block text-sm font-semibold text-gray-700 mb-1">Phone / WhatsApp *</label>
+          <input type="tel" name="phone" id="order-phone" required placeholder="+63 912 345 6789" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></div>
+        <div><label class="block text-sm font-semibold text-gray-700 mb-1">Delivery Address *</label>
+          <textarea name="address" id="order-address" rows="3" required placeholder="House No., Street, Barangay, City, Province" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></textarea></div>
+        <div><label class="block text-sm font-semibold text-gray-700 mb-1">Notes (optional)</label>
+          <textarea name="notes" id="order-notes" rows="2" placeholder="Special instructions, preferred contact time, etc." class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></textarea></div>
         <div class="bg-yellow-50 rounded-xl p-4 border border-yellow-200">
           <p class="text-sm font-bold text-gray-800 mb-2">Order Summary</p>
           <div id="modal-order-summary" class="text-sm text-gray-600 space-y-1"></div>
         </div>
       </div>
       <div class="flex gap-3 mt-6">
-        <button type="button" onclick="closeOrderForm()"
-          class="flex-1 border border-gray-300 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-50 transition text-sm">Cancel</button>
-        <button type="submit" id="submit-btn"
-          class="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition text-sm">Send Order ✓</button>
+        <button type="button" onclick="closeOrderForm()" class="flex-1 border border-gray-300 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-50 transition text-sm">Cancel</button>
+        <button type="submit" id="submit-btn" class="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition text-sm">Send Order ✓</button>
       </div>
     </form>
     <div id="order-success" class="hidden text-center py-8">
@@ -174,7 +149,6 @@
   </div>
 </div>
 
-<!-- EDIT PRODUCT MODAL -->
 <div id="edit-product-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-[200] flex items-center justify-center p-4">
   <div class="bg-white rounded-2xl max-w-lg w-full p-6 max-h-[92vh] overflow-y-auto shadow-2xl">
     <div class="flex items-center justify-between mb-5">
@@ -183,71 +157,43 @@
     </div>
     <div class="space-y-4">
       <input type="hidden" id="edit-product-id">
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-1">Product Name *</label>
-        <input type="text" id="edit-product-name" placeholder="e.g. Hillway Karak Chai 20 Sachets"
-          class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
-      </div>
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-1">Category</label>
-        <select id="edit-product-category"
-          class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
-          <option value="">— No category —</option>
-        </select>
-      </div>
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-1">Price (₱)</label>
-        <input type="number" id="edit-product-price" placeholder="0.00" min="0" step="0.01"
-          class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
-      </div>
+      <div><label class="block text-sm font-semibold text-gray-700 mb-1">Product Name *</label>
+        <input type="text" id="edit-product-name" placeholder="e.g. Hillway Karak Chai 20 Sachets" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></div>
+      <div><label class="block text-sm font-semibold text-gray-700 mb-1">Category</label>
+        <select id="edit-product-category" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"><option value="">— No category —</option></select></div>
+      <div><label class="block text-sm font-semibold text-gray-700 mb-1">Price (₱)</label>
+        <input type="number" id="edit-product-price" placeholder="0.00" min="0" step="0.01" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></div>
       <div>
         <label class="block text-sm font-semibold text-gray-700 mb-1">Image</label>
         <div class="flex gap-2 items-stretch">
-          <input type="text" id="edit-product-img" placeholder="https://... paste image URL here"
-            class="flex-1 border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            oninput="onEditUrlInput()">
-          <label class="upload-btn" title="Upload image from your device">
-            📁 Desktop
-            <input type="file" id="edit-img-file" accept="image/*" class="hidden" onchange="handleEditImgUpload(this)">
-          </label>
+          <input type="text" id="edit-product-img" placeholder="https://... paste image URL here" class="flex-1 border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" oninput="onEditUrlInput()">
+          <label class="upload-btn" title="Upload image from your device">📁 Desktop<input type="file" id="edit-img-file" accept="image/*" class="hidden" onchange="handleEditImgUpload(this)"></label>
         </div>
         <div id="edit-img-preview" class="mt-3 hidden flex items-center gap-3">
-          <img id="edit-img-preview-img" class="h-24 w-24 object-cover rounded-xl border border-gray-200 flex-shrink-0"
-               onerror="document.getElementById('edit-img-preview').classList.add('hidden')">
+          <img id="edit-img-preview-img" class="h-24 w-24 object-cover rounded-xl border border-gray-200 flex-shrink-0" onerror="document.getElementById('edit-img-preview').classList.add('hidden')">
           <div>
             <p id="edit-img-source-label" class="text-xs text-gray-500 mb-1"></p>
-            <button type="button" onclick="clearEditImg()"
-              class="text-xs text-red-500 hover:text-red-700 font-semibold border border-red-200 rounded-lg px-3 py-1 hover:bg-red-50 transition">
-              ✕ Remove image
-            </button>
+            <button type="button" onclick="clearEditImg()" class="text-xs text-red-500 hover:text-red-700 font-semibold border border-red-200 rounded-lg px-3 py-1 hover:bg-red-50 transition">✕ Remove image</button>
           </div>
         </div>
-        <p class="text-xs text-gray-400 mt-1.5">Paste a URL <em>or</em> click <strong>📁 Desktop</strong> to upload a photo directly from your computer.</p>
+        <p class="text-xs text-gray-400 mt-1.5">Paste a URL <em>or</em> click <strong>📁 Desktop</strong> to upload from your computer.</p>
       </div>
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-1">Description <span class="font-normal text-gray-400">(shown under product name)</span></label>
-        <textarea id="edit-product-description" rows="3" placeholder="e.g. Rich and creamy chai mix, 20+4 sachets per pack"
-          class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></textarea>
-      </div>
+      <div><label class="block text-sm font-semibold text-gray-700 mb-1">Description <span class="font-normal text-gray-400">(shown under product name)</span></label>
+        <textarea id="edit-product-description" rows="3" placeholder="e.g. Rich and creamy chai mix, 20+4 sachets per pack" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></textarea></div>
     </div>
     <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 mt-4 text-xs text-blue-700">
-      <strong>Note:</strong> These edits are saved in your browser. Sheet products will show "(edited)" label. To reset to original, use the ↺ button in the product list.
+      <strong>Note:</strong> These edits are saved in your browser. Sheet products show "(edited)". To reset, use ↺ in the product list.
     </div>
     <div class="flex gap-3 mt-5">
-      <button type="button" onclick="closeEditModal()"
-        class="flex-1 border border-gray-300 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-50 transition text-sm">Cancel</button>
-      <button type="button" onclick="saveProductEdit()"
-        class="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition text-sm">Save Changes ✓</button>
+      <button type="button" onclick="closeEditModal()" class="flex-1 border border-gray-300 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-50 transition text-sm">Cancel</button>
+      <button type="button" onclick="saveProductEdit()" class="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition text-sm">Save Changes ✓</button>
     </div>
   </div>
 </div>
 
-<!-- LIGHTBOX -->
 <div id="lightbox" onclick="lbBgClick(event)">
   <button id="lb-close" onclick="closeLightbox()">×</button>
-  <div id="lb-img-wrap">
-    <img id="lb-img" src="" alt="">
-  </div>
+  <div id="lb-img-wrap"><img id="lb-img" src="" alt=""></div>
   <div id="lb-controls">
     <button onclick="lbZoom(-1)" title="Zoom out">−</button>
     <span id="lb-zoom-label">100%</span>
@@ -256,26 +202,18 @@
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
 <div id="admin-panel" class="hidden fixed inset-0 z-[100] bg-gray-100 overflow-y-auto">
   <div id="admin-login" class="flex items-center justify-center min-h-screen p-4">
     <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm">
-      <div class="text-center mb-6">
-        <div class="text-4xl mb-2">🛠</div>
-        <h2 class="text-2xl font-extrabold">Admin Panel</h2>
-        <p class="text-gray-400 text-sm">IG3 Dubai Pasabuy</p>
-      </div>
+      <div class="text-center mb-6"><div class="text-4xl mb-2">🛠</div><h2 class="text-2xl font-extrabold">Admin Panel</h2><p class="text-gray-400 text-sm">IG3 Dubai Pasabuy</p></div>
       <div class="space-y-3">
-        <input type="password" id="admin-pass-input" placeholder="Enter password"
-          class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
-          onkeydown="if(event.key==='Enter') adminLogin()">
+        <input type="password" id="admin-pass-input" placeholder="Enter password" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" onkeydown="if(event.key==='Enter') adminLogin()">
         <p id="admin-login-error" class="hidden text-red-500 text-sm text-center">Incorrect password. Try again.</p>
         <button onclick="adminLogin()" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition">Login</button>
         <button onclick="closeAdmin()" class="w-full border border-gray-300 text-gray-600 py-3 rounded-xl hover:bg-gray-50 transition text-sm">← Back to Shop</button>
       </div>
     </div>
   </div>
-
   <div id="admin-dashboard" class="hidden">
     <div class="bg-white shadow-sm sticky top-0 z-10">
       <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -288,65 +226,43 @@
         <button onclick="showAdminTab('orders')" id="tab-orders" class="admin-tab py-3 text-sm font-semibold text-gray-500 whitespace-nowrap">📋 Orders</button>
       </div>
     </div>
-
     <div class="max-w-5xl mx-auto px-4 py-6">
-
-      <!-- PRODUCTS TAB -->
       <div id="admin-products-tab">
         <div class="bg-white rounded-2xl shadow-sm p-5 mb-5">
           <h3 class="font-bold text-base mb-4">+ Add New Product</h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <input type="text" id="new-product-name" placeholder="Product name *"
-              class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
-            <select id="new-product-category"
-              class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
-              <option value="">Select category</option>
-            </select>
-            <input type="number" id="new-product-price" placeholder="Price in ₱ *" min="0" step="0.01"
-              class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            <input type="text" id="new-product-name" placeholder="Product name *" class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            <select id="new-product-category" class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"><option value="">Select category</option></select>
+            <input type="number" id="new-product-price" placeholder="Price in ₱ *" min="0" step="0.01" class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
             <div class="sm:col-span-1 flex flex-col gap-1">
               <div class="flex gap-2 items-stretch">
-                <input type="text" id="new-product-img" placeholder="Image URL (optional)"
-                  class="flex-1 border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                  oninput="if(pendingNewImg){pendingNewImg=null;document.getElementById('new-img-preview').classList.add('hidden');}">
-                <label class="upload-btn" title="Upload from your device">
-                  📁
-                  <input type="file" id="new-img-file" accept="image/*" class="hidden" onchange="handleNewImgUpload(this)">
-                </label>
+                <input type="text" id="new-product-img" placeholder="Image URL (optional)" class="flex-1 border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" oninput="if(pendingNewImg){pendingNewImg=null;document.getElementById('new-img-preview').classList.add('hidden');}">
+                <label class="upload-btn" title="Upload from your device">📁<input type="file" id="new-img-file" accept="image/*" class="hidden" onchange="handleNewImgUpload(this)"></label>
               </div>
               <div id="new-img-preview" class="hidden flex items-center gap-2 mt-1">
                 <img id="new-img-preview-img" class="h-14 w-14 object-cover rounded-xl border border-gray-200 flex-shrink-0">
                 <button type="button" onclick="clearNewImg()" class="text-xs text-red-500 hover:text-red-700 font-semibold">✕ Remove</button>
               </div>
             </div>
-            <input type="text" id="new-product-desc" placeholder="Description (optional)"
-              class="sm:col-span-2 border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            <input type="text" id="new-product-desc" placeholder="Description (optional)" class="sm:col-span-2 border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
           </div>
           <div class="mt-4 flex items-center gap-3 flex-wrap">
-            <button id="add-product-btn" onclick="addLocalProduct()"
-              class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-2.5 rounded-xl text-sm transition">+ Add Product</button>
+            <button id="add-product-btn" onclick="addLocalProduct()" class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-2.5 rounded-xl text-sm transition">+ Add Product</button>
             <span id="add-product-status" class="text-sm font-semibold"></span>
           </div>
         </div>
         <div id="admin-product-list"></div>
       </div>
-
-      <!-- CATEGORIES TAB -->
       <div id="admin-categories-tab" class="hidden">
         <div class="bg-white rounded-2xl shadow-sm p-5 mb-5">
           <h3 class="font-bold text-base mb-4">+ Add Category</h3>
           <div class="flex gap-3">
-            <input type="text" id="new-category-name" placeholder="Category name *"
-              class="flex-1 border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
-              onkeydown="if(event.key==='Enter') addCategory()">
-            <button onclick="addCategory()"
-              class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-2.5 rounded-xl text-sm transition whitespace-nowrap">+ Add</button>
+            <input type="text" id="new-category-name" placeholder="Category name *" class="flex-1 border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" onkeydown="if(event.key==='Enter') addCategory()">
+            <button onclick="addCategory()" class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-2.5 rounded-xl text-sm transition whitespace-nowrap">+ Add</button>
           </div>
         </div>
         <div id="admin-category-list"></div>
       </div>
-
-      <!-- ORDERS TAB -->
       <div id="admin-orders-tab" class="hidden">
         <div class="flex items-center justify-between mb-4">
           <h3 class="font-bold text-base" id="orders-count-label">Orders</h3>
@@ -358,7 +274,6 @@
   </div>
 </div>
 
-<!-- Print area -->
 <div id="print-area" class="hidden"></div>
 
 <script>
@@ -366,7 +281,7 @@ const SHEET_ID        = '1gjInVmrlRa72FV1lPYFEy40N4tEfAZeOFWWQBWKQhok';
 const SHEET_NAME      = 'Products';
 const ADMIN_PW        = 'Zakizayayeye2026';
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzu4LVN0CFiTeYssk1P-1JwtsBgy-k_zB6kGKMOIEkEeobNrp4ZXmvaOpH6OHdIVnTDNw/exec';
-const CARD_BG         = ['#fce4ec','#e8f5e9','#fffde7','#fff3e0','#f3e5f5','#e3f2fd','#fef9c3','#dcfce7'];
+const CARD_BG = ['#fce4ec','#e8f5e9','#fffde7','#fff3e0','#f3e5f5','#e3f2fd','#fef9c3','#dcfce7'];
 
 let sheetProducts    = [];
 let sheetCategories  = [];
@@ -393,7 +308,6 @@ function fmtPrice(n){ return '₱'+Number(n).toLocaleString('en-PH',{minimumFrac
 function saveOverrides(){ localStorage.setItem('ig3-product-overrides',JSON.stringify(productOverrides)); }
 function saveImageStorage(){ localStorage.setItem('ig3-image-storage',JSON.stringify(imageStorage)); }
 
-// IMAGE COMPRESSION
 function compressImage(file,callback){
   const reader=new FileReader();
   reader.onload=function(e){
@@ -433,10 +347,8 @@ function onEditUrlInput(){
   if(pendingEditImgNew){pendingEditImg=null;pendingEditImgNew=false;}
   const url=document.getElementById('edit-product-img').value.trim();
   const prev=document.getElementById('edit-img-preview');
-  const img=document.getElementById('edit-img-preview-img');
-  const lbl=document.getElementById('edit-img-source-label');
-  if(url){img.src=url;lbl.textContent='🔗 URL image';prev.classList.remove('hidden');}
-  else{prev.classList.add('hidden');}
+  if(url){document.getElementById('edit-img-preview-img').src=url;document.getElementById('edit-img-source-label').textContent='🔗 URL image';prev.classList.remove('hidden');}
+  else prev.classList.add('hidden');
 }
 function clearEditImg(){
   pendingEditImg=null;pendingEditImgNew=true;
@@ -451,32 +363,27 @@ function clearNewImg(){
   document.getElementById('new-img-preview').classList.add('hidden');
 }
 
-// DATA
 function getAllProducts(includeHidden=false){
   const sheet=sheetProducts.map(p=>{
     const ov=productOverrides[p.product_id]||{};
-    return{...p,
+    return {...p,
       name:ov.name!==undefined?ov.name:p.name,
       category:ov.category!==undefined?ov.category:(p.category||''),
       final_price_php:ov.price!=null?String(ov.price):(p.final_price_php||''),
       image_url:ov.imageUrl!==undefined?ov.imageUrl:(p.image_url||''),
       description:ov.description!==undefined?ov.description:(p.description||''),
       _hidden:!!ov._hidden,
-      _edited:Object.keys(ov).filter(k=>k!=='_hidden').length>0
-    };
+      _edited:Object.keys(ov).filter(k=>k!=='_hidden').length>0};
   });
   const local=localProducts.map(p=>{
     const ov=productOverrides[p.id]||{};
-    return{
-      product_id:p.id,
+    return {product_id:p.id,
       name:ov.name!==undefined?ov.name:p.name,
       category:ov.category!==undefined?ov.category:(p.category||''),
       final_price_php:ov.price!=null?String(ov.price):String(p.price||''),
       image_url:ov.imageUrl!==undefined?ov.imageUrl:(p.imageUrl||''),
       description:ov.description!==undefined?ov.description:(p.description||''),
-      _hidden:!!ov._hidden,
-      _local:true
-    };
+      _hidden:!!ov._hidden,_local:true};
   });
   const all=[...sheet,...local];
   return includeHidden?all:all.filter(p=>!p._hidden);
@@ -485,31 +392,24 @@ function getAllCategories(){
   const fromProds=[...new Set(getAllProducts().map(p=>p.category).filter(Boolean))];
   const fromSheet=sheetCategories.filter(c=>!fromProds.includes(c));
   const locals=localCategories.filter(c=>!fromProds.includes(c)&&!sheetCategories.includes(c));
-  return[...new Set([...fromProds,...fromSheet,...locals])].sort();
+  return [...new Set([...fromProds,...fromSheet,...locals])].sort();
 }
 
-// LOAD CATEGORIES
 async function loadCategories(){
   try{
-    const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Categories`;
-    const res=await fetch(url);
+    const res=await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Categories`);
     if(!res.ok){sheetCategories=[];return;}
     const csv=await res.text();
     const lines=csv.trim().split('\n');
     if(lines.length<2){sheetCategories=[];return;}
     sheetCategories=lines.slice(1).map(l=>l.replace(/^"|"$/g,'').trim()).filter(Boolean);
-  }catch(e){
-    console.warn('Could not load categories:',e);
-    sheetCategories=[];
-  }
+  }catch(e){console.warn('Could not load categories:',e);sheetCategories=[];}
 }
 
-// LOAD PRODUCTS
 async function loadProducts(){
   try{
     await loadCategories();
-    const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
-    const res=await fetch(url);
+    const res=await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`);
     if(!res.ok) throw new Error('HTTP '+res.status);
     const csv=await res.text();
     sheetProducts=parseCSV(csv).filter(p=>p.name&&p.name.trim());
@@ -524,7 +424,7 @@ async function loadProducts(){
 }
 function parseCSV(text){
   const lines=text.trim().split('\n');
-  if(lines.length<2)return[];
+  if(lines.length<2) return [];
   const headers=parseCSVLine(lines[0]).map(h=>h.trim().replace(/^"|"$/g,'').toLowerCase().replace(/\s+/g,'_'));
   return lines.slice(1).filter(l=>l.trim()).map(line=>{
     const vals=parseCSVLine(line),obj={};
@@ -542,7 +442,6 @@ function parseCSVLine(line){
   r.push(c);return r;
 }
 
-// CATEGORY PILLS
 function renderCategoryPills(){
   const cats=getAllCategories();
   const el=document.getElementById('category-pills');
@@ -551,7 +450,6 @@ function renderCategoryPills(){
 }
 function setCategory(cat){activeCategory=cat;renderCategoryPills();applyFilters();}
 
-// PRODUCTS GRID
 function applyFilters(){
   const sort=document.getElementById('sort-filter').value;
   let list=activeCategory?getAllProducts().filter(p=>p.category===activeCategory):getAllProducts();
@@ -561,6 +459,48 @@ function applyFilters(){
   renderProducts(list);
   document.getElementById('product-count').textContent=list.length+' items';
 }
+
+function noImgHtml(h){
+  return '<div class="no-img-placeholder" style="height:'+h+'px"><div class="noimg-icon">📷</div><div class="noimg-label">No Image</div></div>';
+}
+function handleImgError(img){
+  const wrap=img.parentElement;if(!wrap)return;
+  wrap.style.cursor='default';wrap.onclick=null;
+  wrap.innerHTML=noImgHtml(160);
+}
+
+// ── CARD QTY CONTROLS ────────────────────────────────────────
+function getCardActionHtml(id,price){
+  if(price<=0) return '';
+  const cartItem=cart.find(c=>c.id===id);
+  const qty=cartItem?cartItem.qty:0;
+  if(qty===0){
+    return `<button onclick="addToCart('${escA(id)}')" class="bg-gray-900 hover:bg-gray-700 text-white text-xs font-bold px-3 py-1.5 rounded-full transition">+ Add</button>`;
+  } else {
+    return `<div class="flex items-center gap-1">
+      <button onclick="cardQtyChange('${escA(id)}',-1)" class="w-7 h-7 rounded-full bg-gray-900 hover:bg-red-600 text-white text-base font-bold flex items-center justify-center transition">−</button>
+      <span class="text-sm font-extrabold w-6 text-center">${qty}</span>
+      <button onclick="cardQtyChange('${escA(id)}',1)" class="w-7 h-7 rounded-full bg-gray-900 hover:bg-gray-700 text-white text-base font-bold flex items-center justify-center transition">+</button>
+    </div>`;
+  }
+}
+function refreshCardAction(id){
+  const el=document.getElementById('card-act-'+id);
+  if(!el) return;
+  const p=getAllProducts().find(x=>x.product_id===id);
+  if(!p) return;
+  el.innerHTML=getCardActionHtml(id,parsePrice(p.final_price_php));
+}
+function cardQtyChange(id,delta){
+  const it=cart.find(c=>c.id===id);
+  if(!it){if(delta>0)addToCart(id);return;}
+  it.qty+=delta;
+  if(it.qty<=0) cart=cart.filter(c=>c.id!==id);
+  saveCart();updateCartBadge();refreshCardAction(id);
+  const sidebar=document.getElementById('cart-sidebar');
+  if(!sidebar.classList.contains('translate-x-full')) renderCartItems();
+}
+
 function renderProducts(list){
   const grid=document.getElementById('products-grid');
   if(!list.length){grid.innerHTML='<div class="col-span-full text-center py-16 text-gray-400"><div class="text-4xl mb-3">🔍</div><p>No products found</p></div>';return;}
@@ -569,10 +509,9 @@ function renderProducts(list){
     const img=getImg(p);
     const bg=CARD_BG[i%CARD_BG.length];
     const desc=p.description||'';
-    return`<div class="product-card rounded-2xl overflow-hidden flex flex-col" style="background:${bg}">
-      <div class="prod-img-wrap" onclick="openLightbox('${escA(img||'')}','${escA(p.name)}')">
-        ${img?`<img src="${escH(img)}" alt="${escH(p.name)}" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\\'height:160px;display:flex;align-items:center;justify-content:center;font-size:3rem\\'>🛍️</div>'">`
-             :`<div style="height:160px;display:flex;align-items:center;justify-content:center;font-size:3rem">🛍️</div>`}
+    return `<div class="product-card rounded-2xl overflow-hidden flex flex-col" style="background:${bg}">
+      <div class="prod-img-wrap"${img?` onclick="openLightbox('${escA(img)}','${escA(p.name)}')"`+' style="cursor:zoom-in"':' style="cursor:default"'}>
+        ${img?`<img src="${escH(img)}" alt="${escH(p.name)}" loading="lazy" onerror="handleImgError(this)">`:noImgHtml(160)}
       </div>
       <div class="p-3 flex flex-col flex-1">
         ${p.category?`<p class="text-xs text-gray-500 mb-0.5">${escH(p.category)}</p>`:''}
@@ -580,27 +519,25 @@ function renderProducts(list){
         ${desc?`<p class="text-xs text-gray-500 mt-1 leading-snug line-clamp-2">${escH(desc)}</p>`:''}
         <div class="mt-3 flex items-center justify-between gap-1">
           <span class="text-base font-extrabold text-gray-900">${price>0?fmtPrice(price):'<span class="text-gray-400 text-xs font-normal">TBA</span>'}</span>
-          ${price>0?`<button onclick="addToCart('${escA(p.product_id)}')" class="bg-gray-900 hover:bg-gray-700 text-white text-xs font-bold px-3 py-1.5 rounded-full transition">+ Add</button>`:''}
+          <div id="card-act-${p.product_id}">${price>0?getCardActionHtml(p.product_id,price):''}</div>
         </div>
       </div>
     </div>`;
   }).join('');
 }
 
-// CART
+// ── CART ─────────────────────────────────────────────────────
 function addToCart(id){
   const p=getAllProducts().find(x=>x.product_id===id);if(!p)return;
   const ex=cart.find(c=>c.id===id);
-  if(ex)ex.qty++;else cart.push({id,name:p.name,price:parsePrice(p.final_price_php),qty:1});
-  saveCart();updateCartBadge();
-  const btn=event&&event.target;
-  if(btn){btn.textContent='✓';setTimeout(()=>btn.textContent='+ Add',800);}
+  if(ex) ex.qty++;else cart.push({id,name:p.name,price:parsePrice(p.final_price_php),qty:1});
+  saveCart();updateCartBadge();refreshCardAction(id);
 }
-function removeFromCart(id){cart=cart.filter(c=>c.id!==id);saveCart();updateCartBadge();renderCartItems();}
+function removeFromCart(id){cart=cart.filter(c=>c.id!==id);saveCart();updateCartBadge();renderCartItems();refreshCardAction(id);}
 function changeQty(id,d){
   const it=cart.find(c=>c.id===id);if(!it)return;
   it.qty+=d;if(it.qty<=0)cart=cart.filter(c=>c.id!==id);
-  saveCart();updateCartBadge();renderCartItems();
+  saveCart();updateCartBadge();renderCartItems();refreshCardAction(id);
 }
 function saveCart(){localStorage.setItem('ig3-cart',JSON.stringify(cart));}
 function updateCartBadge(){
@@ -634,7 +571,6 @@ function toggleCart(){
   else{renderCartItems();s.classList.remove('translate-x-full');o.classList.remove('hidden');}
 }
 
-// ORDER FORM
 function showOrderForm(){
   if(!cart.length)return;
   const total=cart.reduce((s,c)=>s+c.price*c.qty,0);
@@ -648,6 +584,7 @@ function showOrderForm(){
   document.getElementById('order-modal').classList.remove('hidden');
 }
 function closeOrderForm(){document.getElementById('order-modal').classList.add('hidden');}
+
 document.getElementById('order-form').addEventListener('submit',async function(e){
   e.preventDefault();
   const btn=document.getElementById('submit-btn');
@@ -656,17 +593,16 @@ document.getElementById('order-form').addEventListener('submit',async function(e
     const fd=new FormData(this);
     const res=await fetch(this.action,{method:'POST',body:fd,headers:{Accept:'application/json'}});
     if(res.ok){
-      const order={
-        id:Date.now().toString(),
+      const order={id:Date.now().toString(),
         date:new Date().toLocaleString('en-PH',{timeZone:'Asia/Manila',dateStyle:'medium',timeStyle:'short'}),
         name:document.getElementById('order-name').value,
         email:document.getElementById('order-email').value,
         phone:document.getElementById('order-phone').value,
         address:document.getElementById('order-address').value,
         notes:document.getElementById('order-notes').value,
-        items:[...cart],total:cart.reduce((s,c)=>s+c.price*c.qty,0)
-      };
-      orders.unshift(order);localStorage.setItem('ig3-orders',JSON.stringify(orders));
+        items:[...cart],total:cart.reduce((s,c)=>s+c.price*c.qty,0)};
+      orders.unshift(order);
+      localStorage.setItem('ig3-orders',JSON.stringify(orders));
       cart=[];saveCart();updateCartBadge();
       document.getElementById('order-form').classList.add('hidden');
       document.getElementById('order-success').classList.remove('hidden');
@@ -675,7 +611,6 @@ document.getElementById('order-form').addEventListener('submit',async function(e
   btn.textContent='Send Order ✓';btn.disabled=false;
 });
 
-// ADMIN ACCESS
 function handleLogoClick(){
   logoClicks++;clearTimeout(logoTimer);
   if(logoClicks>=5){logoClicks=0;openAdmin();}
@@ -695,23 +630,19 @@ function adminLogin(){
     document.getElementById('admin-login').classList.add('hidden');
     document.getElementById('admin-dashboard').classList.remove('hidden');
     showAdminTab('products');
-  }else{
-    document.getElementById('admin-login-error').classList.remove('hidden');
-  }
+  }else{document.getElementById('admin-login-error').classList.remove('hidden');}
 }
 
-// ADMIN TABS
 function showAdminTab(tab){
   ['products','categories','orders'].forEach(t=>{
     document.getElementById(`admin-${t}-tab`).classList.toggle('hidden',t!==tab);
     document.getElementById(`tab-${t}`).classList.toggle('active',t===tab);
   });
-  if(tab==='products') renderAdminProducts();
-  if(tab==='categories') renderAdminCategories();
-  if(tab==='orders') renderAdminOrders();
+  if(tab==='products')  renderAdminProducts();
+  if(tab==='categories')renderAdminCategories();
+  if(tab==='orders')    renderAdminOrders();
 }
 
-// ADMIN — PRODUCTS
 function renderAdminProducts(){
   populateAdminCategorySelect();
   const all=getAllProducts();
@@ -723,70 +654,47 @@ function renderAdminProducts(){
     <span class="text-sm text-gray-500 font-medium">${all.length} product(s)${hidden.length?' · <span class="text-gray-400">'+hidden.length+' hidden</span>':''}</span>
     <button onclick="findAndRemoveDuplicates()" class="flex items-center gap-1.5 ${dupCount>0?'bg-red-50 hover:bg-red-100 text-red-600 border border-red-200':'bg-gray-100 hover:bg-gray-200 text-gray-500 border border-gray-200'} font-semibold px-4 py-2 rounded-xl text-sm transition">
       🔍 ${dupCount>0?dupCount+' Duplicate'+(dupCount>1?'s':'')+' Found':'No Duplicates'}
-    </button>
-  </div>`;
+    </button></div>`;
   if(!all.length&&!hidden.length){list.innerHTML=dupBtn+'<p class="text-gray-400 text-sm text-center py-8">No products yet.</p>';return;}
   const cats=[...new Set(all.map(p=>p.category||'Uncategorized'))].sort();
   const mainHtml=cats.map(cat=>{
     const prods=all.filter(p=>(p.category||'Uncategorized')===cat);
-    return`<div class="mb-5">
-      <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">${escH(cat)}</h4>
-      <div class="space-y-2">
-        ${prods.map(p=>{
-          const price=parsePrice(p.final_price_php);
-          const img=getImg(p);
-          const hasOv=p._edited||(p._local&&productOverrides[p.product_id]);
-          return`<div class="bg-white rounded-xl shadow-sm p-3 flex items-center gap-3">
-            ${img?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="w-12 h-12 rounded-xl bg-yellow-100 items-center justify-center text-xl flex-shrink-0 hidden">🛍️</div>`
-                :`<div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-semibold text-gray-800 truncate">${escH(p.name)}</p>
-              <p class="text-xs text-gray-400 truncate">
-                ${escH(p.category||'No category')} · ${price>0?fmtPrice(price):'No price'}
-                ${p._edited?' <span style="color:#3b82f6">(edited)</span>':''}
-                ${p._local?' <span style="color:#22c55e">(manual)</span>':''}
-                ${imageStorage[p.product_id]?' <span style="color:#f59e0b">📁 desktop image</span>':''}
-              </p>
-              ${p.description?`<p class="text-xs text-gray-400 italic truncate mt-0.5">${escH(p.description)}</p>`:''}
-            </div>
-            <div class="flex items-center gap-1.5 flex-shrink-0">
-              <button onclick="openEditModal('${escA(p.product_id)}')" class="bg-yellow-400 hover:bg-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full transition">Edit</button>
-              ${hasOv||imageStorage[p.product_id]?`<button onclick="clearProductOverrides('${escA(p.product_id)}')" title="Reset to original" class="text-gray-400 hover:text-red-500 text-sm px-1.5 py-1 rounded-lg hover:bg-red-50 transition">↺</button>`:''}
-              ${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="text-gray-400 hover:text-red-500 text-lg px-1 transition" title="Delete">🗑</button>`:''}
-            </div>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>`;
-  }).join('');
-  const hiddenHtml=hidden.length?`<div class="mt-8 mb-5">
-    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">🚫 Hidden / Removed Duplicates (${hidden.length})</h4>
-    <div class="space-y-2">
-      ${hidden.map(p=>{
-        const price=parsePrice(p.final_price_php);const img=getImg(p);
-        return`<div class="bg-gray-50 rounded-xl shadow-sm p-3 flex items-center gap-3 opacity-60">
-          ${img?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none'">`:`<div class="w-12 h-12 rounded-xl bg-gray-200 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}
+    return `<div class="mb-5"><h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">${escH(cat)}</h4><div class="space-y-2">
+      ${prods.map(p=>{
+        const price=parsePrice(p.final_price_php);const img=getImg(p);const hasOv=p._edited||(p._local&&productOverrides[p.product_id]);
+        return `<div class="bg-white rounded-xl shadow-sm p-3 flex items-center gap-3">
+          ${img?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="w-12 h-12 rounded-xl bg-yellow-100 items-center justify-center text-xl flex-shrink-0 hidden">🛍️</div>`:`<div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}
           <div class="flex-1 min-w-0">
-            <p class="text-sm font-semibold text-gray-400 truncate line-through">${escH(p.name)}</p>
-            <p class="text-xs text-gray-400 truncate">${escH(p.category||'No category')} · ${price>0?fmtPrice(price):'No price'} · <em>duplicate removed</em></p>
+            <p class="text-sm font-semibold text-gray-800 truncate">${escH(p.name)}</p>
+            <p class="text-xs text-gray-400 truncate">${escH(p.category||'No category')} · ${price>0?fmtPrice(price):'No price'}${p._edited?' <span style="color:#3b82f6">(edited)</span>':''}${p._local?' <span style="color:#22c55e">(manual)</span>':''}${imageStorage[p.product_id]?' <span style="color:#f59e0b">📁 desktop image</span>':''}</p>
+            ${p.description?`<p class="text-xs text-gray-400 italic truncate mt-0.5">${escH(p.description)}</p>`:''}
           </div>
           <div class="flex items-center gap-1.5 flex-shrink-0">
-            <button onclick="restoreHiddenProduct('${escA(p.product_id)}')" class="bg-green-50 hover:bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full transition">↩ Restore</button>
-            ${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="text-gray-400 hover:text-red-500 text-lg px-1 transition" title="Delete permanently">🗑</button>`:''}
+            <button onclick="openEditModal('${escA(p.product_id)}')" class="bg-yellow-400 hover:bg-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full transition">Edit</button>
+            ${hasOv||imageStorage[p.product_id]?`<button onclick="clearProductOverrides('${escA(p.product_id)}')" title="Reset to original" class="text-gray-400 hover:text-red-500 text-sm px-1.5 py-1 rounded-lg hover:bg-red-50 transition">↺</button>`:''}
+            ${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="text-gray-400 hover:text-red-500 text-lg px-1 transition" title="Delete">🗑</button>`:''}
           </div>
-        </div>`;
-      }).join('')}
-    </div>
-  </div>`:'';
+        </div>`;}).join('')}</div></div>`;
+  }).join('');
+  const hiddenHtml=hidden.length?`<div class="mt-8 mb-5"><h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">🚫 Hidden / Removed Duplicates (${hidden.length})</h4><div class="space-y-2">
+    ${hidden.map(p=>{const price=parsePrice(p.final_price_php);const img=getImg(p);
+      return `<div class="bg-gray-50 rounded-xl shadow-sm p-3 flex items-center gap-3 opacity-60">
+        ${img?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none'">`:`<div class="w-12 h-12 rounded-xl bg-gray-200 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}
+        <div class="flex-1 min-w-0"><p class="text-sm font-semibold text-gray-400 truncate line-through">${escH(p.name)}</p><p class="text-xs text-gray-400 truncate">${escH(p.category||'No category')} · ${price>0?fmtPrice(price):'No price'} · <em>duplicate removed</em></p></div>
+        <div class="flex items-center gap-1.5 flex-shrink-0">
+          <button onclick="restoreHiddenProduct('${escA(p.product_id)}')" class="bg-green-50 hover:bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full transition">↩ Restore</button>
+          ${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="text-gray-400 hover:text-red-500 text-lg px-1 transition" title="Delete permanently">🗑</button>`:''}
+        </div>
+      </div>`;}).join('')}</div></div>`:'';
   list.innerHTML=dupBtn+mainHtml+hiddenHtml;
 }
+
 function populateAdminCategorySelect(){
   const sel=document.getElementById('new-product-category');
   const cats=getAllCategories();
   sel.innerHTML='<option value="">Select category</option>'+cats.map(c=>`<option value="${escA(c)}">${escH(c)}</option>`).join('');
 }
 
-// EDIT MODAL
 function openEditModal(id){
   const p=getAllProducts().find(x=>x.product_id===id);if(!p)return;
   pendingEditImg=null;pendingEditImgNew=false;
@@ -798,30 +706,19 @@ function openEditModal(id){
   const storedBase64=imageStorage[p.product_id];
   const urlImg=(productOverrides[p.product_id]?.imageUrl)||p.image_url||p.image||p.img||'';
   const curImg=storedBase64||urlImg;
-  if(storedBase64){
-    pendingEditImg=storedBase64;pendingEditImgNew=false;
-    document.getElementById('edit-product-img').value='';
-    document.getElementById('edit-img-source-label').textContent='📁 Desktop image (saved in browser)';
-  }else{
-    document.getElementById('edit-product-img').value=urlImg;
-    document.getElementById('edit-img-source-label').textContent=urlImg?'🔗 URL image':'';
-  }
+  if(storedBase64){pendingEditImg=storedBase64;pendingEditImgNew=false;document.getElementById('edit-product-img').value='';document.getElementById('edit-img-source-label').textContent='📁 Desktop image (saved in browser)';}
+  else{document.getElementById('edit-product-img').value=urlImg;document.getElementById('edit-img-source-label').textContent=urlImg?'🔗 URL image':'';}
   const prev=document.getElementById('edit-img-preview');
-  const prevImg=document.getElementById('edit-img-preview-img');
-  if(curImg){prevImg.src=curImg;prev.classList.remove('hidden');}
-  else{prev.classList.add('hidden');}
+  if(curImg){document.getElementById('edit-img-preview-img').src=curImg;prev.classList.remove('hidden');}
+  else prev.classList.add('hidden');
   const cats=getAllCategories();
   const sel=document.getElementById('edit-product-category');
   sel.innerHTML='<option value="">— No category —</option>'+cats.map(c=>`<option value="${escA(c)}"${p.category===c?' selected':''}>${escH(c)}</option>`).join('');
-  if(p.category&&!cats.includes(p.category))
-    sel.innerHTML+=`<option value="${escA(p.category)}" selected>${escH(p.category)}</option>`;
+  if(p.category&&!cats.includes(p.category)) sel.innerHTML+=`<option value="${escA(p.category)}" selected>${escH(p.category)}</option>`;
   document.getElementById('edit-product-modal').classList.remove('hidden');
   setTimeout(()=>document.getElementById('edit-product-name').focus(),100);
 }
-function closeEditModal(){
-  pendingEditImg=null;pendingEditImgNew=false;
-  document.getElementById('edit-product-modal').classList.add('hidden');
-}
+function closeEditModal(){pendingEditImg=null;pendingEditImgNew=false;document.getElementById('edit-product-modal').classList.add('hidden');}
 function saveProductEdit(){
   const id=document.getElementById('edit-product-id').value;
   const name=document.getElementById('edit-product-name').value.trim();
@@ -836,19 +733,12 @@ function saveProductEdit(){
     if(pendingEditImg){imageStorage[id]=pendingEditImg;saveImageStorage();}
     else{delete imageStorage[id];saveImageStorage();}
   }else if(imgUrl&&!pendingEditImg){delete imageStorage[id];saveImageStorage();}
-  const ov={};
-  ov.name=name;ov.category=cat;
-  if(price!=null)ov.price=price;
+  const ov={};ov.name=name;ov.category=cat;
+  if(price!=null) ov.price=price;
   ov.imageUrl=(pendingEditImg&&!pendingEditImgNew)||(pendingEditImgNew&&pendingEditImg)?'':imgUrl;
-  ov.description=desc;
-  productOverrides[id]=ov;saveOverrides();
+  ov.description=desc;productOverrides[id]=ov;saveOverrides();
   const lIdx=localProducts.findIndex(p=>p.id===id);
-  if(lIdx>=0){
-    localProducts[lIdx]={...localProducts[lIdx],name,category:cat,
-      price:price??localProducts[lIdx].price,
-      imageUrl:imageStorage[id]?'':imgUrl,description:desc};
-    localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
-  }
+  if(lIdx>=0){localProducts[lIdx]={...localProducts[lIdx],name,category:cat,price:price??localProducts[lIdx].price,imageUrl:imageStorage[id]?'':imgUrl,description:desc};localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));}
   pendingEditImg=null;pendingEditImgNew=false;
   closeEditModal();renderCategoryPills();applyFilters();renderAdminProducts();
 }
@@ -859,12 +749,9 @@ function clearProductOverrides(id){
   renderCategoryPills();applyFilters();renderAdminProducts();
 }
 function clearAddProductForm(){
-  document.getElementById('new-product-name').value='';
-  document.getElementById('new-product-price').value='';
-  document.getElementById('new-product-img').value='';
-  document.getElementById('new-product-desc').value='';
-  document.getElementById('new-img-file').value='';
-  document.getElementById('new-img-preview').classList.add('hidden');
+  document.getElementById('new-product-name').value='';document.getElementById('new-product-price').value='';
+  document.getElementById('new-product-img').value='';document.getElementById('new-product-desc').value='';
+  document.getElementById('new-img-file').value='';document.getElementById('new-img-preview').classList.add('hidden');
   pendingNewImg=null;
 }
 async function addLocalProduct(){
@@ -875,26 +762,20 @@ async function addLocalProduct(){
   const desc=document.getElementById('new-product-desc').value.trim();
   if(!name){alert('Product name is required.');return;}
   if(isNaN(price)||price<=0){alert('A valid price is required.');return;}
-  const btn=document.getElementById('add-product-btn');
-  const statusEl=document.getElementById('add-product-status');
+  const btn=document.getElementById('add-product-btn');const statusEl=document.getElementById('add-product-status');
   btn.disabled=true;btn.textContent='Adding...';
   statusEl.textContent='⏳ Saving to Google Sheet...';statusEl.style.color='#6b7280';
-  if(pendingNewImg){
-    const nameKey='byname_'+name.toLowerCase().trim();
-    imageStorage[nameKey]=pendingNewImg;saveImageStorage();
-  }
+  if(pendingNewImg){const nameKey='byname_'+name.toLowerCase().trim();imageStorage[nameKey]=pendingNewImg;saveImageStorage();}
   let sheetSuccess=false;
   try{
-    const payload={name,category:cat,final_price_php:String(price),image_url:pendingNewImg?'':img,description:desc};
-    await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+    await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({name,category:cat,final_price_php:String(price),image_url:pendingNewImg?'':img,description:desc})});
     sheetSuccess=true;
   }catch(e){sheetSuccess=false;console.warn('Apps Script POST failed:',e);}
   if(sheetSuccess){
     statusEl.textContent='⏳ Sent! Refreshing product list...';statusEl.style.color='#6b7280';
     clearAddProductForm();
     await new Promise(r=>setTimeout(r,3000));
-    await loadProducts();
-    renderCategoryPills();renderAdminProducts();
+    await loadProducts();renderCategoryPills();renderAdminProducts();
     statusEl.textContent='✅ Added to Google Sheet!';statusEl.style.color='#16a34a';
     setTimeout(()=>{statusEl.textContent='';},4000);
   }else{
@@ -912,31 +793,20 @@ function deleteLocalProduct(id){
   if(!confirm('Delete this product permanently?'))return;
   localProducts=localProducts.filter(p=>p.id!==id);
   localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
-  delete productOverrides[id];saveOverrides();
-  delete imageStorage[id];saveImageStorage();
+  delete productOverrides[id];saveOverrides();delete imageStorage[id];saveImageStorage();
   renderCategoryPills();applyFilters();renderAdminProducts();
 }
 function findAndRemoveDuplicates(){
-  const all=getAllProducts();
-  const seen=new Map();const dupes=[];
-  for(const p of all){
-    const k=(p.name||'').toLowerCase().trim();if(!k)continue;
-    if(seen.has(k))dupes.push(p);else seen.set(k,p);
-  }
+  const all=getAllProducts();const seen=new Map();const dupes=[];
+  for(const p of all){const k=(p.name||'').toLowerCase().trim();if(!k)continue;if(seen.has(k))dupes.push(p);else seen.set(k,p);}
   if(!dupes.length){alert('\u2705 No duplicate products found!');return;}
   const preview=dupes.slice(0,10).map(p=>' \u2022 '+p.name).join('\n')+(dupes.length>10?'\n  ...and '+(dupes.length-10)+' more':'');
-  if(!confirm('Found '+dupes.length+' duplicate product'+(dupes.length>1?'s':'')+' (same name as another item):\n\n'+preview+'\n\nThe FIRST occurrence of each name is kept.\nRemove the duplicates?'))return;
+  if(!confirm('Found '+dupes.length+' duplicate product'+(dupes.length>1?'s':'')+' (same name):\n\n'+preview+'\n\nThe FIRST occurrence of each name is kept.\nRemove the duplicates?'))return;
   dupes.forEach(p=>{
-    if(p._local){
-      localProducts=localProducts.filter(lp=>lp.id!==p.product_id);
-      localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
-      delete productOverrides[p.product_id];delete imageStorage[p.product_id];
-    }else{
-      productOverrides[p.product_id]={...(productOverrides[p.product_id]||{}),_hidden:true};
-    }
+    if(p._local){localProducts=localProducts.filter(lp=>lp.id!==p.product_id);localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));delete productOverrides[p.product_id];delete imageStorage[p.product_id];}
+    else{productOverrides[p.product_id]={...(productOverrides[p.product_id]||{}),_hidden:true};}
   });
-  saveOverrides();saveImageStorage();
-  renderCategoryPills();applyFilters();renderAdminProducts();
+  saveOverrides();saveImageStorage();renderCategoryPills();applyFilters();renderAdminProducts();
   alert('\u2705 Done! Removed '+dupes.length+' duplicate'+(dupes.length>1?'s':'')+'. Sheet duplicates are hidden (use Restore to bring them back).');
 }
 function restoreHiddenProduct(id){
@@ -946,96 +816,49 @@ function restoreHiddenProduct(id){
   saveOverrides();renderCategoryPills();applyFilters();renderAdminProducts();
 }
 
-// ADMIN — CATEGORIES
 function renderAdminCategories(){
   const cats=getAllCategories();
   const fromProds=[...new Set(sheetProducts.map(p=>p.category||'').filter(Boolean))];
   const list=document.getElementById('admin-category-list');
   if(!cats.length){list.innerHTML='<p class="text-gray-400 text-sm text-center py-8">No categories yet. Add one above.</p>';return;}
   list.innerHTML=cats.map(c=>{
-    const inSheet=sheetCategories.includes(c);
-    const inLocal=localCategories.includes(c);
-    const inProds=fromProds.includes(c);
-    const badge=inSheet
-      ?'<span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full ml-2">✓ Synced</span>'
-      :inLocal
-        ?'<span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full ml-2">Local only</span>'
-        :'';
-    const action=inProds&&!inSheet&&!inLocal
-      ?`<span class="text-xs text-gray-400 italic">From Products</span>`
-      :`<button onclick="deleteCategory('${escA(c)}')" class="text-red-400 hover:text-red-600 text-sm font-semibold transition">Delete</button>`;
-    return`<div class="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between mb-2">
-      <div class="flex items-center gap-3 flex-wrap"><span class="text-xl">🏷</span><span class="font-semibold text-gray-800">${escH(c)}</span>${badge}</div>
-      ${action}
-    </div>`;
+    const inSheet=sheetCategories.includes(c);const inLocal=localCategories.includes(c);const inProds=fromProds.includes(c);
+    const badge=inSheet?'<span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full ml-2">✓ Synced</span>':inLocal?'<span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full ml-2">Local only</span>':'';
+    const action=inProds&&!inSheet&&!inLocal?`<span class="text-xs text-gray-400 italic">From Products</span>`:`<button onclick="deleteCategory('${escA(c)}')" class="text-red-400 hover:text-red-600 text-sm font-semibold transition">Delete</button>`;
+    return `<div class="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between mb-2"><div class="flex items-center gap-3 flex-wrap"><span class="text-xl">🏷</span><span class="font-semibold text-gray-800">${escH(c)}</span>${badge}</div>${action}</div>`;
   }).join('');
 }
 async function addCategory(){
   const name=document.getElementById('new-category-name').value.trim();
   if(!name){alert('Category name is required.');return;}
   if(getAllCategories().includes(name)){alert('This category already exists.');return;}
-  const inp=document.getElementById('new-category-name');
-  inp.disabled=true;
+  const inp=document.getElementById('new-category-name');inp.disabled=true;
   let synced=false;
-  try{
-    await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'add_category',category_name:name})});
-    synced=true;
-  }catch(e){console.warn('Category sync failed:',e);}
-  if(synced){
-    await new Promise(r=>setTimeout(r,2000));
-    await loadCategories();
-    localCategories=localCategories.filter(c=>c!==name);
-    localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));
-  }else{
-    localCategories.push(name);
-    localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));
-  }
+  try{await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'add_category',category_name:name})});synced=true;}
+  catch(e){console.warn('Category sync failed:',e);}
+  if(synced){await new Promise(r=>setTimeout(r,2000));await loadCategories();localCategories=localCategories.filter(c=>c!==name);localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));}
+  else{localCategories.push(name);localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));}
   inp.disabled=false;inp.value='';
   renderCategoryPills();renderAdminCategories();populateAdminCategorySelect();
 }
 async function deleteCategory(name){
   if(!confirm(`Delete category "${name}"?`))return;
-  try{
-    await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'delete_category',category_name:name})});
-    await new Promise(r=>setTimeout(r,2000));
-    await loadCategories();
-  }catch(e){console.warn('Category delete sync failed:',e);}
-  localCategories=localCategories.filter(c=>c!==name);
-  localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));
+  try{await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'delete_category',category_name:name})});await new Promise(r=>setTimeout(r,2000));await loadCategories();}
+  catch(e){console.warn('Category delete sync failed:',e);}
+  localCategories=localCategories.filter(c=>c!==name);localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));
   renderCategoryPills();renderAdminCategories();
 }
 
-// ADMIN — ORDERS
 function renderAdminOrders(){
   const list=document.getElementById('admin-order-list');
   document.getElementById('orders-count-label').textContent=`Orders (${orders.length})`;
-  if(!orders.length){
-    list.innerHTML='<div class="text-center py-16 text-gray-400"><div class="text-5xl mb-4">📋</div><p>No orders yet.</p><p class="text-sm mt-1">Orders placed on the site will appear here.</p></div>';
-    return;
-  }
+  if(!orders.length){list.innerHTML='<div class="text-center py-16 text-gray-400"><div class="text-5xl mb-4">📋</div><p>No orders yet.</p><p class="text-sm mt-1">Orders placed on the site will appear here.</p></div>';return;}
   list.innerHTML=orders.map(o=>`
     <div class="bg-white rounded-2xl shadow-sm p-5 mb-4">
-      <div class="flex items-start justify-between mb-3">
-        <div>
-          <h4 class="font-bold text-gray-900 text-base">${escH(o.name)}</h4>
-          <p class="text-xs text-gray-400">${escH(o.date)} · #${o.id.slice(-8)}</p>
-        </div>
-        <span class="font-extrabold text-yellow-600 text-lg">${fmtPrice(o.total)}</span>
-      </div>
-      <div class="text-sm text-gray-600 space-y-1 mb-3">
-        <p>📱 ${escH(o.phone)}</p>
-        <p>✉️ ${escH(o.email)}</p>
-        <p>📍 ${escH(o.address)}</p>
-        ${o.notes?`<p>📝 ${escH(o.notes)}</p>`:''}
-      </div>
-      <div class="border-t pt-3 mb-4">
-        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">Items Ordered</p>
-        <div class="space-y-1">
-          ${o.items.map(i=>`<div class="flex justify-between text-sm">
-            <span class="text-gray-700 flex-1 truncate mr-2">${escH(i.name)} <span class="text-gray-400">×${i.qty}</span></span>
-            <span class="font-semibold text-gray-800">${fmtPrice(i.price*i.qty)}</span>
-          </div>`).join('')}
-        </div>
+      <div class="flex items-start justify-between mb-3"><div><h4 class="font-bold text-gray-900 text-base">${escH(o.name)}</h4><p class="text-xs text-gray-400">${escH(o.date)} · #${o.id.slice(-8)}</p></div><span class="font-extrabold text-yellow-600 text-lg">${fmtPrice(o.total)}</span></div>
+      <div class="text-sm text-gray-600 space-y-1 mb-3"><p>📱 ${escH(o.phone)}</p><p>✉️ ${escH(o.email)}</p><p>📍 ${escH(o.address)}</p>${o.notes?`<p>📝 ${escH(o.notes)}</p>`:''}</div>
+      <div class="border-t pt-3 mb-4"><p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">Items Ordered</p>
+        <div class="space-y-1">${o.items.map(i=>`<div class="flex justify-between text-sm"><span class="text-gray-700 flex-1 truncate mr-2">${escH(i.name)} <span class="text-gray-400">×${i.qty}</span></span><span class="font-semibold text-gray-800">${fmtPrice(i.price*i.qty)}</span></div>`).join('')}</div>
       </div>
       <div class="flex gap-2">
         <button onclick="printOrder('${o.id}')" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold py-2.5 rounded-xl text-sm transition">🖨 Print</button>
@@ -1047,48 +870,30 @@ function printOrder(id){const o=orders.find(x=>x.id===id);if(!o)return;buildPrin
 function printAllOrders(){if(!orders.length){alert('No orders to print.');return;}buildPrintArea(orders);window.print();clearPrintArea();}
 function buildPrintArea(list){
   const el=document.getElementById('print-area');el.classList.remove('hidden');
-  el.innerHTML=list.map(o=>`
-    <div style="font-family:sans-serif;max-width:600px;margin:0 auto 40px;padding-bottom:40px;border-bottom:2px dashed #ddd;page-break-after:always">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-        <div><h1 style="font-size:18px;font-weight:900;margin:0">IG3 Dubai Pasabuy</h1><p style="color:#888;font-size:11px;margin:2px 0 0">Packed Fresh from Dubai</p></div>
-        <div style="text-align:right"><p style="font-size:11px;color:#888;margin:0">Order #${o.id.slice(-8)}</p><p style="font-size:11px;color:#888;margin:0">${escH(o.date)}</p></div>
-      </div>
-      <hr style="margin:12px 0">
-      <h2 style="font-size:13px;font-weight:700;margin:0 0 8px;color:#555">CUSTOMER DETAILS</h2>
-      <p style="font-size:13px;margin:3px 0"><strong>Name:</strong> ${escH(o.name)}</p>
-      <p style="font-size:13px;margin:3px 0"><strong>Phone:</strong> ${escH(o.phone)}</p>
-      <p style="font-size:13px;margin:3px 0"><strong>Email:</strong> ${escH(o.email)}</p>
-      <p style="font-size:13px;margin:3px 0"><strong>Address:</strong> ${escH(o.address)}</p>
-      ${o.notes?`<p style="font-size:13px;margin:3px 0"><strong>Notes:</strong> ${escH(o.notes)}</p>`:''}
-      <h2 style="font-size:13px;font-weight:700;margin:16px 0 8px;color:#555">ORDER ITEMS</h2>
-      <table style="width:100%;border-collapse:collapse;font-size:13px">
-        <tr style="border-bottom:2px solid #eee"><th style="text-align:left;padding:5px 0">Item</th><th style="text-align:center;width:40px">Qty</th><th style="text-align:right;width:90px">Amount</th></tr>
-        ${o.items.map(i=>`<tr style="border-bottom:1px solid #f0f0f0"><td style="padding:5px 0">${escH(i.name)}</td><td style="text-align:center">${i.qty}</td><td style="text-align:right">${fmtPrice(i.price*i.qty)}</td></tr>`).join('')}
-        <tr><td colspan="2" style="padding-top:10px;font-weight:900;font-size:14px">TOTAL</td><td style="padding-top:10px;font-weight:900;font-size:14px;text-align:right">${fmtPrice(o.total)}</td></tr>
-      </table>
-      <hr style="margin-top:20px">
-      <p style="font-size:11px;color:#aaa;text-align:center;margin-top:10px">Thank you for ordering! We'll be in touch shortly.</p>
-    </div>`).join('');
+  el.innerHTML=list.map(o=>`<div style="font-family:sans-serif;max-width:600px;margin:0 auto 40px;padding-bottom:40px;border-bottom:2px dashed #ddd;page-break-after:always">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><div><h1 style="font-size:18px;font-weight:900;margin:0">IG3 Dubai Pasabuy</h1><p style="color:#888;font-size:11px;margin:2px 0 0">Packed Fresh from Dubai</p></div><div style="text-align:right"><p style="font-size:11px;color:#888;margin:0">Order #${o.id.slice(-8)}</p><p style="font-size:11px;color:#888;margin:0">${escH(o.date)}</p></div></div>
+    <hr style="margin:12px 0"><h2 style="font-size:13px;font-weight:700;margin:0 0 8px;color:#555">CUSTOMER DETAILS</h2>
+    <p style="font-size:13px;margin:3px 0"><strong>Name:</strong> ${escH(o.name)}</p><p style="font-size:13px;margin:3px 0"><strong>Phone:</strong> ${escH(o.phone)}</p><p style="font-size:13px;margin:3px 0"><strong>Email:</strong> ${escH(o.email)}</p><p style="font-size:13px;margin:3px 0"><strong>Address:</strong> ${escH(o.address)}</p>${o.notes?`<p style="font-size:13px;margin:3px 0"><strong>Notes:</strong> ${escH(o.notes)}</p>`:''}
+    <h2 style="font-size:13px;font-weight:700;margin:16px 0 8px;color:#555">ORDER ITEMS</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:13px"><tr style="border-bottom:2px solid #eee"><th style="text-align:left;padding:5px 0">Item</th><th style="text-align:center;width:40px">Qty</th><th style="text-align:right;width:90px">Amount</th></tr>
+    ${o.items.map(i=>`<tr style="border-bottom:1px solid #f0f0f0"><td style="padding:5px 0">${escH(i.name)}</td><td style="text-align:center">${i.qty}</td><td style="text-align:right">${fmtPrice(i.price*i.qty)}</td></tr>`).join('')}
+    <tr><td colspan="2" style="padding-top:10px;font-weight:900;font-size:14px">TOTAL</td><td style="padding-top:10px;font-weight:900;font-size:14px;text-align:right">${fmtPrice(o.total)}</td></tr></table>
+    <hr style="margin-top:20px"><p style="font-size:11px;color:#aaa;text-align:center;margin-top:10px">Thank you for ordering! We'll be in touch shortly.</p>
+  </div>`).join('');
 }
 function clearPrintArea(){const el=document.getElementById('print-area');el.classList.add('hidden');el.innerHTML='';}
 function deleteOrder(id){
   if(!confirm('Delete this order? This cannot be undone.'))return;
-  orders=orders.filter(o=>o.id!==id);
-  localStorage.setItem('ig3-orders',JSON.stringify(orders));
-  renderAdminOrders();
+  orders=orders.filter(o=>o.id!==id);localStorage.setItem('ig3-orders',JSON.stringify(orders));renderAdminOrders();
 }
 
-// LIGHTBOX
 let lbScale=1,lbDragging=false,lbStartX=0,lbStartY=0,lbCurX=0,lbCurY=0;
 function openLightbox(src,name){
-  if(!src)return;
-  lbScale=1;lbCurX=0;lbCurY=0;
-  const img=document.getElementById('lb-img');
-  img.src=src;img.alt=name||'';
+  if(!src)return;lbScale=1;lbCurX=0;lbCurY=0;
+  const img=document.getElementById('lb-img');img.src=src;img.alt=name||'';
   img.style.transform='scale(1) translate(0px,0px)';
   document.getElementById('lb-zoom-label').textContent='100%';
-  document.getElementById('lightbox').classList.add('open');
-  document.body.style.overflow='hidden';
+  document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden';
 }
 function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
 function lbBgClick(e){if(e.target===document.getElementById('lightbox'))closeLightbox();}
@@ -1115,7 +920,6 @@ lbWrap.addEventListener('touchend',()=>{lbDragging=false;});
 lbWrap.addEventListener('wheel',e=>{e.preventDefault();lbScale=Math.min(5,Math.max(0.5,lbScale-(e.deltaY>0?0.15:-0.15)));applyLbTransform();},{passive:false});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
 
-// INIT
 updateCartBadge();
 loadProducts();
 if(window.location.hash==='#admin') openAdmin();
