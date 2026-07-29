@@ -3,620 +3,257 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IG3 Dubai Pasabuy — Packed Fresh from Dubai</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>🎂 Sweet Sprinkles Theme Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; background: #fef6ee; }
-    .product-card { transition: transform 0.15s ease, box-shadow 0.15s ease; }
-    .product-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.12); }
-    #cart-sidebar { transition: transform 0.3s ease; }
-    .cat-pill { transition: all 0.15s ease; }
-    .cat-pill.active { background: #1a1a1a !important; color: #fff !important; border-color: #1a1a1a !important; }
-    .admin-tab { border-bottom: 2px solid transparent; transition: all 0.15s; }
-    .admin-tab.active { border-bottom-color: #f59e0b; color: #92400e; font-weight: 700; }
-    @media print {
-      body > *:not(#print-area) { display: none !important; }
-      #print-area { display: block !important; padding: 32px; }
-    }
-    .line-clamp-2 { display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
-    .prod-img-wrap { background:#fff; cursor:zoom-in; overflow:hidden; }
-    .prod-img-wrap img { object-fit:contain; width:100%; height:160px; display:block; transition:transform 0.2s; }
-    .prod-img-wrap:hover img { transform:scale(1.06); }
-    .no-img-placeholder { height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f3f4f6;color:#9ca3af;gap:8px; }
-    .no-img-placeholder .noimg-icon { font-size:2.5rem;opacity:0.4; }
-    .no-img-placeholder .noimg-label { font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase; }
-    #lightbox { position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.85);display:none;flex-direction:column;align-items:center;justify-content:center; }
-    #lightbox.open { display:flex; }
-    #lb-img-wrap { position:relative;overflow:hidden;max-width:90vw;max-height:80vh;background:#fff;border-radius:16px;display:flex;align-items:center;justify-content:center;cursor:grab; }
-    #lb-img-wrap.grabbing { cursor:grabbing; }
-    #lb-img { max-width:700px;width:100%;max-height:80vh;object-fit:contain;display:block;transform-origin:center center;transition:transform 0.15s;user-select:none;pointer-events:none; }
-    #lb-controls { display:flex;align-items:center;gap:12px;margin-top:16px; }
-    #lb-controls button { background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:22px;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s; }
-    #lb-controls button:hover { background:rgba(255,255,255,0.3); }
-    #lb-close { position:absolute;top:16px;right:16px;background:rgba(0,0,0,0.5);border:none;color:#fff;font-size:26px;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10; }
-    #lb-zoom-label { color:#fff;font-size:13px;min-width:48px;text-align:center;font-weight:700; }
-    .upload-btn { cursor:pointer; display:flex; align-items:center; gap:4px; background:#f3f4f6;
-      border:1px solid #d1d5db; border-radius:12px; padding:8px 14px; font-size:13px;
-      font-weight:600; color:#374151; white-space:nowrap; transition:background 0.15s; }
-    .upload-btn:hover { background:#fef9c3; border-color:#f59e0b; }
-    .track-timeline { display:flex; align-items:flex-start; justify-content:space-between; position:relative; padding:0 8px; }
-    .track-step { flex:1; text-align:center; position:relative; }
-    .track-step:not(:first-child)::before { content:''; position:absolute; top:18px; right:50%; left:-50%; height:3px; background:#e5e7eb; z-index:0; }
-    .track-step.done:not(:first-child)::before { background:#22c55e; }
-    .track-step.current:not(:first-child)::before { background:#22c55e; }
-    .track-dot { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 6px; border:2px solid #e5e7eb; background:#fff; position:relative; z-index:1; font-size:16px; }
-    .track-step.done .track-dot { border-color:#22c55e; background:#dcfce7; }
-    .track-step.current .track-dot { border-color:#f59e0b; background:#fef3c7; box-shadow:0 0 0 4px rgba(245,158,11,0.2); }
-    .track-label { font-size:10px; font-weight:700; color:#9ca3af; text-transform:uppercase; letter-spacing:0.05em; }
-    .track-step.done .track-label { color:#16a34a; }
-    .track-step.current .track-label { color:#d97706; }
-    .badge-pending   { background:#f3f4f6; color:#6b7280; }
-    .badge-confirmed { background:#dbeafe; color:#1d4ed8; }
-    .badge-packed    { background:#ede9fe; color:#7c3aed; }
-    .badge-shipped   { background:#ffedd5; color:#c2410c; }
-    .badge-delivered { background:#dcfce7; color:#15803d; }
-    .badge-cancelled { background:#fee2e2; color:#b91c1c; }
-    .report-card { background:#fff; border-radius:16px; padding:20px; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #fce7f3; min-height: 100vh; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; background-image: radial-gradient(circle, #f9a8d4 2px, transparent 2px), radial-gradient(circle, #a5f3fc 2px, transparent 2px), radial-gradient(circle, #fde68a 2px, transparent 2px), radial-gradient(circle, #c4b5fd 2px, transparent 2px), radial-gradient(circle, #6ee7b7 2px, transparent 2px), radial-gradient(circle, #fb923c 1.5px, transparent 1.5px); background-size: 120px 120px, 90px 90px, 150px 150px, 100px 100px, 80px 80px, 130px 130px; background-position: 10px 10px, 45px 60px, 80px 20px, 20px 80px, 60px 40px, 100px 70px; opacity: 0.35; pointer-events: none; z-index: 0; }
+    header { background: #fff; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(236,72,153,0.10); }
+    .header-inner { max-width: 1100px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
+    .logo-area { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .logo-circle { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #f9a8d4, #c084fc); display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 2px 8px rgba(236,72,153,0.3); }
+    .logo-text h1 { font-family: 'Fredoka One', cursive; font-size: 18px; color: #ec4899; letter-spacing: 0.5px; }
+    .logo-text p { font-size: 11px; color: #a78bfa; font-weight: 700; letter-spacing: 1px; }
+    .sprinkle-border { height: 5px; background: linear-gradient(90deg, #f87171 0%, #fb923c 14%, #fbbf24 28%, #4ade80 42%, #38bdf8 57%, #818cf8 71%, #e879f9 85%, #f87171 100%); }
+    .header-btns { display: flex; gap: 8px; }
+    .btn-track { background: #fdf2f8; border: 2px solid #f9a8d4; color: #ec4899; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 13px; padding: 8px 16px; border-radius: 50px; cursor: pointer; transition: all 0.2s; }
+    .btn-cart { background: linear-gradient(135deg, #ec4899, #a855f7); color: #fff; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 13px; padding: 8px 20px; border-radius: 50px; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(236,72,153,0.35); transition: all 0.2s; }
+    .btn-cart:hover { transform: translateY(-2px); }
+    .cart-badge { background: #fbbf24; color: #7c2d12; font-size: 10px; font-weight: 900; border-radius: 50%; width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; margin-left: 4px; }
+    .hero { position: relative; z-index: 1; padding: 60px 20px 80px; text-align: center; background: linear-gradient(135deg, #fce7f3 0%, #fdf4c1 35%, #ede9fe 70%, #fce7f3 100%); overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 50%, rgba(249,168,212,0.4) 0%, transparent 60%), radial-gradient(ellipse at 80% 30%, rgba(192,132,252,0.3) 0%, transparent 60%), radial-gradient(ellipse at 50% 80%, rgba(253,230,138,0.4) 0%, transparent 60%); }
+    .floaties { position: absolute; inset: 0; pointer-events: none; }
+    .float-dot { position: absolute; border-radius: 50%; animation: floatUp 4s ease-in-out infinite; }
+    @keyframes floatUp { 0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; } 50% { transform: translateY(-20px) rotate(180deg); opacity: 1; } }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-badge { display: inline-block; background: rgba(255,255,255,0.7); border: 2px solid #f9a8d4; color: #ec4899; font-weight: 800; font-size: 13px; padding: 6px 18px; border-radius: 50px; margin-bottom: 16px; backdrop-filter: blur(4px); }
+    .hero h2 { font-family: 'Fredoka One', cursive; font-size: clamp(32px, 6vw, 54px); color: #be185d; line-height: 1.15; margin-bottom: 12px; text-shadow: 2px 2px 0 rgba(255,255,255,0.5); }
+    .hero h2 span { color: #7c3aed; }
+    .hero p { font-size: 17px; color: #9d174d; font-weight: 700; margin-bottom: 28px; opacity: 0.85; }
+    .hero-cta { display: inline-block; background: linear-gradient(135deg, #ec4899, #a855f7); color: #fff; font-family: 'Fredoka One', cursive; font-size: 20px; padding: 14px 40px; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 24px rgba(236,72,153,0.4); transition: all 0.25s; }
+    .hero-cta:hover { transform: translateY(-4px) scale(1.03); }
+    .hero-emojis { font-size: 2.5rem; margin-bottom: 16px; }
+    .section { max-width: 1100px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+    .cat-section { padding: 28px 20px 8px; }
+    .cat-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .pill { background: #fff; border: 2px solid #f9a8d4; color: #be185d; font-weight: 800; font-size: 13px; padding: 8px 20px; border-radius: 50px; cursor: pointer; transition: all 0.2s; font-family: 'Nunito', sans-serif; }
+    .pill:hover, .pill.active { background: linear-gradient(135deg, #ec4899, #a855f7); color: #fff; border-color: transparent; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(236,72,153,0.35); }
+    .products-section { padding: 16px 20px 60px; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 18px; max-width: 1100px; margin: 0 auto; }
+    .product-card { background: #fff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 20px rgba(236,72,153,0.10); transition: all 0.25s; }
+    .product-card:hover { transform: translateY(-6px) rotate(-0.5deg); box-shadow: 0 12px 32px rgba(236,72,153,0.22); }
+    .card-sprinkle-top { height: 6px; width: 100%; }
+    .card-img { background: #fdf2f8; height: 150px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; }
+    .card-body { padding: 12px 14px 14px; }
+    .card-cat { font-size: 10px; font-weight: 800; color: #a855f7; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+    .card-name { font-family: 'Fredoka One', cursive; font-size: 15px; color: #4a1942; line-height: 1.3; margin-bottom: 10px; }
+    .card-price { font-family: 'Fredoka One', cursive; font-size: 20px; color: #be185d; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; }
+    .btn-add { background: linear-gradient(135deg, #ec4899, #a855f7); color: #fff; border: none; font-family: 'Fredoka One', cursive; font-size: 14px; padding: 7px 16px; border-radius: 50px; cursor: pointer; transition: all 0.2s; box-shadow: 0 3px 10px rgba(236,72,153,0.3); }
+    .btn-add:hover { transform: scale(1.08); }
+    .sp1 { background: linear-gradient(90deg, #f87171, #fb923c, #fbbf24, #4ade80); }
+    .sp2 { background: linear-gradient(90deg, #38bdf8, #818cf8, #e879f9, #f87171); }
+    .sp3 { background: linear-gradient(90deg, #4ade80, #38bdf8, #818cf8, #fbbf24); }
+    .sp4 { background: linear-gradient(90deg, #e879f9, #f87171, #fb923c, #38bdf8); }
+    .sp5 { background: linear-gradient(90deg, #fbbf24, #4ade80, #f87171, #818cf8); }
+    .tracking-box { background: linear-gradient(135deg, #fdf2f8, #f5f0ff); border: 2px solid #f9a8d4; border-radius: 24px; padding: 28px; text-align: center; max-width: 400px; margin: 40px auto; box-shadow: 0 8px 32px rgba(236,72,153,0.15); }
+    .tracking-box .confetti-emoji { font-size: 3rem; margin-bottom: 12px; }
+    .tracking-box h3 { font-family: 'Fredoka One', cursive; font-size: 24px; color: #be185d; margin-bottom: 8px; }
+    .tracking-box p { color: #9d174d; font-size: 14px; font-weight: 600; margin-bottom: 16px; }
+    .order-id-display { background: #fff; border: 2px dashed #f9a8d4; border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+    .order-id-label { font-size: 10px; font-weight: 800; color: #a855f7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .order-id-code { font-family: 'Fredoka One', cursive; font-size: 26px; color: #7c3aed; letter-spacing: 3px; }
+    .btn-copy { background: linear-gradient(135deg, #ec4899, #a855f7); color: #fff; border: none; font-family: 'Fredoka One', cursive; font-size: 15px; padding: 10px 28px; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 16px rgba(236,72,153,0.35); transition: all 0.2s; }
+    .timeline-preview { background: #fdf2f8; border-radius: 20px; padding: 24px; max-width: 600px; margin: 40px auto; }
+    .tl-title { font-family:'Fredoka One',cursive; font-size:18px; color:#be185d; margin-bottom:20px; text-align:center; }
+    .timeline { display:flex; align-items:flex-start; justify-content:space-between; }
+    .tl-step { flex:1; text-align:center; position:relative; }
+    .tl-step:not(:first-child)::before { content:''; position:absolute; top:18px; right:50%; left:-50%; height:3px; background:#f9a8d4; z-index:0; }
+    .tl-step.done:not(:first-child)::before { background:linear-gradient(90deg,#ec4899,#a855f7); }
+    .tl-step.active:not(:first-child)::before { background:linear-gradient(90deg,#ec4899,#f9a8d4); }
+    .tl-dot { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 8px; border:2px solid #f9a8d4; background:#fff; position:relative; z-index:1; font-size:16px; }
+    .tl-step.done .tl-dot { background:linear-gradient(135deg,#ec4899,#a855f7); border-color:transparent; box-shadow:0 4px 12px rgba(236,72,153,0.4); }
+    .tl-step.active .tl-dot { border-color:#ec4899; box-shadow:0 0 0 5px rgba(236,72,153,0.15); animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 0 5px rgba(236,72,153,0.15);} 50%{box-shadow:0 0 0 9px rgba(236,72,153,0.08);} }
+    .tl-label { font-size:10px; font-weight:800; color:#c084fc; text-transform:uppercase; letter-spacing:0.5px; }
+    .tl-step.done .tl-label { color:#ec4899; }
+    .tl-step.active .tl-label { color:#7c3aed; }
+    .report-preview { max-width: 700px; margin: 40px auto; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 20px; }
+    .rcard { background: #fff; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 4px 16px rgba(236,72,153,0.10); position: relative; overflow: hidden; }
+    .rcard::before { content:''; position:absolute; top:0; left:0; right:0; height:5px; }
+    .rcard.r1::before{background:linear-gradient(90deg,#f87171,#fb923c);}
+    .rcard.r2::before{background:linear-gradient(90deg,#38bdf8,#818cf8);}
+    .rcard.r3::before{background:linear-gradient(90deg,#4ade80,#38bdf8);}
+    .rcard.r4::before{background:linear-gradient(90deg,#e879f9,#f87171);}
+    .rcard-label { font-size:11px; font-weight:800; color:#c084fc; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:8px; }
+    .rcard-value { font-family:'Fredoka One',cursive; font-size:30px; color:#be185d; margin-bottom:4px; }
+    .rcard-sub { font-size:12px; color:#d1a0b8; font-weight:700; }
+    .section-label { font-family: 'Fredoka One', cursive; font-size: 14px; color: #a855f7; text-transform: uppercase; letter-spacing: 2px; text-align: center; margin: 36px 0 8px; position: relative; z-index: 1; }
+    .preview-note { text-align:center; background: linear-gradient(135deg, #fff0fb, #f5f0ff); border: 2px solid #f9a8d4; border-radius: 20px; padding: 16px 24px; max-width: 500px; margin: 24px auto 40px; font-size: 14px; color: #7c3aed; font-weight: 700; position: relative; z-index: 1; }
   </style>
 </head>
-<body class="text-gray-900">
+<body>
 
-<header class="bg-white shadow-sm sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
-    <div onclick="handleLogoClick()" class="cursor-pointer select-none flex items-center gap-2 flex-shrink-0">
-      <img src="https://raw.githubusercontent.com/owencelestino19-arch/IG3-DUBAI-PASABUY/main/logo.jpg"
-           alt="IG3 Dubai Pasabuy" class="h-12 w-12 rounded-full object-cover"
-           onerror="this.style.display='none'">
-      <div>
-        <h1 class="text-base font-extrabold tracking-tight leading-tight" style="color:#22c55e;">IG3 Dubai Pasabuy</h1>
-        <p class="text-xs" style="color:#7c3aed;">DUBAI PASABUY</p>
+<div class="section-label">① Header</div>
+<header>
+  <div class="header-inner">
+    <div class="logo-area">
+      <div class="logo-circle">🎂</div>
+      <div class="logo-text">
+        <h1>IG3 Dubai Pasabuy</h1>
+        <p>DUBAI PASABUY</p>
       </div>
     </div>
-    <div class="flex items-center gap-2">
-      <button onclick="showTrackOrder()" class="bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold px-3 py-2 rounded-full flex items-center gap-1 text-sm transition border border-blue-200">
-        📍 <span class="hidden sm:inline">Track Order</span>
-      </button>
-      <button onclick="toggleCart()" class="relative bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-4 py-2 rounded-full flex items-center gap-2 text-sm transition">
-        🛒 Cart
-        <span id="cart-count" class="bg-red-500 text-white text-xs rounded-full px-1.5 hidden">0</span>
-      </button>
+    <div class="header-btns">
+      <button class="btn-track">📍 Track Order</button>
+      <button class="btn-cart">🛒 Cart <span class="cart-badge">3</span></button>
     </div>
   </div>
+  <div class="sprinkle-border"></div>
 </header>
 
-<div class="bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400 py-14 px-4 text-center">
-  <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-2">Snacks, sweets &amp; treats</h2>
-  <p class="text-white text-lg opacity-90 mb-1">straight from Dubai.</p>
-  <p class="text-white text-sm opacity-75">Pick your favorites, tell us where to send them.</p>
-</div>
-
-<div class="max-w-7xl mx-auto px-4 pt-6 pb-2">
-  <div id="category-pills" class="flex flex-wrap gap-2 justify-center"></div>
-</div>
-
-<div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
-  <span class="text-sm text-gray-500 font-medium">↑↓ Sort by</span>
-  <select id="sort-filter" onchange="applyFilters()"
-    class="border border-gray-300 rounded-full px-4 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400">
-    <option value="name">Featured</option>
-    <option value="price_asc">Price: Low → High</option>
-    <option value="price_desc">Price: High → Low</option>
-  </select>
-  <span id="product-count" class="text-sm text-gray-400 ml-auto"></span>
-</div>
-
-<main class="max-w-7xl mx-auto px-4 pb-20">
-  <div id="loading" class="text-center py-20 text-gray-400">
-    <div class="text-5xl mb-4">🛍️</div>
-    <p class="text-lg font-medium">Loading the shelves...</p>
+<div class="section-label" style="margin-top:32px;">② Hero Banner</div>
+<div class="hero">
+  <div class="floaties">
+    <div class="float-dot" style="width:12px;height:12px;background:#f9a8d4;top:15%;left:8%;animation-delay:0s;"></div>
+    <div class="float-dot" style="width:8px;height:8px;background:#a5f3fc;top:30%;left:20%;animation-delay:0.5s;"></div>
+    <div class="float-dot" style="width:10px;height:10px;background:#fde68a;top:20%;right:15%;animation-delay:1s;"></div>
+    <div class="float-dot" style="width:14px;height:14px;background:#c4b5fd;top:60%;right:10%;animation-delay:1.5s;"></div>
+    <div class="float-dot" style="width:9px;height:9px;background:#6ee7b7;top:70%;left:15%;animation-delay:2s;"></div>
+    <div class="float-dot" style="width:11px;height:11px;background:#fb923c;top:50%;left:50%;animation-delay:0.8s;"></div>
+    <div class="float-dot" style="width:7px;height:7px;background:#f472b6;top:10%;right:35%;animation-delay:1.3s;"></div>
+    <div class="float-dot" style="width:13px;height:13px;background:#818cf8;top:75%;right:30%;animation-delay:0.3s;"></div>
   </div>
-  <div id="error-msg" class="hidden text-center py-20">
-    <div class="text-5xl mb-4">⚠️</div>
-    <p class="text-red-500 font-medium">Could not load products.</p>
-    <p class="text-gray-500 text-sm mt-2">Make sure the Google Sheet is shared as <strong>Anyone with the link → Viewer</strong>.</p>
-  </div>
-  <div id="products-grid" class="hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
-</main>
-
-<div id="cart-overlay" class="hidden fixed inset-0 bg-black bg-opacity-40 z-40" onclick="toggleCart()"></div>
-
-<div id="cart-sidebar" class="fixed right-0 top-0 h-full w-full max-w-sm bg-white shadow-2xl z-50 transform translate-x-full flex flex-col">
-  <div class="p-4 border-b flex items-center justify-between">
-    <h3 class="text-lg font-bold">Your Order 🛒</h3>
-    <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-700 text-2xl leading-none">&times;</button>
-  </div>
-  <div id="cart-items" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
-  <div class="p-4 border-t bg-gray-50">
-    <div class="flex justify-between font-bold text-lg mb-3">
-      <span>Total</span>
-      <span id="cart-total" class="text-yellow-600">₱0</span>
-    </div>
-    <button onclick="showOrderForm()" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition text-sm">Place Order →</button>
+  <div class="hero-content">
+    <div class="hero-badge">🎉 Fresh from Dubai!</div>
+    <div class="hero-emojis">🎂 🍰 🍬 🍭 🎁</div>
+    <h2>Sweet treats & snacks<br><span>straight from Dubai!</span></h2>
+    <p>Pick your favorites — we'll pack them fresh & send with love 💕</p>
+    <a href="#" class="hero-cta">🛍️ Shop Now!</a>
   </div>
 </div>
 
-<div id="order-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-  <div class="bg-white rounded-2xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto shadow-2xl">
-    <h3 class="text-xl font-bold mb-5">Complete Your Order 📦</h3>
-    <form id="order-form" action="https://formspree.io/f/xykrlbbg" method="POST">
-      <input type="hidden" name="_subject" value="New Order — IG3 Dubai Pasabuy">
-      <input type="hidden" name="order_items" id="form-order-items">
-      <input type="hidden" name="order_total" id="form-order-total">
-      <input type="hidden" name="order_id" id="form-order-id">
-      <div class="space-y-4">
-        <div><label class="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
-          <input type="text" name="name" id="order-name" required placeholder="Juan dela Cruz" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></div>
-        <div><label class="block text-sm font-semibold text-gray-700 mb-1">Email *</label>
-          <input type="email" name="email" id="order-email" required placeholder="juan@email.com" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></div>
-        <div><label class="block text-sm font-semibold text-gray-700 mb-1">Phone / WhatsApp *</label>
-          <input type="tel" name="phone" id="order-phone" required placeholder="+63 912 345 6789" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></div>
-        <div><label class="block text-sm font-semibold text-gray-700 mb-1">Delivery Address *</label>
-          <textarea name="address" id="order-address" rows="3" required placeholder="House No., Street, Barangay, City, Province" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></textarea></div>
-        <div><label class="block text-sm font-semibold text-gray-700 mb-1">Notes (optional)</label>
-          <textarea name="notes" id="order-notes" rows="2" placeholder="Special instructions, preferred contact time, etc." class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></textarea></div>
-        <div class="bg-yellow-50 rounded-xl p-4 border border-yellow-200">
-          <p class="text-sm font-bold text-gray-800 mb-2">Order Summary</p>
-          <div id="modal-order-summary" class="text-sm text-gray-600 space-y-1"></div>
+<div class="section-label" style="margin-top:20px;">③ Category Pills</div>
+<div class="cat-section section">
+  <div class="cat-pills">
+    <button class="pill active">🌟 All</button>
+    <button class="pill">🍫 Chocolate</button>
+    <button class="pill">🍪 Biscuits</button>
+    <button class="pill">🧃 Drinks</button>
+    <button class="pill">🍬 Candies</button>
+    <button class="pill">🥜 Nuts</button>
+    <button class="pill">🧴 Personal Care</button>
+  </div>
+</div>
+
+<div class="section-label">④ Product Cards</div>
+<div class="products-section">
+  <div class="products-grid">
+    <div class="product-card">
+      <div class="card-sprinkle-top sp1"></div>
+      <div class="card-img">🍫</div>
+      <div class="card-body">
+        <div class="card-cat">Chocolate</div>
+        <div class="card-name">Kinder Bueno White 2 Pack</div>
+        <div class="card-footer">
+          <div class="card-price">₱189</div>
+          <button class="btn-add">+ Add</button>
         </div>
       </div>
-      <div class="flex gap-3 mt-6">
-        <button type="button" onclick="closeOrderForm()" class="flex-1 border border-gray-300 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-50 transition text-sm">Cancel</button>
-        <button type="submit" id="submit-btn" class="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition text-sm">Send Order ✓</button>
-      </div>
-    </form>
-    <div id="order-success" class="hidden text-center py-6">
-      <div class="text-5xl mb-3">🎉</div>
-      <h4 class="text-xl font-bold text-gray-800 mb-2">Order Sent!</h4>
-      <p class="text-gray-500 text-sm mb-4">We'll contact you soon to confirm your order.</p>
-      <div class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-4 mb-4">
-        <p class="text-xs font-bold text-blue-500 uppercase tracking-wide mb-1">Your Order Tracking ID</p>
-        <p id="success-order-id" class="text-2xl font-extrabold text-blue-800 tracking-widest mb-3"></p>
-        <button onclick="copyOrderId()" id="copy-id-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2 rounded-xl text-sm transition">📋 Copy Order ID</button>
-        <p class="text-xs text-blue-500 mt-2">Save this ID to track your order status anytime</p>
-      </div>
-      <button onclick="showTrackOrder()" class="w-full border-2 border-blue-200 text-blue-700 font-bold py-2.5 rounded-xl hover:bg-blue-50 transition text-sm mb-3">📍 Track My Order</button>
-      <button onclick="closeOrderForm()" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-2.5 rounded-xl transition text-sm">Continue Shopping</button>
     </div>
-  </div>
-</div>
-
-<div id="track-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-[150] flex items-center justify-center p-4">
-  <div class="bg-white rounded-2xl max-w-lg w-full p-6 max-h-[92vh] overflow-y-auto shadow-2xl">
-    <div class="flex items-center justify-between mb-5">
-      <h3 class="text-xl font-bold">📍 Track Your Order</h3>
-      <button onclick="closeTrackOrder()" class="text-gray-400 hover:text-gray-700 text-2xl leading-none">&times;</button>
-    </div>
-    <p class="text-sm text-gray-500 mb-4">Enter the Order ID you received when you placed your order.</p>
-    <div class="flex gap-2 mb-2">
-      <input type="text" id="track-input" placeholder="e.g. IG3-A1B2C3D4"
-        class="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-sm font-mono font-bold uppercase focus:outline-none focus:ring-2 focus:ring-blue-400"
-        onkeydown="if(event.key==='Enter') lookupOrder()">
-      <button onclick="lookupOrder()" id="track-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-3 rounded-xl text-sm transition whitespace-nowrap">Search</button>
-    </div>
-    <p id="track-error" class="hidden text-red-500 text-sm mb-3"></p>
-    <div id="track-result" class="hidden mt-5">
-      <div class="bg-gray-50 rounded-2xl p-4 mb-4">
-        <div id="track-timeline" class="track-timeline mb-2"></div>
-      </div>
-      <div class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
-        <div class="flex items-start justify-between mb-3">
-          <div>
-            <p id="tr-name" class="font-bold text-gray-900 text-base"></p>
-            <p id="tr-id" class="text-xs text-gray-400 font-mono"></p>
-            <p id="tr-date" class="text-xs text-gray-400"></p>
-          </div>
-          <div class="text-right">
-            <p id="tr-total" class="text-lg font-extrabold text-yellow-600"></p>
-            <p id="tr-status-badge" class="text-xs font-bold px-2 py-0.5 rounded-full mt-1 inline-block"></p>
+    <div class="product-card">
+      <div class="card-sprinkle-top sp2"></div>
+      <div class="card-img">🍪</div>
+      <div class="card-body">
+        <div class="card-cat">Biscuits</div>
+        <div class="card-name">Lotus Biscoff Cookies 250g</div>
+        <div class="card-footer">
+          <div class="card-price">₱320</div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#a855f7);color:#fff;border:none;font-size:16px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;">−</button>
+            <span style="font-family:'Fredoka One',cursive;font-size:16px;color:#7c3aed;width:20px;text-align:center;">2</span>
+            <button style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#a855f7);color:#fff;border:none;font-size:16px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;">+</button>
           </div>
         </div>
-        <div class="text-sm text-gray-600 space-y-1 mb-3 border-t pt-3">
-          <p id="tr-phone"></p><p id="tr-address"></p><p id="tr-notes" class="hidden"></p>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="card-sprinkle-top sp3"></div>
+      <div class="card-img">🧃</div>
+      <div class="card-body">
+        <div class="card-cat">Drinks</div>
+        <div class="card-name">Milo Activ-Go 3-in-1 20 sachets</div>
+        <div class="card-footer">
+          <div class="card-price">₱693</div>
+          <button class="btn-add">+ Add</button>
         </div>
-        <div class="border-t pt-3">
-          <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">Items Ordered</p>
-          <div id="tr-items" class="space-y-1 text-sm"></div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="card-sprinkle-top sp4"></div>
+      <div class="card-img">🍬</div>
+      <div class="card-body">
+        <div class="card-cat">Candies</div>
+        <div class="card-name">Haribo Gold Bears Gummies 200g</div>
+        <div class="card-footer">
+          <div class="card-price">₱245</div>
+          <button class="btn-add">+ Add</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="card-sprinkle-top sp5"></div>
+      <div class="card-img">✨</div>
+      <div class="card-body">
+        <div class="card-cat">Special</div>
+        <div class="card-name">Mystery Dubai Gift Box</div>
+        <div class="card-footer">
+          <div style="font-size:12px;color:#c084fc;font-weight:800;">Coming soon!</div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div id="edit-product-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-[200] flex items-center justify-center p-4">
-  <div class="bg-white rounded-2xl max-w-lg w-full p-6 max-h-[92vh] overflow-y-auto shadow-2xl">
-    <div class="flex items-center justify-between mb-5">
-      <h3 class="text-xl font-bold">✏️ Edit Product</h3>
-      <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-700 text-2xl leading-none">&times;</button>
+<div class="section-label">⑤ Order Success & Tracking ID</div>
+<div style="position:relative;z-index:1;">
+  <div class="tracking-box">
+    <div class="confetti-emoji">🎉</div>
+    <h3>Order Sent!</h3>
+    <p>We'll contact you soon to confirm your order 💕</p>
+    <div class="order-id-display">
+      <div class="order-id-label">Your Order Tracking ID</div>
+      <div class="order-id-code">IG3-A8F2K9</div>
     </div>
-    <div class="space-y-4">
-      <input type="hidden" id="edit-product-id">
-      <div><label class="block text-sm font-semibold text-gray-700 mb-1">Product Name *</label>
-        <input type="text" id="edit-product-name" placeholder="e.g. Hillway Karak Chai 20 Sachets" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></div>
-      <div><label class="block text-sm font-semibold text-gray-700 mb-1">Category</label>
-        <select id="edit-product-category" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"><option value="">— No category —</option></select></div>
-      <div><label class="block text-sm font-semibold text-gray-700 mb-1">Price (₱)</label>
-        <input type="number" id="edit-product-price" placeholder="0.00" min="0" step="0.01" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></div>
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-1">Image</label>
-        <div class="flex gap-2 items-stretch">
-          <input type="text" id="edit-product-img" placeholder="https://... paste image URL here" class="flex-1 border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" oninput="onEditUrlInput()">
-          <label class="upload-btn" title="Upload image from your device">📁 Desktop<input type="file" id="edit-img-file" accept="image/*" class="hidden" onchange="handleEditImgUpload(this)"></label>
-        </div>
-        <div id="edit-img-preview" class="mt-3 hidden flex items-center gap-3">
-          <img id="edit-img-preview-img" class="h-24 w-24 object-cover rounded-xl border border-gray-200 flex-shrink-0" onerror="document.getElementById('edit-img-preview').classList.add('hidden')">
-          <div><p id="edit-img-source-label" class="text-xs text-gray-500 mb-1"></p>
-            <button type="button" onclick="clearEditImg()" class="text-xs text-red-500 hover:text-red-700 font-semibold border border-red-200 rounded-lg px-3 py-1 hover:bg-red-50 transition">✕ Remove image</button></div>
-        </div>
-        <p class="text-xs text-gray-400 mt-1.5">Paste a URL <em>or</em> click <strong>📁 Desktop</strong> to upload from your computer.</p>
-      </div>
-      <div><label class="block text-sm font-semibold text-gray-700 mb-1">Description</label>
-        <textarea id="edit-product-description" rows="3" placeholder="e.g. Rich and creamy chai mix, 20+4 sachets per pack" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"></textarea></div>
+    <button class="btn-copy">📋 Copy Order ID</button>
+    <p style="font-size:11px;color:#c084fc;margin-top:10px;font-weight:700;">Save this to track your order anytime!</p>
+  </div>
+  <div class="timeline-preview">
+    <div class="tl-title">📍 Order Status</div>
+    <div class="timeline">
+      <div class="tl-step done"><div class="tl-dot">⏳</div><div class="tl-label">Pending</div></div>
+      <div class="tl-step done"><div class="tl-dot">✅</div><div class="tl-label">Confirmed</div></div>
+      <div class="tl-step active"><div class="tl-dot">📦</div><div class="tl-label">Packed</div></div>
+      <div class="tl-step"><div class="tl-dot">🚚</div><div class="tl-label">Shipped</div></div>
+      <div class="tl-step"><div class="tl-dot">🎉</div><div class="tl-label">Delivered</div></div>
     </div>
-    <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 mt-4 text-xs text-blue-700"><strong>Note:</strong> Edits are saved in your browser. To reset, use the ↺ button in the product list.</div>
-    <div class="flex gap-3 mt-5">
-      <button type="button" onclick="closeEditModal()" class="flex-1 border border-gray-300 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-50 transition text-sm">Cancel</button>
-      <button type="button" onclick="saveProductEdit()" class="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition text-sm">Save Changes ✓</button>
-    </div>
+    <p style="text-align:center;font-size:13px;color:#be185d;font-weight:700;margin-top:16px;">Your package is being packed with love! 💕</p>
   </div>
 </div>
 
-<div id="lightbox" onclick="lbBgClick(event)">
-  <button id="lb-close" onclick="closeLightbox()">×</button>
-  <div id="lb-img-wrap"><img id="lb-img" src="" alt=""></div>
-  <div id="lb-controls">
-    <button onclick="lbZoom(-1)">−</button>
-    <span id="lb-zoom-label">100%</span>
-    <button onclick="lbZoom(1)">+</button>
-    <button onclick="lbReset()" style="font-size:15px;width:auto;padding:0 14px;border-radius:20px;">Reset</button>
-  </div>
+<div class="section-label">⑥ Sales Report Cards (Admin)</div>
+<div class="report-preview">
+  <div class="rcard r1"><div class="rcard-label">Total Revenue</div><div class="rcard-value">₱48,250</div><div class="rcard-sub">All time</div></div>
+  <div class="rcard r2"><div class="rcard-label">Total Orders</div><div class="rcard-value">127</div><div class="rcard-sub">Active / completed</div></div>
+  <div class="rcard r3"><div class="rcard-label">Avg Order</div><div class="rcard-value">₱380</div><div class="rcard-sub">Per order</div></div>
+  <div class="rcard r4"><div class="rcard-label">This Month</div><div class="rcard-value">₱12,840</div><div class="rcard-sub">38 orders</div></div>
 </div>
 
-<div id="admin-panel" class="hidden fixed inset-0 z-[100] bg-gray-100 overflow-y-auto">
-  <div id="admin-login" class="flex items-center justify-center min-h-screen p-4">
-    <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm">
-      <div class="text-center mb-6"><div class="text-4xl mb-2">🛠</div><h2 class="text-2xl font-extrabold">Admin Panel</h2><p class="text-gray-400 text-sm">IG3 Dubai Pasabuy</p></div>
-      <div class="space-y-3">
-        <input type="password" id="admin-pass-input" placeholder="Enter password" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" onkeydown="if(event.key==='Enter') adminLogin()">
-        <p id="admin-login-error" class="hidden text-red-500 text-sm text-center">Incorrect password. Try again.</p>
-        <button onclick="adminLogin()" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition">Login</button>
-        <button onclick="closeAdmin()" class="w-full border border-gray-300 text-gray-600 py-3 rounded-xl hover:bg-gray-50 transition text-sm">← Back to Shop</button>
-      </div>
-    </div>
-  </div>
-  <div id="admin-dashboard" class="hidden">
-    <div class="bg-white shadow-sm sticky top-0 z-10">
-      <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-        <h2 class="font-extrabold text-base">🛠 Admin Panel — IG3 Dubai Pasabuy</h2>
-        <button onclick="closeAdmin()" class="text-sm font-semibold text-gray-500 hover:text-gray-900 transition">✕ Exit Admin</button>
-      </div>
-      <div class="max-w-5xl mx-auto px-4 flex gap-6 border-t overflow-x-auto">
-        <button onclick="showAdminTab('products')" id="tab-products" class="admin-tab py-3 text-sm font-semibold text-gray-500 whitespace-nowrap active">📦 Products</button>
-        <button onclick="showAdminTab('categories')" id="tab-categories" class="admin-tab py-3 text-sm font-semibold text-gray-500 whitespace-nowrap">🏷 Categories</button>
-        <button onclick="showAdminTab('orders')" id="tab-orders" class="admin-tab py-3 text-sm font-semibold text-gray-500 whitespace-nowrap">📋 Orders</button>
-        <button onclick="showAdminTab('reports')" id="tab-reports" class="admin-tab py-3 text-sm font-semibold text-gray-500 whitespace-nowrap">📊 Reports</button>
-      </div>
-    </div>
-    <div class="max-w-5xl mx-auto px-4 py-6">
-      <div id="admin-products-tab">
-        <div class="bg-white rounded-2xl shadow-sm p-5 mb-5">
-          <h3 class="font-bold text-base mb-4">+ Add New Product</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <input type="text" id="new-product-name" placeholder="Product name *" class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
-            <select id="new-product-category" class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"><option value="">Select category</option></select>
-            <input type="number" id="new-product-price" placeholder="Price in ₱ *" min="0" step="0.01" class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
-            <div class="sm:col-span-1 flex flex-col gap-1">
-              <div class="flex gap-2 items-stretch">
-                <input type="text" id="new-product-img" placeholder="Image URL (optional)" class="flex-1 border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" oninput="if(pendingNewImg){pendingNewImg=null;document.getElementById('new-img-preview').classList.add('hidden');}">
-                <label class="upload-btn">📁<input type="file" id="new-img-file" accept="image/*" class="hidden" onchange="handleNewImgUpload(this)"></label>
-              </div>
-              <div id="new-img-preview" class="hidden flex items-center gap-2 mt-1">
-                <img id="new-img-preview-img" class="h-14 w-14 object-cover rounded-xl border border-gray-200 flex-shrink-0">
-                <button type="button" onclick="clearNewImg()" class="text-xs text-red-500 hover:text-red-700 font-semibold">✕ Remove</button>
-              </div>
-            </div>
-            <input type="text" id="new-product-desc" placeholder="Description (optional)" class="sm:col-span-2 border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
-          </div>
-          <div class="mt-4 flex items-center gap-3 flex-wrap">
-            <button id="add-product-btn" onclick="addLocalProduct()" class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-2.5 rounded-xl text-sm transition">+ Add Product</button>
-            <span id="add-product-status" class="text-sm font-semibold"></span>
-          </div>
-        </div>
-        <div id="admin-product-list"></div>
-      </div>
-      <div id="admin-categories-tab" class="hidden">
-        <div class="bg-white rounded-2xl shadow-sm p-5 mb-5">
-          <h3 class="font-bold text-base mb-4">+ Add Category</h3>
-          <div class="flex gap-3">
-            <input type="text" id="new-category-name" placeholder="Category name *" class="flex-1 border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" onkeydown="if(event.key==='Enter') addCategory()">
-            <button onclick="addCategory()" class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-2.5 rounded-xl text-sm transition whitespace-nowrap">+ Add</button>
-          </div>
-        </div>
-        <div id="admin-category-list"></div>
-      </div>
-      <div id="admin-orders-tab" class="hidden">
-        <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
-          <h3 class="font-bold text-base" id="orders-count-label">Orders</h3>
-          <div class="flex gap-2 flex-wrap">
-            <button onclick="loadAndRenderOrders()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold px-4 py-2 rounded-xl text-sm transition">🔄 Refresh</button>
-            <button onclick="printAllOrders()" class="bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold px-4 py-2 rounded-xl text-sm transition">🖨 Print All</button>
-          </div>
-        </div>
-        <div class="flex gap-2 mb-4 flex-wrap">
-          <select id="order-status-filter" onchange="renderAdminOrders()" class="border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
-            <option value="">All Statuses</option>
-            <option value="Pending">⏳ Pending</option>
-            <option value="Confirmed">✅ Confirmed</option>
-            <option value="Packed">📦 Packed</option>
-            <option value="Shipped">🚚 Shipped</option>
-            <option value="Delivered">🎉 Delivered</option>
-            <option value="Cancelled">❌ Cancelled</option>
-          </select>
-        </div>
-        <div id="admin-order-list"></div>
-      </div>
-      <div id="admin-reports-tab" class="hidden"><div id="reports-content"></div></div>
-    </div>
-  </div>
+<div class="preview-note">
+  🎨 This is a <strong>PREVIEW ONLY</strong> — no changes to your live site yet!<br>
+  Say <strong>"Yes, apply this theme!"</strong> and I'll update the full site 💕
 </div>
 
-<div id="print-area" class="hidden"></div>
-
-<script>
-const SHEET_ID        = '1gjInVmrlRa72FV1lPYFEy40N4tEfAZeOFWWQBWKQhok';
-const SHEET_NAME      = 'Products';
-const ADMIN_PW        = 'Zakizayayeye2026';
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzu4LVN0CFiTeYssk1P-1JwtsBgy-k_zB6kGKMOIEkEeobNrp4ZXmvaOpH6OHdIVnTDNw/exec';
-const CARD_BG         = ['#fce4ec','#e8f5e9','#fffde7','#fff3e0','#f3e5f5','#e3f2fd','#fef9c3','#dcfce7'];
-const ORDER_STATUSES  = ['Pending','Confirmed','Packed','Shipped','Delivered'];
-const STATUS_ICONS    = {Pending:'⏳',Confirmed:'✅',Packed:'📦',Shipped:'🚚',Delivered:'🎉',Cancelled:'❌'};
-
-let sheetProducts=[], sheetCategories=[], sheetOrders=[];
-let localProducts    = JSON.parse(localStorage.getItem('ig3-local-products')    || '[]');
-let localCategories  = JSON.parse(localStorage.getItem('ig3-local-categories')  || '[]');
-let productOverrides = JSON.parse(localStorage.getItem('ig3-product-overrides') || '{}');
-let imageStorage     = JSON.parse(localStorage.getItem('ig3-image-storage')     || '{}');
-let orders           = JSON.parse(localStorage.getItem('ig3-orders')            || '[]');
-let cart             = JSON.parse(localStorage.getItem('ig3-cart')              || '[]');
-let activeCategory='', logoClicks=0, logoTimer=null, lastOrderId=null;
-let pendingEditImg=null, pendingEditImgNew=false, pendingNewImg=null;
-
-function escH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function escA(s){return String(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');}
-function getImg(p){
-  if(imageStorage[p.product_id]) return imageStorage[p.product_id];
-  const k='byname_'+(p.name||'').toLowerCase().trim();
-  if(imageStorage[k]) return imageStorage[k];
-  return p.image_url||p.image||p.img||p.photo||p.thumbnail||p.picture||'';
-}
-function parsePrice(v){if(v===null||v===undefined||v==='')return 0;var s=String(v).replace(/[₱,\s]/g,'').trim();var n=parseFloat(s);return isNaN(n)?0:n;}
-function fmtPrice(n){return '₱'+Number(n).toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function saveOverrides(){localStorage.setItem('ig3-product-overrides',JSON.stringify(productOverrides));}
-function saveImageStorage(){localStorage.setItem('ig3-image-storage',JSON.stringify(imageStorage));}
-function genOrderId(){const c='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';let s='';for(let i=0;i<8;i++)s+=c[Math.floor(Math.random()*c.length)];return 'IG3-'+s;}
-function statusBadgeClass(s){return {Pending:'badge-pending',Confirmed:'badge-confirmed',Packed:'badge-packed',Shipped:'badge-shipped',Delivered:'badge-delivered',Cancelled:'badge-cancelled'}[s]||'badge-pending';}
-function safeParseJSON(str,fb){try{return JSON.parse(str||fb);}catch{return typeof fb==='string'?JSON.parse(fb):fb;}}
-
-function compressImage(file,cb){
-  const r=new FileReader();
-  r.onload=function(e){
-    const img=new Image();
-    img.onload=function(){
-      const c=document.createElement('canvas');const mw=800;let w=img.width,h=img.height;
-      if(w>mw){h=Math.round(h*mw/w);w=mw;}c.width=w;c.height=h;
-      c.getContext('2d').drawImage(img,0,0,w,h);cb(c.toDataURL('image/jpeg',0.75));
-    };img.src=e.target.result;
-  };r.readAsDataURL(file);
-}
-function handleEditImgUpload(input){const f=input.files[0];if(!f)return;compressImage(f,function(b64){pendingEditImg=b64;pendingEditImgNew=true;document.getElementById('edit-product-img').value='';document.getElementById('edit-img-preview-img').src=b64;document.getElementById('edit-img-source-label').textContent='📁 '+f.name;document.getElementById('edit-img-preview').classList.remove('hidden');});}
-function handleNewImgUpload(input){const f=input.files[0];if(!f)return;compressImage(f,function(b64){pendingNewImg=b64;document.getElementById('new-product-img').value='';document.getElementById('new-img-preview-img').src=b64;document.getElementById('new-img-preview').classList.remove('hidden');});}
-function onEditUrlInput(){if(pendingEditImgNew){pendingEditImg=null;pendingEditImgNew=false;}const url=document.getElementById('edit-product-img').value.trim();const prev=document.getElementById('edit-img-preview');if(url){document.getElementById('edit-img-preview-img').src=url;document.getElementById('edit-img-source-label').textContent='🔗 URL';prev.classList.remove('hidden');}else prev.classList.add('hidden');}
-function clearEditImg(){pendingEditImg=null;pendingEditImgNew=true;document.getElementById('edit-product-img').value='';document.getElementById('edit-img-file').value='';document.getElementById('edit-img-preview').classList.add('hidden');}
-function clearNewImg(){pendingNewImg=null;document.getElementById('new-product-img').value='';document.getElementById('new-img-file').value='';document.getElementById('new-img-preview').classList.add('hidden');}
-
-function getAllProducts(includeHidden=false){
-  const sheet=sheetProducts.map(p=>{const ov=productOverrides[p.product_id]||{};return{...p,name:ov.name!==undefined?ov.name:p.name,category:ov.category!==undefined?ov.category:(p.category||''),final_price_php:ov.price!=null?String(ov.price):(p.final_price_php||''),image_url:ov.imageUrl!==undefined?ov.imageUrl:(p.image_url||''),description:ov.description!==undefined?ov.description:(p.description||''),_hidden:!!ov._hidden,_edited:Object.keys(ov).filter(k=>k!=='_hidden').length>0};});
-  const local=localProducts.map(p=>{const ov=productOverrides[p.id]||{};return{product_id:p.id,name:ov.name!==undefined?ov.name:p.name,category:ov.category!==undefined?ov.category:(p.category||''),final_price_php:ov.price!=null?String(ov.price):String(p.price||''),image_url:ov.imageUrl!==undefined?ov.imageUrl:(p.imageUrl||''),description:ov.description!==undefined?ov.description:(p.description||''),_hidden:!!ov._hidden,_local:true};});
-  const all=[...sheet,...local];return includeHidden?all:all.filter(p=>!p._hidden);
-}
-function getAllCategories(){const fp=[...new Set(getAllProducts().map(p=>p.category).filter(Boolean))];const fs=sheetCategories.filter(c=>!fp.includes(c));const l=localCategories.filter(c=>!fp.includes(c)&&!sheetCategories.includes(c));return[...new Set([...fp,...fs,...l])].sort();}
-
-async function loadSheetOrders(){try{const r=await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Orders`);if(!r.ok){sheetOrders=[];return;}const csv=await r.text();sheetOrders=parseCSV(csv).filter(o=>o.order_id&&o.order_id.trim());}catch(e){console.warn('Orders load error:',e);sheetOrders=[];}}
-function getAllOrders(){const fs=sheetOrders.map(o=>({id:o.order_id||'',date:o.date||'',name:o.name||'',email:o.email||'',phone:o.phone||'',address:o.address||'',notes:o.notes||'',items:safeParseJSON(o.items_json,'[]'),total:parseFloat(String(o.total||'0').replace(/[₱,\s]/g,''))||0,status:o.status||'Pending',_fromSheet:true}));const sid=new Set(fs.map(o=>o.id));const lo=orders.filter(o=>!sid.has(o.id));return[...fs,...lo].sort((a,b)=>String(b.id).localeCompare(String(a.id)));}
-
-async function loadCategories(){try{const r=await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Categories`);if(!r.ok){sheetCategories=[];return;}const csv=await r.text();const lines=csv.trim().split('\n');sheetCategories=lines.length<2?[]:lines.slice(1).map(l=>l.replace(/^"|"$/g,'').trim()).filter(Boolean);}catch(e){sheetCategories=[];}}
-async function loadProducts(){try{await loadCategories();const r=await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`);if(!r.ok)throw new Error('HTTP '+r.status);const csv=await r.text();sheetProducts=parseCSV(csv).filter(p=>p.name&&p.name.trim());renderCategoryPills();applyFilters();document.getElementById('loading').classList.add('hidden');document.getElementById('products-grid').classList.remove('hidden');}catch(e){console.error(e);document.getElementById('loading').classList.add('hidden');document.getElementById('error-msg').classList.remove('hidden');}}
-function parseCSV(text){const lines=text.trim().split('\n');if(lines.length<2)return[];const hdr=parseCSVLine(lines[0]).map(h=>h.trim().replace(/^"|"$/g,'').toLowerCase().replace(/\s+/g,'_'));return lines.slice(1).filter(l=>l.trim()).map(line=>{const vals=parseCSVLine(line),obj={};hdr.forEach((h,i)=>{obj[h]=(vals[i]||'').replace(/^"|"$/g,'').trim();});return obj;});}
-function parseCSVLine(line){const r=[];let c='',q=false;for(let i=0;i<line.length;i++){if(line[i]==='"'){if(q&&line[i+1]==='"'){c+='"';i++;}else q=!q;}else if(line[i]===','&&!q){r.push(c);c='';}else c+=line[i];}r.push(c);return r;}
-
-function renderCategoryPills(){const cats=getAllCategories();const el=document.getElementById('category-pills');el.innerHTML=`<button class="cat-pill border border-gray-400 rounded-full px-5 py-1.5 text-sm font-semibold bg-white ${activeCategory===''?'active':''}" onclick="setCategory('')">All</button>`+cats.map(c=>`<button class="cat-pill border border-gray-400 rounded-full px-5 py-1.5 text-sm font-semibold bg-white ${activeCategory===c?'active':''}" onclick="setCategory('${escA(c)}')">${escH(c)}</button>`).join('');}
-function setCategory(cat){activeCategory=cat;renderCategoryPills();applyFilters();}
-function applyFilters(){const sort=document.getElementById('sort-filter').value;let list=activeCategory?getAllProducts().filter(p=>p.category===activeCategory):getAllProducts();if(sort==='price_asc')list.sort((a,b)=>parsePrice(a.final_price_php)-parsePrice(b.final_price_php));else if(sort==='price_desc')list.sort((a,b)=>parsePrice(b.final_price_php)-parsePrice(a.final_price_php));else list.sort((a,b)=>(a.name||'').localeCompare(b.name||''));renderProducts(list);document.getElementById('product-count').textContent=list.length+' items';}
-function renderProducts(list){const grid=document.getElementById('products-grid');if(!list.length){grid.innerHTML='<div class="col-span-full text-center py-16 text-gray-400"><div class="text-4xl mb-3">🔍</div><p>No products found</p></div>';return;}grid.innerHTML=list.map((p,i)=>{const price=parsePrice(p.final_price_php);const img=getImg(p);const bg=CARD_BG[i%CARD_BG.length];const desc=p.description||'';return `<div class="product-card rounded-2xl overflow-hidden flex flex-col" style="background:${bg}"><div class="prod-img-wrap"${img?` onclick="openLightbox('${escA(img)}','${escA(p.name)}')"`:" style='cursor:default'"}>${img?`<img src="${escH(img)}" alt="${escH(p.name)}" loading="lazy" onerror="handleImgError(this)">`:noImgHtml(160)}</div><div class="p-3 flex flex-col flex-1">${p.category?`<p class="text-xs text-gray-500 mb-0.5">${escH(p.category)}</p>`:''}<p class="text-sm font-bold text-gray-900 leading-snug line-clamp-2">${escH(p.name)}</p>${desc?`<p class="text-xs text-gray-500 mt-1 leading-snug line-clamp-2">${escH(desc)}</p>`:''}<div class="mt-3 flex items-center justify-between gap-1"><span class="text-base font-extrabold text-gray-900">${price>0?fmtPrice(price):'<span class="text-gray-400 text-xs font-normal">TBA</span>'}</span><div id="card-act-${p.product_id}">${price>0?getCardActionHtml(p.product_id,price):''}</div></div></div></div>`;}).join('');}
-
-function getCardActionHtml(id,price){if(price<=0)return'';const ci=cart.find(c=>c.id===id);const qty=ci?ci.qty:0;if(qty===0)return`<button onclick="addToCart('${escA(id)}')" class="bg-gray-900 hover:bg-gray-700 text-white text-xs font-bold px-3 py-1.5 rounded-full transition">+ Add</button>`;return`<div class="flex items-center gap-1"><button onclick="cardQtyChange('${escA(id)}',-1)" class="w-7 h-7 rounded-full bg-gray-900 hover:bg-red-600 text-white text-base font-bold flex items-center justify-center transition">−</button><span class="text-sm font-extrabold w-6 text-center">${qty}</span><button onclick="cardQtyChange('${escA(id)}',1)" class="w-7 h-7 rounded-full bg-gray-900 hover:bg-gray-700 text-white text-base font-bold flex items-center justify-center transition">+</button></div>`;}
-function refreshCardAction(id){const el=document.getElementById('card-act-'+id);if(!el)return;const p=getAllProducts().find(x=>x.product_id===id);if(!p)return;el.innerHTML=getCardActionHtml(id,parsePrice(p.final_price_php));}
-function cardQtyChange(id,delta){const it=cart.find(c=>c.id===id);if(!it){if(delta>0)addToCart(id);return;}it.qty+=delta;if(it.qty<=0)cart=cart.filter(c=>c.id!==id);saveCart();updateCartBadge();refreshCardAction(id);if(!document.getElementById('cart-sidebar').classList.contains('translate-x-full'))renderCartItems();}
-function addToCart(id){const p=getAllProducts().find(x=>x.product_id===id);if(!p)return;const ex=cart.find(c=>c.id===id);if(ex)ex.qty++;else cart.push({id,name:p.name,price:parsePrice(p.final_price_php),qty:1});saveCart();updateCartBadge();refreshCardAction(id);}
-function removeFromCart(id){cart=cart.filter(c=>c.id!==id);saveCart();updateCartBadge();renderCartItems();refreshCardAction(id);}
-function changeQty(id,d){const it=cart.find(c=>c.id===id);if(!it)return;it.qty+=d;if(it.qty<=0)cart=cart.filter(c=>c.id!==id);saveCart();updateCartBadge();renderCartItems();refreshCardAction(id);}
-function saveCart(){localStorage.setItem('ig3-cart',JSON.stringify(cart));}
-function updateCartBadge(){const count=cart.reduce((s,c)=>s+c.qty,0);const total=cart.reduce((s,c)=>s+c.price*c.qty,0);const b=document.getElementById('cart-count');b.textContent=count;b.classList.toggle('hidden',count===0);document.getElementById('cart-total').textContent=fmtPrice(total);}
-function renderCartItems(){const el=document.getElementById('cart-items');if(!cart.length){el.innerHTML='<div class="text-center py-10 text-gray-400"><div class="text-4xl mb-3">🛒</div><p>Your cart is empty</p></div>';return;}el.innerHTML=cart.map(c=>`<div class="flex items-start gap-3 bg-gray-50 rounded-xl p-3"><div class="flex-1 min-w-0"><p class="text-xs font-semibold text-gray-800 leading-snug">${escH(c.name)}</p><p class="text-sm font-bold text-yellow-600 mt-0.5">${fmtPrice(c.price)}</p></div><div class="flex items-center gap-1 flex-shrink-0"><button onclick="changeQty('${escA(c.id)}',-1)" class="w-6 h-6 rounded-full bg-gray-200 hover:bg-gray-300 text-sm font-bold flex items-center justify-center">−</button><span class="text-sm font-bold w-5 text-center">${c.qty}</span><button onclick="changeQty('${escA(c.id)}',1)" class="w-6 h-6 rounded-full bg-gray-200 hover:bg-gray-300 text-sm font-bold flex items-center justify-center">+</button><button onclick="removeFromCart('${escA(c.id)}')" class="text-red-400 hover:text-red-600 ml-1 text-xl leading-none">&times;</button></div></div>`).join('');}
-function toggleCart(){const s=document.getElementById('cart-sidebar'),o=document.getElementById('cart-overlay');const open=!s.classList.contains('translate-x-full');if(open){s.classList.add('translate-x-full');o.classList.add('hidden');}else{renderCartItems();s.classList.remove('translate-x-full');o.classList.remove('hidden');}}
-
-function showOrderForm(){if(!cart.length)return;const total=cart.reduce((s,c)=>s+c.price*c.qty,0);const oid=genOrderId();document.getElementById('form-order-id').value=oid;document.getElementById('form-order-items').value=cart.map(c=>`${c.name} x${c.qty} = ${fmtPrice(c.price*c.qty)}`).join('\n');document.getElementById('form-order-total').value=fmtPrice(total);document.getElementById('modal-order-summary').innerHTML=cart.map(c=>`<div class="flex justify-between"><span class="flex-1 mr-2 truncate">${escH(c.name)} ×${c.qty}</span><span class="font-semibold">${fmtPrice(c.price*c.qty)}</span></div>`).join('')+`<div class="flex justify-between font-bold border-t border-yellow-300 mt-2 pt-2 text-gray-800"><span>Total</span><span>${fmtPrice(total)}</span></div>`;document.getElementById('order-form').classList.remove('hidden');document.getElementById('order-success').classList.add('hidden');document.getElementById('order-modal').classList.remove('hidden');}
-function closeOrderForm(){document.getElementById('order-modal').classList.add('hidden');}
-function copyOrderId(){const id=document.getElementById('success-order-id').textContent;navigator.clipboard.writeText(id).then(()=>{const b=document.getElementById('copy-id-btn');b.textContent='✓ Copied!';setTimeout(()=>b.textContent='📋 Copy Order ID',2000);}).catch(()=>{const ta=document.createElement('textarea');ta.value=id;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);const b=document.getElementById('copy-id-btn');b.textContent='✓ Copied!';setTimeout(()=>b.textContent='📋 Copy Order ID',2000);});}
-
-document.getElementById('order-form').addEventListener('submit',async function(e){
-  e.preventDefault();
-  const btn=document.getElementById('submit-btn');btn.textContent='Sending...';btn.disabled=true;
-  const oid=document.getElementById('form-order-id').value||genOrderId();
-  const oname=document.getElementById('order-name').value,oemail=document.getElementById('order-email').value,ophone=document.getElementById('order-phone').value,oaddr=document.getElementById('order-address').value,onotes=document.getElementById('order-notes').value;
-  const ototal=cart.reduce((s,c)=>s+c.price*c.qty,0);
-  const odate=new Date().toLocaleString('en-PH',{timeZone:'Asia/Manila',dateStyle:'medium',timeStyle:'short'});
-  const oitems=[...cart];
-  try{
-    const fd=new FormData(this);const res=await fetch(this.action,{method:'POST',body:fd,headers:{Accept:'application/json'}});
-    if(res.ok){
-      fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'save_order',order_id:oid,date:odate,name:oname,email:oemail,phone:ophone,address:oaddr,notes:onotes,items_json:JSON.stringify(oitems),total:String(ototal),status:'Pending'})}).catch(e=>console.warn(e));
-      orders.unshift({id:oid,date:odate,name:oname,email:oemail,phone:ophone,address:oaddr,notes:onotes,items:oitems,total:ototal,status:'Pending'});
-      localStorage.setItem('ig3-orders',JSON.stringify(orders));
-      lastOrderId=oid;cart=[];saveCart();updateCartBadge();
-      document.getElementById('success-order-id').textContent=oid;
-      document.getElementById('order-form').classList.add('hidden');document.getElementById('order-success').classList.remove('hidden');
-    }else alert('Something went wrong. Please try again.');
-  }catch{alert('Network error. Please try again.');}
-  btn.textContent='Send Order ✓';btn.disabled=false;
-});
-
-function showTrackOrder(){document.getElementById('track-modal').classList.remove('hidden');document.getElementById('track-result').classList.add('hidden');document.getElementById('track-error').classList.add('hidden');if(lastOrderId)document.getElementById('track-input').value=lastOrderId;setTimeout(()=>document.getElementById('track-input').focus(),100);}
-function closeTrackOrder(){document.getElementById('track-modal').classList.add('hidden');}
-async function lookupOrder(){
-  const raw=document.getElementById('track-input').value.trim().toUpperCase();
-  const errEl=document.getElementById('track-error'),btn=document.getElementById('track-btn');
-  if(!raw){errEl.textContent='Please enter an Order ID.';errEl.classList.remove('hidden');return;}
-  btn.textContent='Searching...';btn.disabled=true;errEl.classList.add('hidden');document.getElementById('track-result').classList.add('hidden');
-  await loadSheetOrders();
-  const order=getAllOrders().find(o=>o.id.toUpperCase()===raw||o.id.toUpperCase().replace('IG3-','')===raw.replace('IG3-',''));
-  btn.textContent='Search';btn.disabled=false;
-  if(!order){errEl.textContent='Order not found. Check your Order ID and try again.';errEl.classList.remove('hidden');return;}
-  renderTrackingResult(order);
-}
-function renderTrackingResult(order){
-  const steps=ORDER_STATUSES,curIdx=steps.indexOf(order.status);
-  document.getElementById('track-timeline').innerHTML=steps.map((s,i)=>{const done=i<curIdx||(order.status==='Delivered'&&i<=curIdx);const current=i===curIdx&&order.status!=='Cancelled';return`<div class="track-step ${done?'done':current?'current':''}"><div class="track-dot">${STATUS_ICONS[s]||'•'}</div><div class="track-label">${s}</div></div>`;}).join('');
-  document.getElementById('tr-name').textContent=order.name;document.getElementById('tr-id').textContent='Order ID: '+order.id;document.getElementById('tr-date').textContent=order.date;document.getElementById('tr-total').textContent=fmtPrice(order.total);
-  const badge=document.getElementById('tr-status-badge');badge.textContent=(STATUS_ICONS[order.status]||'')+' '+order.status;badge.className='text-xs font-bold px-3 py-1 rounded-full mt-1 inline-block '+statusBadgeClass(order.status);
-  document.getElementById('tr-phone').textContent='📱 '+order.phone;document.getElementById('tr-address').textContent='📍 '+order.address;
-  const ne=document.getElementById('tr-notes');if(order.notes){ne.textContent='📝 '+order.notes;ne.classList.remove('hidden');}else ne.classList.add('hidden');
-  const items=Array.isArray(order.items)?order.items:safeParseJSON(order.items,'[]');
-  document.getElementById('tr-items').innerHTML=items.map(i=>`<div class="flex justify-between"><span class="text-gray-700 flex-1 truncate mr-2">${escH(i.name)} <span class="text-gray-400">×${i.qty}</span></span><span class="font-semibold text-gray-800">${fmtPrice(i.price*i.qty)}</span></div>`).join('');
-  document.getElementById('track-result').classList.remove('hidden');
-}
-
-function handleLogoClick(){logoClicks++;clearTimeout(logoTimer);if(logoClicks>=5){logoClicks=0;openAdmin();}else logoTimer=setTimeout(()=>logoClicks=0,2000);}
-function openAdmin(){document.getElementById('admin-panel').classList.remove('hidden');document.getElementById('admin-login').classList.remove('hidden');document.getElementById('admin-dashboard').classList.add('hidden');document.getElementById('admin-pass-input').value='';document.getElementById('admin-login-error').classList.add('hidden');setTimeout(()=>document.getElementById('admin-pass-input').focus(),100);}
-function closeAdmin(){document.getElementById('admin-panel').classList.add('hidden');}
-function adminLogin(){if(document.getElementById('admin-pass-input').value===ADMIN_PW){document.getElementById('admin-login').classList.add('hidden');document.getElementById('admin-dashboard').classList.remove('hidden');showAdminTab('products');}else document.getElementById('admin-login-error').classList.remove('hidden');}
-
-function showAdminTab(tab){['products','categories','orders','reports'].forEach(t=>{document.getElementById(`admin-${t}-tab`).classList.toggle('hidden',t!==tab);document.getElementById(`tab-${t}`).classList.toggle('active',t===tab);});if(tab==='products')renderAdminProducts();if(tab==='categories')renderAdminCategories();if(tab==='orders')loadAndRenderOrders();if(tab==='reports')loadAndRenderReports();}
-
-function renderAdminProducts(){
-  populateAdminCategorySelect();
-  const all=getAllProducts(),hidden=getAllProducts(true).filter(p=>p._hidden),list=document.getElementById('admin-product-list');
-  const seenNames=new Map();let dupCount=0;all.forEach(p=>{const k=(p.name||'').toLowerCase().trim();if(!k)return;if(seenNames.has(k))dupCount++;else seenNames.set(k,1);});
-  const dupBtn=`<div class="flex items-center justify-between mb-4"><span class="text-sm text-gray-500 font-medium">${all.length} product(s)${hidden.length?' · <span class="text-gray-400">'+hidden.length+' hidden</span>':''}</span><button onclick="findAndRemoveDuplicates()" class="flex items-center gap-1.5 ${dupCount>0?'bg-red-50 hover:bg-red-100 text-red-600 border border-red-200':'bg-gray-100 hover:bg-gray-200 text-gray-500 border border-gray-200'} font-semibold px-4 py-2 rounded-xl text-sm transition">🔍 ${dupCount>0?dupCount+' Duplicate'+(dupCount>1?'s':'')+' Found':'No Duplicates'}</button></div>`;
-  if(!all.length&&!hidden.length){list.innerHTML=dupBtn+'<p class="text-gray-400 text-sm text-center py-8">No products yet.</p>';return;}
-  const cats=[...new Set(all.map(p=>p.category||'Uncategorized'))].sort();
-  const mainHtml=cats.map(cat=>{const prods=all.filter(p=>(p.category||'Uncategorized')===cat);return`<div class="mb-5"><h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">${escH(cat)}</h4><div class="space-y-2">${prods.map(p=>{const price=parsePrice(p.final_price_php);const img=getImg(p);const hasOv=p._edited||(p._local&&productOverrides[p.product_id]);return`<div class="bg-white rounded-xl shadow-sm p-3 flex items-center gap-3">${img?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="w-12 h-12 rounded-xl bg-yellow-100 items-center justify-center text-xl flex-shrink-0 hidden">🛍️</div>`:`<div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}<div class="flex-1 min-w-0"><p class="text-sm font-semibold text-gray-800 truncate">${escH(p.name)}</p><p class="text-xs text-gray-400 truncate">${escH(p.category||'No category')} · ${price>0?fmtPrice(price):'No price'}${p._edited?' <span style="color:#3b82f6">(edited)</span>':''}${p._local?' <span style="color:#22c55e">(manual)</span>':''}${imageStorage[p.product_id]?' <span style="color:#f59e0b">📁 desktop</span>':''}</p>${p.description?`<p class="text-xs text-gray-400 italic truncate mt-0.5">${escH(p.description)}</p>`:''}</div><div class="flex items-center gap-1.5 flex-shrink-0"><button onclick="openEditModal('${escA(p.product_id)}')" class="bg-yellow-400 hover:bg-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full transition">Edit</button>${hasOv||imageStorage[p.product_id]?`<button onclick="clearProductOverrides('${escA(p.product_id)}')" title="Reset" class="text-gray-400 hover:text-red-500 text-sm px-1.5 py-1 rounded-lg hover:bg-red-50 transition">↺</button>`:''}${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="text-gray-400 hover:text-red-500 text-lg px-1 transition">🗑</button>`:''}</div></div>`;}).join('')}</div></div>`;}).join('');
-  const hiddenHtml=hidden.length?`<div class="mt-8 mb-5"><h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">🚫 Hidden (${hidden.length})</h4><div class="space-y-2">${hidden.map(p=>{const img=getImg(p);return`<div class="bg-gray-50 rounded-xl shadow-sm p-3 flex items-center gap-3 opacity-60">${img?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none'">`:`<div class="w-12 h-12 rounded-xl bg-gray-200 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}<div class="flex-1 min-w-0"><p class="text-sm font-semibold text-gray-400 truncate line-through">${escH(p.name)}</p></div><div class="flex items-center gap-1.5 flex-shrink-0"><button onclick="restoreHiddenProduct('${escA(p.product_id)}')" class="bg-green-50 hover:bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full transition">↩ Restore</button>${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="text-gray-400 hover:text-red-500 text-lg px-1 transition">🗑</button>`:''}</div></div>`;}).join('')}</div></div>`:'';
-  list.innerHTML=dupBtn+mainHtml+hiddenHtml;
-}
-function populateAdminCategorySelect(){const sel=document.getElementById('new-product-category');sel.innerHTML='<option value="">Select category</option>'+getAllCategories().map(c=>`<option value="${escA(c)}">${escH(c)}</option>`).join('');}
-
-function openEditModal(id){
-  const p=getAllProducts().find(x=>x.product_id===id);if(!p)return;
-  pendingEditImg=null;pendingEditImgNew=false;document.getElementById('edit-img-file').value='';
-  document.getElementById('edit-product-id').value=id;document.getElementById('edit-product-name').value=p.name||'';document.getElementById('edit-product-price').value=parseFloat(p.final_price_php)||'';document.getElementById('edit-product-description').value=p.description||'';
-  const sb64=imageStorage[p.product_id];const urlImg=(productOverrides[p.product_id]?.imageUrl)||p.image_url||p.image||p.img||'';const curImg=sb64||urlImg;
-  if(sb64){pendingEditImg=sb64;pendingEditImgNew=false;document.getElementById('edit-product-img').value='';document.getElementById('edit-img-source-label').textContent='📁 Desktop image';}else{document.getElementById('edit-product-img').value=urlImg;document.getElementById('edit-img-source-label').textContent=urlImg?'🔗 URL image':'';}
-  const prev=document.getElementById('edit-img-preview');if(curImg){document.getElementById('edit-img-preview-img').src=curImg;prev.classList.remove('hidden');}else prev.classList.add('hidden');
-  const cats=getAllCategories();const sel=document.getElementById('edit-product-category');sel.innerHTML='<option value="">— No category —</option>'+cats.map(c=>`<option value="${escA(c)}"${p.category===c?' selected':''}>${escH(c)}</option>`).join('');if(p.category&&!cats.includes(p.category))sel.innerHTML+=`<option value="${escA(p.category)}" selected>${escH(p.category)}</option>`;
-  document.getElementById('edit-product-modal').classList.remove('hidden');setTimeout(()=>document.getElementById('edit-product-name').focus(),100);
-}
-function closeEditModal(){pendingEditImg=null;pendingEditImgNew=false;document.getElementById('edit-product-modal').classList.add('hidden');}
-function saveProductEdit(){
-  const id=document.getElementById('edit-product-id').value,name=document.getElementById('edit-product-name').value.trim(),cat=document.getElementById('edit-product-category').value,priceVal=document.getElementById('edit-product-price').value,price=priceVal!==''?parseFloat(priceVal):null,imgUrl=document.getElementById('edit-product-img').value.trim(),desc=document.getElementById('edit-product-description').value.trim();
-  if(!name){alert('Product name is required.');return;}if(price!==null&&(isNaN(price)||price<0)){alert('Invalid price.');return;}
-  if(pendingEditImgNew){if(pendingEditImg){imageStorage[id]=pendingEditImg;saveImageStorage();}else{delete imageStorage[id];saveImageStorage();}}else if(imgUrl&&!pendingEditImg){delete imageStorage[id];saveImageStorage();}
-  const ov={};ov.name=name;ov.category=cat;if(price!=null)ov.price=price;ov.imageUrl=(pendingEditImg&&!pendingEditImgNew)||(pendingEditImgNew&&pendingEditImg)?'':imgUrl;ov.description=desc;productOverrides[id]=ov;saveOverrides();
-  const lIdx=localProducts.findIndex(p=>p.id===id);if(lIdx>=0){localProducts[lIdx]={...localProducts[lIdx],name,category:cat,price:price??localProducts[lIdx].price,imageUrl:imageStorage[id]?'':imgUrl,description:desc};localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));}
-  const syncImg=pendingEditImg?'':imgUrl;fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'update_product',product_id:id,name,category:cat,final_price_php:price!=null?String(price):'',image_url:syncImg,description:desc})}).catch(e=>console.warn(e));
-  pendingEditImg=null;pendingEditImgNew=false;closeEditModal();renderCategoryPills();applyFilters();renderAdminProducts();
-}
-function clearProductOverrides(id){if(!confirm('Reset this product?'))return;delete productOverrides[id];delete imageStorage[id];saveOverrides();saveImageStorage();renderCategoryPills();applyFilters();renderAdminProducts();}
-function clearAddProductForm(){['new-product-name','new-product-price','new-product-img','new-product-desc'].forEach(i=>document.getElementById(i).value='');document.getElementById('new-img-file').value='';document.getElementById('new-img-preview').classList.add('hidden');pendingNewImg=null;}
-async function addLocalProduct(){
-  const name=document.getElementById('new-product-name').value.trim(),cat=document.getElementById('new-product-category').value,price=parseFloat(document.getElementById('new-product-price').value),img=document.getElementById('new-product-img').value.trim(),desc=document.getElementById('new-product-desc').value.trim();
-  if(!name){alert('Product name is required.');return;}if(isNaN(price)||price<=0){alert('A valid price is required.');return;}
-  const btn=document.getElementById('add-product-btn'),statusEl=document.getElementById('add-product-status');btn.disabled=true;btn.textContent='Adding...';statusEl.textContent='⏳ Saving...';statusEl.style.color='#6b7280';
-  if(pendingNewImg){const k='byname_'+name.toLowerCase().trim();imageStorage[k]=pendingNewImg;saveImageStorage();}
-  let ok=false;try{await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({name,category:cat,final_price_php:String(price),image_url:pendingNewImg?'':img,description:desc})});ok=true;}catch(e){console.warn(e);}
-  if(ok){statusEl.textContent='⏳ Sent! Refreshing...';statusEl.style.color='#6b7280';clearAddProductForm();await new Promise(r=>setTimeout(r,3000));await loadProducts();renderCategoryPills();renderAdminProducts();statusEl.textContent='✅ Added to Google Sheet!';statusEl.style.color='#16a34a';setTimeout(()=>statusEl.textContent='',4000);}
-  else{const newId='local_'+Date.now();localProducts.push({id:newId,name,category:cat,price,imageUrl:pendingNewImg?'':img,description:desc});localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));if(pendingNewImg){imageStorage[newId]=pendingNewImg;saveImageStorage();}statusEl.textContent='⚠️ Saved locally only.';statusEl.style.color='#d97706';clearAddProductForm();renderCategoryPills();applyFilters();renderAdminProducts();setTimeout(()=>statusEl.textContent='',6000);}
-  btn.disabled=false;btn.textContent='+ Add Product';
-}
-function deleteLocalProduct(id){if(!confirm('Delete permanently?'))return;localProducts=localProducts.filter(p=>p.id!==id);localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));delete productOverrides[id];saveOverrides();delete imageStorage[id];saveImageStorage();renderCategoryPills();applyFilters();renderAdminProducts();}
-function findAndRemoveDuplicates(){const all=getAllProducts();const seen=new Map();const dupes=[];for(const p of all){const k=(p.name||'').toLowerCase().trim();if(!k)continue;if(seen.has(k))dupes.push(p);else seen.set(k,p);}if(!dupes.length){alert('✅ No duplicates found!');return;}const preview=dupes.slice(0,10).map(p=>' • '+p.name).join('\n')+(dupes.length>10?'\n  ...and '+(dupes.length-10)+' more':'');if(!confirm('Found '+dupes.length+' duplicate(s):\n\n'+preview+'\n\nRemove duplicates?'))return;dupes.forEach(p=>{if(p._local){localProducts=localProducts.filter(lp=>lp.id!==p.product_id);localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));delete productOverrides[p.product_id];delete imageStorage[p.product_id];}else productOverrides[p.product_id]={...(productOverrides[p.product_id]||{}),_hidden:true};});saveOverrides();saveImageStorage();renderCategoryPills();applyFilters();renderAdminProducts();alert('✅ Done!');}
-function restoreHiddenProduct(id){if(!productOverrides[id])return;delete productOverrides[id]._hidden;if(!Object.keys(productOverrides[id]).length)delete productOverrides[id];saveOverrides();renderCategoryPills();applyFilters();renderAdminProducts();}
-
-function renderAdminCategories(){const cats=getAllCategories();const fp=[...new Set(sheetProducts.map(p=>p.category||'').filter(Boolean))];const list=document.getElementById('admin-category-list');if(!cats.length){list.innerHTML='<p class="text-gray-400 text-sm text-center py-8">No categories yet.</p>';return;}list.innerHTML=cats.map(c=>{const inSheet=sheetCategories.includes(c);const inLocal=localCategories.includes(c);const inProds=fp.includes(c);const badge=inSheet?'<span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full ml-2">✓ Synced</span>':inLocal?'<span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full ml-2">Local only</span>':'';const action=inProds&&!inSheet&&!inLocal?`<span class="text-xs text-gray-400 italic">From Products</span>`:`<button onclick="deleteCategory('${escA(c)}')" class="text-red-400 hover:text-red-600 text-sm font-semibold transition">Delete</button>`;return`<div class="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between mb-2"><div class="flex items-center gap-3 flex-wrap"><span class="text-xl">🏷</span><span class="font-semibold text-gray-800">${escH(c)}</span>${badge}</div>${action}</div>`;}).join('');}
-async function addCategory(){const name=document.getElementById('new-category-name').value.trim();if(!name){alert('Category name required.');return;}if(getAllCategories().includes(name)){alert('Already exists.');return;}const inp=document.getElementById('new-category-name');inp.disabled=true;let synced=false;try{await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'add_category',category_name:name})});synced=true;}catch(e){console.warn(e);}if(synced){await new Promise(r=>setTimeout(r,2000));await loadCategories();localCategories=localCategories.filter(c=>c!==name);localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));}else{localCategories.push(name);localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));}inp.disabled=false;inp.value='';renderCategoryPills();renderAdminCategories();populateAdminCategorySelect();}
-async function deleteCategory(name){if(!confirm(`Delete category "${name}"?`))return;try{await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'delete_category',category_name:name})});await new Promise(r=>setTimeout(r,2000));await loadCategories();}catch(e){console.warn(e);}localCategories=localCategories.filter(c=>c!==name);localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));renderCategoryPills();renderAdminCategories();}
-
-async function loadAndRenderOrders(){document.getElementById('admin-order-list').innerHTML='<div class="text-center py-8 text-gray-400">⏳ Loading orders...</div>';await loadSheetOrders();renderAdminOrders();}
-function renderAdminOrders(){
-  const sf=document.getElementById('order-status-filter').value;let allOrders=getAllOrders();if(sf)allOrders=allOrders.filter(o=>o.status===sf);
-  const list=document.getElementById('admin-order-list');document.getElementById('orders-count-label').textContent=`Orders (${getAllOrders().length})`;
-  if(!allOrders.length){list.innerHTML='<div class="text-center py-16 text-gray-400"><div class="text-5xl mb-4">📋</div><p>No orders found.</p></div>';return;}
-  list.innerHTML=allOrders.map(o=>{const sc=statusBadgeClass(o.status);const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');return`<div class="bg-white rounded-2xl shadow-sm p-5 mb-4"><div class="flex items-start justify-between mb-3 flex-wrap gap-2"><div><h4 class="font-bold text-gray-900 text-base">${escH(o.name)}</h4><p class="text-xs text-gray-400 font-mono">${escH(o.id)} · ${escH(o.date)}</p>${o._fromSheet?'<span class="text-xs text-green-600 font-semibold">✓ In Sheet</span>':'<span class="text-xs text-orange-500 font-semibold">⚠ Local only</span>'}</div><div class="text-right"><span class="font-extrabold text-yellow-600 text-lg">${fmtPrice(o.total)}</span><div><span class="text-xs font-bold px-2 py-0.5 rounded-full ${sc}">${STATUS_ICONS[o.status]||''} ${escH(o.status)}</span></div></div></div><div class="flex items-center gap-2 mb-3 flex-wrap"><span class="text-xs font-semibold text-gray-500">Update Status:</span>${ORDER_STATUSES.concat(['Cancelled']).map(s=>`<button onclick="updateOrderStatus('${escA(o.id)}','${s}')" class="text-xs font-bold px-2.5 py-1 rounded-full border transition ${o.status===s?statusBadgeClass(s)+' border-current':'border-gray-200 text-gray-500 hover:bg-gray-50'}">${STATUS_ICONS[s]||'❌'} ${s}</button>`).join('')}</div><div class="text-sm text-gray-600 space-y-1 mb-3 border-t pt-3"><p>📱 ${escH(o.phone)}</p><p>✉️ ${escH(o.email)}</p><p>📍 ${escH(o.address)}</p>${o.notes?`<p>📝 ${escH(o.notes)}</p>`:''}</div><div class="border-t pt-3 mb-4"><p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">Items</p><div class="space-y-1">${items.map(i=>`<div class="flex justify-between text-sm"><span class="text-gray-700 flex-1 truncate mr-2">${escH(i.name)} <span class="text-gray-400">×${i.qty}</span></span><span class="font-semibold text-gray-800">${fmtPrice(i.price*i.qty)}</span></div>`).join('')}</div></div><div class="flex gap-2"><button onclick="printOrder('${escA(o.id)}')" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold py-2.5 rounded-xl text-sm transition">🖨 Print</button><button onclick="deleteOrder('${escA(o.id)}')" class="flex-1 bg-red-50 hover:bg-red-100 text-red-600 font-bold py-2.5 rounded-xl text-sm transition">🗑 Delete</button></div></div>`;}).join('');
-}
-async function updateOrderStatus(orderId,newStatus){const so=sheetOrders.find(o=>o.order_id===orderId);if(so)so.status=newStatus;const lo=orders.find(o=>o.id===orderId);if(lo){lo.status=newStatus;localStorage.setItem('ig3-orders',JSON.stringify(orders));}renderAdminOrders();fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'update_order_status',order_id:orderId,status:newStatus})}).catch(e=>console.warn(e));}
-function printOrder(id){const o=getAllOrders().find(x=>x.id===id);if(!o)return;buildPrintArea([o]);window.print();clearPrintArea();}
-function printAllOrders(){const all=getAllOrders();if(!all.length){alert('No orders to print.');return;}buildPrintArea(all);window.print();clearPrintArea();}
-function buildPrintArea(list){const el=document.getElementById('print-area');el.classList.remove('hidden');el.innerHTML=list.map(o=>{const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');return`<div style="font-family:sans-serif;max-width:600px;margin:0 auto 40px;padding-bottom:40px;border-bottom:2px dashed #ddd;page-break-after:always"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><div><h1 style="font-size:18px;font-weight:900;margin:0">IG3 Dubai Pasabuy</h1><p style="color:#888;font-size:11px;margin:2px 0 0">Packed Fresh from Dubai</p></div><div style="text-align:right"><p style="font-size:11px;color:#888;margin:0">Order #${escH(o.id)}</p><p style="font-size:11px;color:#888;margin:0">${escH(o.date)}</p><p style="font-size:11px;font-weight:700;margin:2px 0 0">Status: ${escH(o.status||'Pending')}</p></div></div><hr style="margin:12px 0"><h2 style="font-size:13px;font-weight:700;margin:0 0 8px;color:#555">CUSTOMER DETAILS</h2><p style="font-size:13px;margin:3px 0"><strong>Name:</strong> ${escH(o.name)}</p><p style="font-size:13px;margin:3px 0"><strong>Phone:</strong> ${escH(o.phone)}</p><p style="font-size:13px;margin:3px 0"><strong>Email:</strong> ${escH(o.email)}</p><p style="font-size:13px;margin:3px 0"><strong>Address:</strong> ${escH(o.address)}</p>${o.notes?`<p style="font-size:13px;margin:3px 0"><strong>Notes:</strong> ${escH(o.notes)}</p>`:''}<h2 style="font-size:13px;font-weight:700;margin:16px 0 8px;color:#555">ORDER ITEMS</h2><table style="width:100%;border-collapse:collapse;font-size:13px"><tr style="border-bottom:2px solid #eee"><th style="text-align:left;padding:5px 0">Item</th><th style="text-align:center;width:40px">Qty</th><th style="text-align:right;width:90px">Amount</th></tr>${items.map(i=>`<tr style="border-bottom:1px solid #f0f0f0"><td style="padding:5px 0">${escH(i.name)}</td><td style="text-align:center">${i.qty}</td><td style="text-align:right">${fmtPrice(i.price*i.qty)}</td></tr>`).join('')}<tr><td colspan="2" style="padding-top:10px;font-weight:900;font-size:14px">TOTAL</td><td style="padding-top:10px;font-weight:900;font-size:14px;text-align:right">${fmtPrice(o.total)}</td></tr></table><hr style="margin-top:20px"><p style="font-size:11px;color:#aaa;text-align:center;margin-top:10px">Thank you for ordering!</p></div>`;}).join('');}
-function clearPrintArea(){const el=document.getElementById('print-area');el.classList.add('hidden');el.innerHTML='';}
-function deleteOrder(id){if(!confirm('Delete this order?'))return;orders=orders.filter(o=>o.id!==id);localStorage.setItem('ig3-orders',JSON.stringify(orders));sheetOrders=sheetOrders.filter(o=>o.order_id!==id);fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'delete_order',order_id:id})}).catch(e=>console.warn(e));renderAdminOrders();}
-
-async function loadAndRenderReports(){document.getElementById('reports-content').innerHTML='<div class="text-center py-8 text-gray-400">⏳ Loading...</div>';await loadSheetOrders();renderSalesReport();}
-function renderSalesReport(){
-  const allOrders=getAllOrders().filter(o=>o.status!=='Cancelled');const totalRevenue=allOrders.reduce((s,o)=>s+o.total,0);const totalOrders=allOrders.length;const avgOrder=totalOrders>0?totalRevenue/totalOrders:0;
-  const now=new Date();const thisMonth=allOrders.filter(o=>{try{const d=new Date(o.date);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}catch{return false;}});const thisMonthRevenue=thisMonth.reduce((s,o)=>s+o.total,0);
-  const prMap={},pqMap={};allOrders.forEach(o=>{const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');items.forEach(i=>{if(!i.name)return;prMap[i.name]=(prMap[i.name]||0)+(i.price*i.qty);pqMap[i.name]=(pqMap[i.name]||0)+i.qty;});});const topP=Object.entries(prMap).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  const crMap={};allOrders.forEach(o=>{const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');items.forEach(i=>{const prod=getAllProducts().find(p=>p.name===i.name);const cat=prod?.category||'Uncategorized';crMap[cat]=(crMap[cat]||0)+(i.price*i.qty);});});const topC=Object.entries(crMap).sort((a,b)=>b[1]-a[1]);
-  const sCount={};getAllOrders().forEach(o=>sCount[o.status]=(sCount[o.status]||0)+1);
-  document.getElementById('reports-content').innerHTML=`
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-      <div class="report-card text-center"><p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Total Revenue</p><p class="text-2xl font-extrabold text-yellow-600">${fmtPrice(totalRevenue)}</p><p class="text-xs text-gray-400 mt-1">All time</p></div>
-      <div class="report-card text-center"><p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Total Orders</p><p class="text-2xl font-extrabold text-blue-600">${totalOrders}</p><p class="text-xs text-gray-400 mt-1">Active/completed</p></div>
-      <div class="report-card text-center"><p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Avg Order</p><p class="text-2xl font-extrabold text-purple-600">${fmtPrice(avgOrder)}</p><p class="text-xs text-gray-400 mt-1">Per order</p></div>
-      <div class="report-card text-center"><p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">This Month</p><p class="text-2xl font-extrabold text-green-600">${fmtPrice(thisMonthRevenue)}</p><p class="text-xs text-gray-400 mt-1">${thisMonth.length} order(s)</p></div>
-    </div>
-    <div class="report-card mb-6"><h3 class="font-bold text-base mb-4">Order Status Breakdown</h3><div class="flex flex-wrap gap-3">${ORDER_STATUSES.concat(['Cancelled']).map(s=>`<div class="flex items-center gap-2 ${statusBadgeClass(s)} px-3 py-2 rounded-xl"><span class="text-lg">${STATUS_ICONS[s]||''}</span><div><p class="font-extrabold text-lg leading-none">${sCount[s]||0}</p><p class="text-xs font-semibold">${s}</p></div></div>`).join('')}</div></div>
-    <div class="report-card mb-6"><h3 class="font-bold text-base mb-4">Top Products by Revenue</h3>${topP.length===0?'<p class="text-gray-400 text-sm text-center py-4">No data yet.</p>':`<div class="space-y-2">${topP.map(([name,rev],i)=>{const qty=pqMap[name]||0;const pct=totalRevenue>0?Math.round(rev/totalRevenue*100):0;return`<div><div class="flex items-center justify-between mb-1"><span class="text-sm font-semibold text-gray-800 flex-1 truncate mr-2">${i+1}. ${escH(name)}</span><div class="text-right flex-shrink-0"><span class="text-sm font-bold text-yellow-700">${fmtPrice(rev)}</span><span class="text-xs text-gray-400 ml-1">${qty} sold</span></div></div><div class="w-full bg-gray-100 rounded-full h-1.5"><div class="bg-yellow-400 h-1.5 rounded-full" style="width:${pct}%"></div></div></div>`;}).join('')}</div>`}</div>
-    <div class="report-card mb-6"><h3 class="font-bold text-base mb-4">Revenue by Category</h3>${topC.length===0?'<p class="text-gray-400 text-sm text-center py-4">No data yet.</p>':`<div class="space-y-2">${topC.map(([cat,rev])=>{const pct=totalRevenue>0?Math.round(rev/totalRevenue*100):0;return`<div><div class="flex items-center justify-between mb-1"><span class="text-sm font-semibold text-gray-700">${escH(cat)}</span><span class="text-sm font-bold text-purple-700">${fmtPrice(rev)} <span class="text-xs text-gray-400">(${pct}%)</span></span></div><div class="w-full bg-gray-100 rounded-full h-1.5"><div class="bg-purple-400 h-1.5 rounded-full" style="width:${pct}%"></div></div></div>`;}).join('')}</div>`}</div>
-    <div class="report-card"><h3 class="font-bold text-base mb-4">Recent Orders</h3>${getAllOrders().length===0?'<p class="text-gray-400 text-sm text-center py-4">No orders yet.</p>':`<div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr class="border-b text-left text-xs text-gray-400 uppercase tracking-wide"><th class="pb-2 pr-4">Order ID</th><th class="pb-2 pr-4">Customer</th><th class="pb-2 pr-4">Date</th><th class="pb-2 pr-4">Total</th><th class="pb-2">Status</th></tr></thead><tbody>${getAllOrders().slice(0,20).map(o=>`<tr class="border-b last:border-0"><td class="py-2 pr-4 font-mono text-xs text-blue-600">${escH(o.id)}</td><td class="py-2 pr-4 font-semibold">${escH(o.name)}</td><td class="py-2 pr-4 text-gray-500 text-xs">${escH(o.date)}</td><td class="py-2 pr-4 font-bold text-yellow-700">${fmtPrice(o.total)}</td><td class="py-2"><span class="text-xs font-bold px-2 py-0.5 rounded-full ${statusBadgeClass(o.status)}">${STATUS_ICONS[o.status]||''} ${escH(o.status||'Pending')}</span></td></tr>`).join('')}</tbody></table></div>`}</div>`;
-}
-
-let lbScale=1,lbDragging=false,lbStartX=0,lbStartY=0,lbCurX=0,lbCurY=0;
-function openLightbox(src,name){if(!src)return;lbScale=1;lbCurX=0;lbCurY=0;const img=document.getElementById('lb-img');img.src=src;img.alt=name||'';img.style.transform='scale(1) translate(0px,0px)';document.getElementById('lb-zoom-label').textContent='100%';document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden';}
-function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
-function lbBgClick(e){if(e.target===document.getElementById('lightbox'))closeLightbox();}
-function lbZoom(dir){lbScale=Math.min(5,Math.max(0.5,lbScale+dir*0.25));applyLbTransform();}
-function lbReset(){lbScale=1;lbCurX=0;lbCurY=0;applyLbTransform();}
-function applyLbTransform(){document.getElementById('lb-img').style.transform=`scale(${lbScale}) translate(${lbCurX/lbScale}px,${lbCurY/lbScale}px)`;document.getElementById('lb-zoom-label').textContent=Math.round(lbScale*100)+'%';}
-const lbWrap=document.getElementById('lb-img-wrap');
-lbWrap.addEventListener('mousedown',e=>{if(lbScale<=1)return;lbDragging=true;lbStartX=e.clientX-lbCurX;lbStartY=e.clientY-lbCurY;lbWrap.classList.add('grabbing');});
-window.addEventListener('mousemove',e=>{if(!lbDragging)return;lbCurX=e.clientX-lbStartX;lbCurY=e.clientY-lbStartY;applyLbTransform();});
-window.addEventListener('mouseup',()=>{lbDragging=false;lbWrap.classList.remove('grabbing');});
-let lbLastDist=0;
-lbWrap.addEventListener('touchstart',e=>{if(e.touches.length===2)lbLastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);else if(e.touches.length===1){lbDragging=true;lbStartX=e.touches[0].clientX-lbCurX;lbStartY=e.touches[0].clientY-lbCurY;}},{passive:true});
-lbWrap.addEventListener('touchmove',e=>{if(e.touches.length===2){const dist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);lbScale=Math.min(5,Math.max(0.5,lbScale*(dist/lbLastDist)));lbLastDist=dist;applyLbTransform();}else if(e.touches.length===1&&lbDragging){lbCurX=e.touches[0].clientX-lbStartX;lbCurY=e.touches[0].clientY-lbStartY;applyLbTransform();}},{passive:true});
-lbWrap.addEventListener('touchend',()=>lbDragging=false);
-lbWrap.addEventListener('wheel',e=>{e.preventDefault();lbScale=Math.min(5,Math.max(0.5,lbScale-(e.deltaY>0?0.15:-0.15)));applyLbTransform();},{passive:false});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();closeTrackOrder();}});
-
-function noImgHtml(h){return'<div class="no-img-placeholder" style="height:'+h+'px"><div class="noimg-icon">📷</div><div class="noimg-label">No Image</div></div>';}
-function handleImgError(img){const wrap=img.parentElement;if(!wrap)return;wrap.style.cursor='default';wrap.onclick=null;wrap.innerHTML=noImgHtml(160);}
-
-updateCartBadge();
-loadProducts();
-if(window.location.hash==='#admin')openAdmin();
-const trackParam=new URLSearchParams(window.location.search).get('track');
-if(trackParam)lastOrderId=trackParam;
-</script>
 </body>
 </html>
-</details>
