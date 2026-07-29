@@ -93,7 +93,7 @@
   <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 15% 55%,rgba(255,255,255,0.18) 0%,transparent 50%),radial-gradient(ellipse at 85% 25%,rgba(255,255,255,0.14) 0%,transparent 45%),radial-gradient(ellipse at 50% 90%,rgba(255,255,255,0.10) 0%,transparent 40%);"></div>
   <div class="relative z-10">
     <div class="text-5xl mb-4 select-none" style="letter-spacing:0.15em;">🍭 🍬 🌈 🎀</div>
-    <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-3" style="font-family:'Fredoka One',cursive;text-shadow:3px 5px 0 rgba(0,0,0,0.15);">Snacks, sweets &amp; treats</h2>
+    <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-3" style="font-family:'Fredoka One',cursive;text-shadow:3px 5px 0 rgba(0,0,0,0.15);">Snacks, Sweets &amp; Treats</h2>
     <p class="text-white text-xl opacity-95 mb-1 font-extrabold">🎀 Packed Fresh from Dubai 🎀</p>
     <p class="text-white text-sm opacity-85 font-semibold">Pick your favorites — tell us where to send them! 🛍️</p>
   </div>
@@ -418,9 +418,35 @@ async function loadProducts(){
   }catch(e){ console.error(e); document.getElementById('loading').classList.add('hidden'); document.getElementById('error-msg').classList.remove('hidden'); }
 }
 
-function parseCSV(text){ const lines=text.trim().split('\n'); if(lines.length<2) return []; const headers=parseCSVLine(lines[0]).map(h=>h.trim().replace(/^"|"$/g,'').toLowerCase().replace(/\s+/g,'_')); return lines.slice(1).filter(l=>l.trim()).map(line=>{ const vals=parseCSVLine(line),obj={}; headers.forEach((h,i)=>{obj[h]=(vals[i]||'').replace(/^"|"$/g,'').trim();}); return obj; }); }
-function parseCSVLine(line){ const r=[];let c='',q=false; for(let i=0;i<line.length;i++){ if(line[i]==='"'){if(q&&line[i+1]==='"'){c+='"';i++;}else q=!q;} else if(line[i]===','&&!q){r.push(c);c='';} else c+=line[i]; } r.push(c);return r; }
-
+function csvToRows(text){
+  const rows=[];let row=[],cell='',inQ=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(inQ){
+      if(c==='"'&&text[i+1]==='"'){cell+='"';i++;}
+      else if(c==='"'){inQ=false;}
+      else{cell+=c;}
+    }else{
+      if(c==='"'){inQ=true;}
+      else if(c===','){row.push(cell);cell='';}
+      else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell='';}
+      else if(c!=='\r'){cell+=c;}
+    }
+  }
+  if(row.length||cell){row.push(cell);rows.push(row);}
+  return rows;
+}
+function parseCSV(text){
+  const rows=csvToRows(text.trim());
+  if(rows.length<2) return [];
+  const headers=rows[0].map(h=>h.trim().toLowerCase().replace(/\s+/g,'_'));
+  return rows.slice(1).filter(r=>r.some(v=>v.trim())).map(vals=>{
+    const obj={};
+    headers.forEach((h,i)=>{obj[h]=(vals[i]||'').trim();});
+    return obj;
+  });
+}
+function parseCSVLine(line){return csvToRows(line)[0]||[];}
 function renderCategoryPills(){
   const cats=getAllCategories(),el=document.getElementById('category-pills'),allActive=activeCategory==='';
   el.innerHTML=`<button class="cat-pill rounded-full px-5 py-2 text-sm transition" style="border:2.5px solid #ff4d94;background:${allActive?'#ff4d94':'white'};color:${allActive?'white':'#ff4d94'};font-weight:800;" onclick="setCategory('')">🍭 All</button>`
