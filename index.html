@@ -28,7 +28,6 @@
     .no-img-placeholder { height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f3f4f6;color:#9ca3af;gap:8px; }
     .no-img-placeholder .noimg-icon { font-size:2.5rem;opacity:0.4; }
     .no-img-placeholder .noimg-label { font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase; }
-    /* Lightbox */
     #lightbox { position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.85);display:none;flex-direction:column;align-items:center;justify-content:center; }
     #lightbox.open { display:flex; }
     #lb-img-wrap { position:relative;overflow:hidden;max-width:90vw;max-height:80vh;background:#fff;border-radius:16px;display:flex;align-items:center;justify-content:center;cursor:grab; }
@@ -43,7 +42,6 @@
       border:1px solid #d1d5db; border-radius:12px; padding:8px 14px; font-size:13px;
       font-weight:600; color:#374151; white-space:nowrap; transition:background 0.15s; }
     .upload-btn:hover { background:#fef9c3; border-color:#f59e0b; }
-    /* Order status timeline */
     .track-timeline { display:flex; align-items:flex-start; justify-content:space-between; position:relative; padding:0 8px; }
     .track-step { flex:1; text-align:center; position:relative; }
     .track-step:not(:first-child)::before { content:''; position:absolute; top:18px; right:50%; left:-50%; height:3px; background:#e5e7eb; z-index:0; }
@@ -55,25 +53,18 @@
     .track-label { font-size:10px; font-weight:700; color:#9ca3af; text-transform:uppercase; letter-spacing:0.05em; }
     .track-step.done .track-label { color:#16a34a; }
     .track-step.current .track-label { color:#d97706; }
-    /* Status badges */
     .badge-pending   { background:#f3f4f6; color:#6b7280; }
     .badge-confirmed { background:#dbeafe; color:#1d4ed8; }
     .badge-packed    { background:#ede9fe; color:#7c3aed; }
     .badge-shipped   { background:#ffedd5; color:#c2410c; }
     .badge-delivered { background:#dcfce7; color:#15803d; }
     .badge-cancelled { background:#fee2e2; color:#b91c1c; }
-    /* Report cards */
     .report-card { background:#fff; border-radius:16px; padding:20px; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
-    /* ===== CANDY SHOP THEME ===== */
     h2 { font-family: 'Fredoka One', cursive; }
-    /* Rainbow candy stripe at bottom of header */
     header::after { content:''; display:block; height:5px; background:linear-gradient(90deg,#ff4d94 0%,#ff9f43 18%,#f9ca24 34%,#a29bfe 50%,#55efc4 68%,#74b9ff 84%,#ff4d94 100%); }
-    /* Candy pill buttons */
     .candy-pill-btn { background:#ff4d94; color:#fff; font-weight:900; border-radius:9999px; transition:background 0.15s; }
     .candy-pill-btn:hover { background:#e91e8c; }
-    /* Card hover pop */
     .product-card:hover { transform:translateY(-5px) scale(1.02); box-shadow:0 16px 36px rgba(255,77,148,0.18); }
-    /* Bubbly category pills */
     .cat-pill { font-weight: 800; }
   </style>
 </head>
@@ -81,21 +72,45 @@
 
 <!-- HEADER -->
 <header class="bg-white shadow-sm sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
+    <!-- Logo -->
     <div onclick="handleLogoClick()" class="cursor-pointer select-none flex items-center gap-2 flex-shrink-0">
       <img src="https://raw.githubusercontent.com/owencelestino19-arch/IG3-DUBAI-PASABUY/main/logo.jpg"
            alt="IG3 Dubai Pasabuy" class="h-12 w-12 rounded-full object-cover"
            onerror="this.style.display='none'">
-      <div>
+      <div class="hidden sm:block">
         <h1 class="text-base font-extrabold tracking-tight leading-tight" style="color:#22c55e;font-family:'Fredoka One',cursive;font-size:1.1rem;">IG3 Dubai Pasabuy</h1>
         <p class="text-xs font-extrabold" style="color:#ff4d94;">🍬 DUBAI PASABUY 🍬</p>
       </div>
     </div>
-    <div class="flex items-center gap-2">
-      <button onclick="toggleCart()" class="relative font-extrabold px-4 py-2 rounded-full flex items-center gap-2 text-sm transition text-white" style="background:#ff4d94;">
-        🛒 Cart
-        <span id="cart-count" class="bg-red-500 text-white text-xs rounded-full px-1.5 hidden">0</span>
-      </button>
+    <!-- Search box (desktop stretches, mobile full row below) -->
+    <div class="relative flex-1 hidden sm:block">
+      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-base pointer-events-none">🔍</span>
+      <input type="text" id="search-input" placeholder="Search products..."
+        oninput="applyFilters()"
+        class="w-full rounded-full pl-9 pr-8 py-2 text-sm font-semibold border-2 focus:outline-none"
+        style="border-color:#ff4d94;font-family:'Nunito',sans-serif;background:#fff;color:#333;">
+      <button id="search-clear" onclick="clearSearch()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-400 text-base font-bold hidden">✕</button>
+    </div>
+    <!-- Track Order -->
+    <button onclick="showTrackOrder()" class="font-extrabold px-3 py-2 rounded-full flex items-center gap-1 text-sm transition border-2 whitespace-nowrap flex-shrink-0" style="background:#f0fff4;color:#00b894;border-color:#00b894;">
+      📍 <span class="hidden sm:inline">Track Order</span>
+    </button>
+    <!-- Cart -->
+    <button onclick="toggleCart()" class="relative font-extrabold px-4 py-2 rounded-full flex items-center gap-2 text-sm transition text-white flex-shrink-0" style="background:#ff4d94;">
+      🛒 <span class="hidden sm:inline">Cart</span>
+      <span id="cart-count" class="bg-red-500 text-white text-xs rounded-full px-1.5 hidden">0</span>
+    </button>
+  </div>
+  <!-- Mobile search row -->
+  <div class="sm:hidden px-4 pb-2">
+    <div class="relative">
+      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-base pointer-events-none">🔍</span>
+      <input type="text" id="search-input-mobile" placeholder="Search products..."
+        oninput="syncMobileSearch(this)"
+        class="w-full rounded-full pl-9 pr-8 py-2 text-sm font-semibold border-2 focus:outline-none"
+        style="border-color:#ff4d94;font-family:'Nunito',sans-serif;background:#fff;color:#333;">
+      <button onclick="clearSearch()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-400 text-base font-bold">✕</button>
     </div>
   </div>
 </header>
@@ -114,24 +129,6 @@
 <!-- CATEGORY PILLS -->
 <div class="max-w-7xl mx-auto px-4 pt-6 pb-2">
   <div id="category-pills" class="flex flex-wrap gap-2 justify-center"></div>
-</div>
-
-<!-- SEARCH + TRACK ORDER ROW -->
-<div class="max-w-7xl mx-auto px-4 pt-4 pb-1">
-  <div class="flex items-center gap-2">
-    <div class="relative flex-1">
-      <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xl pointer-events-none">🔍</span>
-      <input type="text" id="search-input" placeholder="Search products... e.g. Milo, Nescafe, Chips"
-        oninput="applyFilters()"
-        class="w-full rounded-full pl-11 pr-10 py-3 text-sm font-semibold border-2 focus:outline-none"
-        style="border-color:#ff4d94;font-family:'Nunito',sans-serif;background:#fff;color:#333;"
-      >
-      <button id="search-clear" onclick="clearSearch()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-400 text-xl font-bold hidden">✕</button>
-    </div>
-    <button onclick="showTrackOrder()" class="font-extrabold px-4 py-3 rounded-full flex items-center gap-1.5 text-sm transition border-2 whitespace-nowrap flex-shrink-0" style="background:#f0fff4;color:#00b894;border-color:#00b894;">
-      📍 <span>Track Order</span>
-    </button>
-  </div>
 </div>
 
 <!-- SORT -->
@@ -381,8 +378,6 @@
 
 <!-- ADMIN PANEL -->
 <div id="admin-panel" class="hidden fixed inset-0 z-[100] bg-gray-100 overflow-y-auto">
-
-  <!-- Admin Login -->
   <div id="admin-login" class="flex items-center justify-center min-h-screen p-4">
     <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm">
       <div class="text-center mb-6">
@@ -400,8 +395,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Admin Dashboard -->
   <div id="admin-dashboard" class="hidden">
     <div class="bg-white shadow-sm sticky top-0 z-10">
       <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -415,9 +408,7 @@
         <button onclick="showAdminTab('reports')"   id="tab-reports"    class="admin-tab py-3 text-sm font-semibold text-gray-500 whitespace-nowrap">📊 Reports</button>
       </div>
     </div>
-
     <div class="max-w-5xl mx-auto px-4 py-6">
-
       <!-- PRODUCTS TAB -->
       <div id="admin-products-tab">
         <div class="bg-white rounded-2xl shadow-sm p-5 mb-5">
@@ -457,7 +448,6 @@
         </div>
         <div id="admin-product-list"></div>
       </div>
-
       <!-- CATEGORIES TAB -->
       <div id="admin-categories-tab" class="hidden">
         <div class="bg-white rounded-2xl shadow-sm p-5 mb-5">
@@ -472,7 +462,6 @@
         </div>
         <div id="admin-category-list"></div>
       </div>
-
       <!-- ORDERS TAB -->
       <div id="admin-orders-tab" class="hidden">
         <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
@@ -495,7 +484,6 @@
         </div>
         <div id="admin-order-list"></div>
       </div>
-
       <!-- REPORTS TAB -->
       <div id="admin-reports-tab" class="hidden">
         <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
@@ -533,7 +521,6 @@ let cart             = JSON.parse(localStorage.getItem('ig3-cart')              
 let activeCategory   = '';
 let logoClicks       = 0, logoTimer = null;
 let lastOrderId      = null;
-
 let pendingEditImg    = null;
 let pendingEditImgNew = false;
 let pendingNewImg     = null;
@@ -550,19 +537,16 @@ function parsePrice(v){ if(v===null||v===undefined||v==='') return 0; var s=Stri
 function fmtPrice(n){ return '₱'+Number(n).toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function saveOverrides(){ localStorage.setItem('ig3-product-overrides',JSON.stringify(productOverrides)); }
 function saveImageStorage(){ localStorage.setItem('ig3-image-storage',JSON.stringify(imageStorage)); }
-
 function genOrderId(){
   const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let s='';for(let i=0;i<8;i++) s+=chars[Math.floor(Math.random()*chars.length)];
   return 'IG3-'+s;
 }
-
 function statusBadgeClass(status){
   const map={Pending:'badge-pending',Confirmed:'badge-confirmed',Packed:'badge-packed',Shipped:'badge-shipped',Delivered:'badge-delivered',Cancelled:'badge-cancelled'};
   return map[status]||'badge-pending';
 }
 
-// ── IMAGE COMPRESSION ─────────────────────────────────────────
 function compressImage(file, callback){
   const reader = new FileReader();
   reader.onload = function(e){
@@ -574,55 +558,44 @@ function compressImage(file, callback){
       if(w > maxW){ h = Math.round(h * maxW / w); w = maxW; }
       canvas.width = w; canvas.height = h;
       canvas.getContext('2d').drawImage(image, 0, 0, w, h);
-      const base64 = canvas.toDataURL('image/jpeg', 0.75);
-      callback(base64);
+      callback(canvas.toDataURL('image/jpeg', 0.75));
     };
     image.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
-
 function handleEditImgUpload(input){
   const file = input.files[0]; if(!file) return;
   compressImage(file, function(base64){
-    pendingEditImg = base64;
-    pendingEditImgNew = true;
+    pendingEditImg = base64; pendingEditImgNew = true;
     document.getElementById('edit-product-img').value = '';
-    const prev = document.getElementById('edit-img-preview');
     document.getElementById('edit-img-preview-img').src = base64;
     document.getElementById('edit-img-source-label').textContent = '📁 ' + file.name + ' (from your computer)';
-    prev.classList.remove('hidden');
+    document.getElementById('edit-img-preview').classList.remove('hidden');
   });
 }
-
 function handleNewImgUpload(input){
   const file = input.files[0]; if(!file) return;
   compressImage(file, function(base64){
     pendingNewImg = base64;
     document.getElementById('new-product-img').value = '';
-    const prev = document.getElementById('new-img-preview');
     document.getElementById('new-img-preview-img').src = base64;
-    prev.classList.remove('hidden');
+    document.getElementById('new-img-preview').classList.remove('hidden');
   });
 }
-
 function onEditUrlInput(){
   if(pendingEditImgNew){ pendingEditImg = null; pendingEditImgNew = false; }
   const url = document.getElementById('edit-product-img').value.trim();
   const prev = document.getElementById('edit-img-preview');
-  const img  = document.getElementById('edit-img-preview-img');
-  const lbl  = document.getElementById('edit-img-source-label');
-  if(url){ img.src = url; lbl.textContent = '🔗 URL image'; prev.classList.remove('hidden'); }
+  if(url){ document.getElementById('edit-img-preview-img').src = url; document.getElementById('edit-img-source-label').textContent = '🔗 URL image'; prev.classList.remove('hidden'); }
   else   { prev.classList.add('hidden'); }
 }
-
 function clearEditImg(){
   pendingEditImg = null; pendingEditImgNew = true;
   document.getElementById('edit-product-img').value = '';
   document.getElementById('edit-img-file').value = '';
   document.getElementById('edit-img-preview').classList.add('hidden');
 }
-
 function clearNewImg(){
   pendingNewImg = null;
   document.getElementById('new-product-img').value = '';
@@ -630,7 +603,6 @@ function clearNewImg(){
   document.getElementById('new-img-preview').classList.add('hidden');
 }
 
-// ── DATA ──────────────────────────────────────────────────────
 function getAllProducts(includeHidden=false){
   const sheet = sheetProducts.map(p=>{
     const ov = productOverrides[p.product_id]||{};
@@ -661,7 +633,6 @@ function getAllProducts(includeHidden=false){
   const all=[...sheet,...local];
   return includeHidden ? all : all.filter(p=>!p._hidden);
 }
-
 function getAllCategories(){
   const fromProds=[...new Set(getAllProducts().map(p=>p.category).filter(Boolean))];
   const fromSheet=sheetCategories.filter(c=>!fromProds.includes(c));
@@ -669,79 +640,49 @@ function getAllCategories(){
   return [...new Set([...fromProds,...fromSheet,...locals])].sort();
 }
 
-// ── ORDERS: load from Google Sheet CSV ───────────────────────
 async function loadSheetOrders(){
   try{
-    const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Orders`;
-    const res=await fetch(url);
+    const res=await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Orders`);
     if(!res.ok){sheetOrders=[];return;}
-    const csv=await res.text();
-    const parsed=parseCSV(csv);
+    const parsed=parseCSV(await res.text());
     sheetOrders=parsed.filter(o=>o.order_id&&o.order_id.trim());
-  }catch(e){
-    console.warn('Could not load orders:',e);
-    sheetOrders=[];
-  }
+  }catch(e){ sheetOrders=[]; }
 }
-
 function getAllOrders(){
   const fromSheet=sheetOrders.map(o=>({
-    id:       o.order_id||'',
-    date:     o.date||'',
-    name:     o.name||'',
-    email:    o.email||'',
-    phone:    o.phone||'',
-    address:  o.address||'',
-    notes:    o.notes||'',
-    items:    safeParseJSON(o.items_json,'[]'),
-    total:    parseFloat(String(o.total||'0').replace(/[₱,\s]/g,''))||0,
-    status:   o.status||'Pending',
-    _fromSheet:true
+    id:o.order_id||'',date:o.date||'',name:o.name||'',email:o.email||'',phone:o.phone||'',
+    address:o.address||'',notes:o.notes||'',items:safeParseJSON(o.items_json,'[]'),
+    total:parseFloat(String(o.total||'0').replace(/[₱,\s]/g,''))||0,status:o.status||'Pending',_fromSheet:true
   }));
   const sheetIds=new Set(fromSheet.map(o=>o.id));
-  const localOnly=orders.filter(o=>!sheetIds.has(o.id));
-  return [...fromSheet,...localOnly].sort((a,b)=>String(b.id).localeCompare(String(a.id)));
+  return [...fromSheet,...orders.filter(o=>!sheetIds.has(o.id))].sort((a,b)=>String(b.id).localeCompare(String(a.id)));
 }
-
 function safeParseJSON(str, fallback){
   try{ return JSON.parse(str||fallback); }catch{ return typeof fallback==='string'?JSON.parse(fallback):fallback; }
 }
 
-// ── LOAD CATEGORIES ──────────────────────────────────────────
 async function loadCategories(){
   try{
-    const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Categories`;
-    const res=await fetch(url);
+    const res=await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Categories`);
     if(!res.ok){sheetCategories=[];return;}
-    const csv=await res.text();
-    const lines=csv.trim().split('\n');
-    if(lines.length<2){sheetCategories=[];return;}
-    sheetCategories=lines.slice(1).map(l=>l.replace(/^"|"$/g,'').trim()).filter(Boolean);
-  }catch(e){
-    console.warn('Could not load categories:',e);
-    sheetCategories=[];
-  }
+    const lines=(await res.text()).trim().split('\n');
+    sheetCategories=lines.length<2?[]:lines.slice(1).map(l=>l.replace(/^"|"$/g,'').trim()).filter(Boolean);
+  }catch(e){ sheetCategories=[]; }
 }
-
-// ── LOAD SHEET ────────────────────────────────────────────────
 async function loadProducts(){
   try{
     await loadCategories();
-    const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
-    const res=await fetch(url);
+    const res=await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`);
     if(!res.ok) throw new Error('HTTP '+res.status);
-    const csv=await res.text();
-    sheetProducts=parseCSV(csv).filter(p=>p.name&&p.name.trim());
+    sheetProducts=parseCSV(await res.text()).filter(p=>p.name&&p.name.trim());
     renderCategoryPills();applyFilters();
     document.getElementById('loading').classList.add('hidden');
     document.getElementById('products-grid').classList.remove('hidden');
   }catch(e){
-    console.error(e);
     document.getElementById('loading').classList.add('hidden');
     document.getElementById('error-msg').classList.remove('hidden');
   }
 }
-
 function parseCSV(text){
   const lines=text.trim().split('\n');
   if(lines.length<2) return [];
@@ -755,14 +696,13 @@ function parseCSV(text){
 function parseCSVLine(line){
   const r=[];let c='',q=false;
   for(let i=0;i<line.length;i++){
-    if(line[i]==='\"'){if(q&&line[i+1]==='\"'){c+='\"';i++;}else q=!q;}
+    if(line[i]==='"'){if(q&&line[i+1]==='"'){c+='"';i++;}else q=!q;}
     else if(line[i]===','&&!q){r.push(c);c='';}
     else c+=line[i];
   }
   r.push(c);return r;
 }
 
-// ── CATEGORY PILLS ────────────────────────────────────────────
 function renderCategoryPills(){
   const cats=getAllCategories();
   const el=document.getElementById('category-pills');
@@ -772,26 +712,30 @@ function renderCategoryPills(){
 }
 function setCategory(cat){activeCategory=cat;renderCategoryPills();applyFilters();}
 
-// ── PRODUCTS GRID ─────────────────────────────────────────────
-function clearSearch(){
-  document.getElementById('search-input').value='';
-  document.getElementById('search-clear').classList.add('hidden');
+function syncMobileSearch(el){
+  const d=document.getElementById('search-input');
+  if(d) d.value=el.value;
   applyFilters();
-  document.getElementById('search-input').focus();
 }
-
+function clearSearch(){
+  const d=document.getElementById('search-input');
+  const m=document.getElementById('search-input-mobile');
+  if(d) d.value='';
+  if(m) m.value='';
+  const cb=document.getElementById('search-clear');
+  if(cb) cb.classList.add('hidden');
+  applyFilters();
+  if(d) d.focus();
+}
 function applyFilters(){
   const sort=document.getElementById('sort-filter').value;
-  const query=(document.getElementById('search-input')?.value||'').toLowerCase().trim();
-  const clearBtn=document.getElementById('search-clear');
-  if(clearBtn) clearBtn.classList.toggle('hidden',!query);
+  const query=(document.getElementById('search-input')?.value||document.getElementById('search-input-mobile')?.value||'').toLowerCase().trim();
+  const cb=document.getElementById('search-clear');
+  if(cb) cb.classList.toggle('hidden',!query);
   let list=activeCategory?getAllProducts().filter(p=>p.category===activeCategory):getAllProducts();
   if(query){
     list=list.filter(p=>{
-      const name=(p.name||'').toLowerCase();
-      const cat=(p.category||'').toLowerCase();
-      const desc=(p.description||'').toLowerCase();
-      return name.includes(query)||cat.includes(query)||desc.includes(query);
+      return (p.name||'').toLowerCase().includes(query)||(p.category||'').toLowerCase().includes(query)||(p.description||'').toLowerCase().includes(query);
     });
   }
   if(sort==='price_asc') list.sort((a,b)=>parsePrice(a.final_price_php)-parsePrice(b.final_price_php));
@@ -800,7 +744,6 @@ function applyFilters(){
   renderProducts(list);
   document.getElementById('product-count').textContent=list.length+' items';
 }
-
 function renderProducts(list){
   const grid=document.getElementById('products-grid');
   const query=(document.getElementById('search-input')?.value||'').trim();
@@ -812,9 +755,7 @@ function renderProducts(list){
     const desc=p.description||'';
     return `<div class="product-card rounded-2xl overflow-hidden flex flex-col" style="background:${bg}">
       <div class="prod-img-wrap"${img?` onclick="openLightbox('${escA(img)}','${escA(p.name)}')"`:' style="cursor:default"'}>
-        ${img
-          ? `<img src="${escH(img)}" alt="${escH(p.name)}" loading="lazy" onerror="handleImgError(this)">`
-          : noImgHtml(160)}
+        ${img?`<img src="${escH(img)}" alt="${escH(p.name)}" loading="lazy" onerror="handleImgError(this)">`:noImgHtml(160)}
       </div>
       <div class="p-3 flex flex-col flex-1">
         ${p.category?`<p class="text-xs text-gray-500 mb-0.5">${escH(p.category)}</p>`:''}
@@ -829,26 +770,19 @@ function renderProducts(list){
   }).join('');
 }
 
-// ── CARD QTY CONTROLS ────────────────────────────────────────
 function getCardActionHtml(id, price){
   if(price<=0) return '';
-  const cartItem=cart.find(c=>c.id===id);
-  const qty=cartItem?cartItem.qty:0;
-  if(qty===0){
-    return `<button onclick="addToCart('${escA(id)}')" class="text-white text-xs font-extrabold px-3 py-2 rounded-full transition" style="background:#ff4d94;">🛒 Add</button>`;
-  } else {
-    return `<div class="flex items-center gap-1">
-      <button onclick="cardQtyChange('${escA(id)}',-1)" class="w-7 h-7 rounded-full text-white text-base font-extrabold flex items-center justify-center transition" style="background:#ff4d94;">−</button>
-      <span class="text-sm font-extrabold w-6 text-center" style="color:#ff4d94;">${qty}</span>
-      <button onclick="cardQtyChange('${escA(id)}',1)" class="w-7 h-7 rounded-full text-white text-base font-extrabold flex items-center justify-center transition" style="background:#ff4d94;">+</button>
-    </div>`;
-  }
+  const qty=(cart.find(c=>c.id===id)||{qty:0}).qty;
+  if(qty===0) return `<button onclick="addToCart('${escA(id)}')" class="text-white text-xs font-extrabold px-3 py-2 rounded-full transition" style="background:#ff4d94;">🛒 Add</button>`;
+  return `<div class="flex items-center gap-1">
+    <button onclick="cardQtyChange('${escA(id)}',-1)" class="w-7 h-7 rounded-full text-white text-base font-extrabold flex items-center justify-center" style="background:#ff4d94;">−</button>
+    <span class="text-sm font-extrabold w-6 text-center" style="color:#ff4d94;">${qty}</span>
+    <button onclick="cardQtyChange('${escA(id)}',1)" class="w-7 h-7 rounded-full text-white text-base font-extrabold flex items-center justify-center" style="background:#ff4d94;">+</button>
+  </div>`;
 }
 function refreshCardAction(id){
-  const el=document.getElementById('card-act-'+id);
-  if(!el) return;
-  const p=getAllProducts().find(x=>x.product_id===id);
-  if(!p) return;
+  const el=document.getElementById('card-act-'+id); if(!el) return;
+  const p=getAllProducts().find(x=>x.product_id===id); if(!p) return;
   el.innerHTML=getCardActionHtml(id,parsePrice(p.final_price_php));
 }
 function cardQtyChange(id,delta){
@@ -857,11 +791,9 @@ function cardQtyChange(id,delta){
   it.qty+=delta;
   if(it.qty<=0) cart=cart.filter(c=>c.id!==id);
   saveCart();updateCartBadge();refreshCardAction(id);
-  const sidebar=document.getElementById('cart-sidebar');
-  if(!sidebar.classList.contains('translate-x-full')) renderCartItems();
+  if(!document.getElementById('cart-sidebar').classList.contains('translate-x-full')) renderCartItems();
 }
 
-// ── CART ──────────────────────────────────────────────────────
 function addToCart(id){
   const p=getAllProducts().find(x=>x.product_id===id);if(!p)return;
   const ex=cart.find(c=>c.id===id);
@@ -906,7 +838,6 @@ function toggleCart(){
   else{renderCartItems();s.classList.remove('translate-x-full');o.classList.remove('hidden');}
 }
 
-// ── ORDER FORM ────────────────────────────────────────────────
 function showOrderForm(){
   if(!cart.length)return;
   const total=cart.reduce((s,c)=>s+c.price*c.qty,0);
@@ -922,20 +853,16 @@ function showOrderForm(){
   document.getElementById('order-modal').classList.remove('hidden');
 }
 function closeOrderForm(){document.getElementById('order-modal').classList.add('hidden');}
-
 function copyOrderId(){
   const id=document.getElementById('success-order-id').textContent;
   navigator.clipboard.writeText(id).then(()=>{
     const btn=document.getElementById('copy-id-btn');
-    btn.textContent='✓ Copied!';
-    setTimeout(()=>btn.textContent='📋 Copy Order ID',2000);
+    btn.textContent='✓ Copied!';setTimeout(()=>btn.textContent='📋 Copy Order ID',2000);
   }).catch(()=>{
-    const ta=document.createElement('textarea');
-    ta.value=id; document.body.appendChild(ta); ta.select();
-    document.execCommand('copy'); document.body.removeChild(ta);
+    const ta=document.createElement('textarea');ta.value=id;document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
     const btn=document.getElementById('copy-id-btn');
-    btn.textContent='✓ Copied!';
-    setTimeout(()=>btn.textContent='📋 Copy Order ID',2000);
+    btn.textContent='✓ Copied!';setTimeout(()=>btn.textContent='📋 Copy Order ID',2000);
   });
 }
 
@@ -943,8 +870,7 @@ document.getElementById('order-form').addEventListener('submit',async function(e
   e.preventDefault();
   const btn=document.getElementById('submit-btn');
   btn.textContent='Sending...';btn.disabled=true;
-
-  const orderId=document.getElementById('form-order-id').value || genOrderId();
+  const orderId=document.getElementById('form-order-id').value||genOrderId();
   const orderName=document.getElementById('order-name').value;
   const orderEmail=document.getElementById('order-email').value;
   const orderPhone=document.getElementById('order-phone').value;
@@ -953,41 +879,18 @@ document.getElementById('order-form').addEventListener('submit',async function(e
   const orderTotal=cart.reduce((s,c)=>s+c.price*c.qty,0);
   const orderDate=new Date().toLocaleString('en-PH',{timeZone:'Asia/Manila',dateStyle:'medium',timeStyle:'short'});
   const orderItems=[...cart];
-
   try{
-    const fd=new FormData(this);
-    const res=await fetch(this.action,{method:'POST',body:fd,headers:{Accept:'application/json'}});
-
+    const res=await fetch(this.action,{method:'POST',body:new FormData(this),headers:{Accept:'application/json'}});
     if(res.ok){
-      const orderPayload={
-        action:'save_order',
-        order_id:orderId,
-        date:orderDate,
-        name:orderName,
-        email:orderEmail,
-        phone:orderPhone,
-        address:orderAddress,
-        notes:orderNotes,
-        items_json:JSON.stringify(orderItems),
-        total:String(orderTotal),
-        status:'Pending'
-      };
-      fetch(APPS_SCRIPT_URL,{
-        method:'POST',mode:'no-cors',
-        headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body:JSON.stringify(orderPayload)
-      }).catch(e=>console.warn('Order sheet save failed:',e));
-
-      const localOrder={
-        id:orderId,date:orderDate,name:orderName,email:orderEmail,phone:orderPhone,
-        address:orderAddress,notes:orderNotes,items:orderItems,total:orderTotal,status:'Pending'
-      };
-      orders.unshift(localOrder);
+      fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({action:'save_order',order_id:orderId,date:orderDate,name:orderName,email:orderEmail,
+          phone:orderPhone,address:orderAddress,notes:orderNotes,items_json:JSON.stringify(orderItems),
+          total:String(orderTotal),status:'Pending'})
+      }).catch(()=>{});
+      orders.unshift({id:orderId,date:orderDate,name:orderName,email:orderEmail,phone:orderPhone,
+        address:orderAddress,notes:orderNotes,items:orderItems,total:orderTotal,status:'Pending'});
       localStorage.setItem('ig3-orders',JSON.stringify(orders));
-
-      lastOrderId=orderId;
-      cart=[];saveCart();updateCartBadge();
-
+      lastOrderId=orderId;cart=[];saveCart();updateCartBadge();
       document.getElementById('success-order-id').textContent=orderId;
       document.getElementById('order-form').classList.add('hidden');
       document.getElementById('order-success').classList.remove('hidden');
@@ -996,7 +899,6 @@ document.getElementById('order-form').addEventListener('submit',async function(e
   btn.textContent='Send Order ✓';btn.disabled=false;
 });
 
-// ── TRACK ORDER ───────────────────────────────────────────────
 function showTrackOrder(){
   document.getElementById('track-modal').classList.remove('hidden');
   document.getElementById('track-result').classList.add('hidden');
@@ -1005,75 +907,47 @@ function showTrackOrder(){
   setTimeout(()=>document.getElementById('track-input').focus(),100);
 }
 function closeTrackOrder(){document.getElementById('track-modal').classList.add('hidden');}
-
 async function lookupOrder(){
   const raw=document.getElementById('track-input').value.trim().toUpperCase();
   const errEl=document.getElementById('track-error');
-  const resultEl=document.getElementById('track-result');
   if(!raw){errEl.textContent='Please enter an Order ID.';errEl.classList.remove('hidden');return;}
-
   const btn=document.getElementById('track-btn');
   btn.textContent='Searching...';btn.disabled=true;
-  errEl.classList.add('hidden');
-  resultEl.classList.add('hidden');
-
+  errEl.classList.add('hidden');document.getElementById('track-result').classList.add('hidden');
   await loadSheetOrders();
-  const all=getAllOrders();
-  const order=all.find(o=>o.id.toUpperCase()===raw || o.id.toUpperCase().replace('IG3-','')===raw.replace('IG3-',''));
-
+  const order=getAllOrders().find(o=>o.id.toUpperCase()===raw||o.id.toUpperCase().replace('IG3-','')===raw.replace('IG3-',''));
   btn.textContent='Search';btn.disabled=false;
-
-  if(!order){
-    errEl.textContent='Order not found. Check your Order ID and try again.';
-    errEl.classList.remove('hidden');
-    return;
-  }
-
+  if(!order){errEl.textContent='Order not found. Check your Order ID and try again.';errEl.classList.remove('hidden');return;}
   renderTrackingResult(order);
 }
-
 function renderTrackingResult(order){
-  const steps=ORDER_STATUSES;
-  const curIdx=steps.indexOf(order.status);
-
-  const timelineEl=document.getElementById('track-timeline');
-  timelineEl.innerHTML=steps.map((s,i)=>{
+  const curIdx=ORDER_STATUSES.indexOf(order.status);
+  document.getElementById('track-timeline').innerHTML=ORDER_STATUSES.map((s,i)=>{
     const done=i<curIdx||(order.status==='Delivered'&&i<=curIdx);
     const current=i===curIdx&&order.status!=='Cancelled';
-    const cls=done?'done':current?'current':'';
-    return `<div class="track-step ${cls}">
+    return `<div class="track-step ${done?'done':current?'current':''}">
       <div class="track-dot">${STATUS_ICONS[s]||'•'}</div>
       <div class="track-label">${s}</div>
     </div>`;
   }).join('');
-
   document.getElementById('tr-name').textContent=order.name;
   document.getElementById('tr-id').textContent='Order ID: '+order.id;
   document.getElementById('tr-date').textContent=order.date;
   document.getElementById('tr-total').textContent=fmtPrice(order.total);
-
   const badge=document.getElementById('tr-status-badge');
   badge.textContent=(STATUS_ICONS[order.status]||'')+' '+order.status;
   badge.className='text-xs font-bold px-3 py-1 rounded-full mt-1 inline-block '+statusBadgeClass(order.status);
-
   document.getElementById('tr-phone').textContent='📱 '+order.phone;
   document.getElementById('tr-address').textContent='📍 '+order.address;
   const notesEl=document.getElementById('tr-notes');
-  if(order.notes){notesEl.textContent='📝 '+order.notes;notesEl.classList.remove('hidden');}
-  else notesEl.classList.add('hidden');
-
+  if(order.notes){notesEl.textContent='📝 '+order.notes;notesEl.classList.remove('hidden');}else notesEl.classList.add('hidden');
   const items=Array.isArray(order.items)?order.items:safeParseJSON(order.items,'[]');
   document.getElementById('tr-items').innerHTML=items.map(i=>
-    `<div class="flex justify-between">
-      <span class="text-gray-700 flex-1 truncate mr-2">${escH(i.name)} <span class="text-gray-400">×${i.qty}</span></span>
-      <span class="font-semibold text-gray-800">${fmtPrice(i.price*i.qty)}</span>
-    </div>`
+    `<div class="flex justify-between"><span class="text-gray-700 flex-1 truncate mr-2">${escH(i.name)} <span class="text-gray-400">×${i.qty}</span></span><span class="font-semibold text-gray-800">${fmtPrice(i.price*i.qty)}</span></div>`
   ).join('');
-
   document.getElementById('track-result').classList.remove('hidden');
 }
 
-// ── ADMIN ACCESS (tap logo 5×) ────────────────────────────────
 function handleLogoClick(){
   logoClicks++;clearTimeout(logoTimer);
   if(logoClicks>=5){logoClicks=0;openAdmin();}
@@ -1093,12 +967,9 @@ function adminLogin(){
     document.getElementById('admin-login').classList.add('hidden');
     document.getElementById('admin-dashboard').classList.remove('hidden');
     showAdminTab('products');
-  }else{
-    document.getElementById('admin-login-error').classList.remove('hidden');
-  }
+  }else{document.getElementById('admin-login-error').classList.remove('hidden');}
 }
 
-// ── ADMIN TABS ────────────────────────────────────────────────
 function showAdminTab(tab){
   ['products','categories','orders','reports'].forEach(t=>{
     document.getElementById(`admin-${t}-tab`).classList.toggle('hidden',t!==tab);
@@ -1110,134 +981,89 @@ function showAdminTab(tab){
   if(tab==='reports')    loadAndRenderReports();
 }
 
-// ── ADMIN — PRODUCTS ──────────────────────────────────────────
 function renderAdminProducts(){
   populateAdminCategorySelect();
   const all=getAllProducts();
   const hidden=getAllProducts(true).filter(p=>p._hidden);
   const list=document.getElementById('admin-product-list');
-
   const seenNames=new Map(); let dupCount=0;
   all.forEach(p=>{const k=(p.name||'').toLowerCase().trim();if(!k)return;if(seenNames.has(k))dupCount++;else seenNames.set(k,1);});
-
   const dupBtn=`<div class="flex items-center justify-between mb-4">
     <span class="text-sm text-gray-500 font-medium">${all.length} product(s)${hidden.length?' · <span class="text-gray-400">'+hidden.length+' hidden</span>':''}</span>
-    <button onclick="findAndRemoveDuplicates()"
-      class="flex items-center gap-1.5 ${dupCount>0?'bg-red-50 hover:bg-red-100 text-red-600 border border-red-200':'bg-gray-100 hover:bg-gray-200 text-gray-500 border border-gray-200'} font-semibold px-4 py-2 rounded-xl text-sm transition">
+    <button onclick="findAndRemoveDuplicates()" class="flex items-center gap-1.5 ${dupCount>0?'bg-red-50 hover:bg-red-100 text-red-600 border border-red-200':'bg-gray-100 hover:bg-gray-200 text-gray-500 border border-gray-200'} font-semibold px-4 py-2 rounded-xl text-sm transition">
       🔍 ${dupCount>0?dupCount+' Duplicate'+(dupCount>1?'s':'')+' Found':'No Duplicates'}
     </button>
   </div>`;
-
-  if(!all.length && !hidden.length){
-    list.innerHTML=dupBtn+'<p class="text-gray-400 text-sm text-center py-8">No products yet.</p>';
-    return;
-  }
-
+  if(!all.length&&!hidden.length){list.innerHTML=dupBtn+'<p class="text-gray-400 text-sm text-center py-8">No products yet.</p>';return;}
   const cats=[...new Set(all.map(p=>p.category||'Uncategorized'))].sort();
   const mainHtml=cats.map(cat=>{
     const prods=all.filter(p=>(p.category||'Uncategorized')===cat);
-    return `<div class="mb-5">
-      <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">${escH(cat)}</h4>
-      <div class="space-y-2">
-        ${prods.map(p=>{
-          const price=parsePrice(p.final_price_php);
-          const img=getImg(p);
-          const hasOv=p._edited||(p._local&&productOverrides[p.product_id]);
-          return `<div class="bg-white rounded-xl shadow-sm p-3 flex items-center gap-3">
-            ${img
-              ?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="w-12 h-12 rounded-xl bg-yellow-100 items-center justify-center text-xl flex-shrink-0 hidden">🛍️</div>`
-              :`<div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-semibold text-gray-800 truncate">${escH(p.name)}</p>
-              <p class="text-xs text-gray-400 truncate">
-                ${escH(p.category||'No category')} · ${price>0?fmtPrice(price):'No price'}
-                ${p._edited?' <span style="color:#3b82f6">(edited)</span>':''}
-                ${p._local?' <span style="color:#22c55e">(manual)</span>':''}
-                ${imageStorage[p.product_id]?' <span style="color:#f59e0b">📁 desktop image</span>':''}
-              </p>
-              ${p.description?`<p class="text-xs text-gray-400 italic truncate mt-0.5">${escH(p.description)}</p>`:''}
-            </div>
-            <div class="flex items-center gap-1.5 flex-shrink-0">
-              <button onclick="openEditModal('${escA(p.product_id)}')"
-                class="bg-yellow-400 hover:bg-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full transition">Edit</button>
-              ${hasOv||imageStorage[p.product_id]?`<button onclick="clearProductOverrides('${escA(p.product_id)}')" title="Reset to original" class="text-gray-400 hover:text-red-500 text-sm px-1.5 py-1 rounded-lg hover:bg-red-50 transition">↺</button>`:''}
-              ${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="text-gray-400 hover:text-red-500 text-lg px-1 transition" title="Delete">🗑</button>`:''}
-            </div>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>`;
-  }).join('');
-
-  const hiddenHtml=hidden.length?`<div class="mt-8 mb-5">
-    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">🚫 Hidden / Removed Duplicates (${hidden.length})</h4>
-    <div class="space-y-2">
-      ${hidden.map(p=>{
-        const price=parsePrice(p.final_price_php);
-        const img=getImg(p);
-        return `<div class="bg-gray-50 rounded-xl shadow-sm p-3 flex items-center gap-3 opacity-60">
-          ${img?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none'">`:`<div class="w-12 h-12 rounded-xl bg-gray-200 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}
+    return `<div class="mb-5"><h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">${escH(cat)}</h4><div class="space-y-2">
+      ${prods.map(p=>{
+        const price=parsePrice(p.final_price_php);const img=getImg(p);const hasOv=p._edited||(p._local&&productOverrides[p.product_id]);
+        return `<div class="bg-white rounded-xl shadow-sm p-3 flex items-center gap-3">
+          ${img?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="w-12 h-12 rounded-xl bg-yellow-100 items-center justify-center text-xl flex-shrink-0 hidden">🛍️</div>`:`<div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}
           <div class="flex-1 min-w-0">
-            <p class="text-sm font-semibold text-gray-400 truncate line-through">${escH(p.name)}</p>
-            <p class="text-xs text-gray-400 truncate">${escH(p.category||'No category')} · ${price>0?fmtPrice(price):'No price'} · <em>duplicate removed</em></p>
+            <p class="text-sm font-semibold text-gray-800 truncate">${escH(p.name)}</p>
+            <p class="text-xs text-gray-400 truncate">${escH(p.category||'No category')} · ${price>0?fmtPrice(price):'No price'}${p._edited?' <span style="color:#3b82f6">(edited)</span>':''}${p._local?' <span style="color:#22c55e">(manual)</span>':''}${imageStorage[p.product_id]?' <span style="color:#f59e0b">📁 desktop image</span>':''}</p>
+            ${p.description?`<p class="text-xs text-gray-400 italic truncate mt-0.5">${escH(p.description)}</p>`:''}
           </div>
           <div class="flex items-center gap-1.5 flex-shrink-0">
-            <button onclick="restoreHiddenProduct('${escA(p.product_id)}')"
-              class="bg-green-50 hover:bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full transition">↩ Restore</button>
-            ${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="text-gray-400 hover:text-red-500 text-lg px-1 transition" title="Delete permanently">🗑</button>`:''}
+            <button onclick="openEditModal('${escA(p.product_id)}')" class="bg-yellow-400 hover:bg-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full transition">Edit</button>
+            ${hasOv||imageStorage[p.product_id]?`<button onclick="clearProductOverrides('${escA(p.product_id)}')" title="Reset" class="text-gray-400 hover:text-red-500 text-sm px-1.5 py-1 rounded-lg hover:bg-red-50 transition">↺</button>`:''}
+            ${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="text-gray-400 hover:text-red-500 text-lg px-1 transition">🗑</button>`:''}
           </div>
         </div>`;
       }).join('')}
-    </div>
-  </div>`:'';
-
+    </div></div>`;
+  }).join('');
+  const hiddenHtml=hidden.length?`<div class="mt-8 mb-5"><h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">🚫 Hidden / Removed Duplicates (${hidden.length})</h4><div class="space-y-2">
+    ${hidden.map(p=>{const price=parsePrice(p.final_price_php);const img=getImg(p);return`<div class="bg-gray-50 rounded-xl shadow-sm p-3 flex items-center gap-3 opacity-60">
+      ${img?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none'">`:`<div class="w-12 h-12 rounded-xl bg-gray-200 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}
+      <div class="flex-1 min-w-0"><p class="text-sm font-semibold text-gray-400 truncate line-through">${escH(p.name)}</p><p class="text-xs text-gray-400 truncate">${escH(p.category||'No category')} · ${price>0?fmtPrice(price):'No price'} · <em>duplicate removed</em></p></div>
+      <div class="flex items-center gap-1.5 flex-shrink-0">
+        <button onclick="restoreHiddenProduct('${escA(p.product_id)}')" class="bg-green-50 hover:bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full transition">↩ Restore</button>
+        ${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="text-gray-400 hover:text-red-500 text-lg px-1 transition">🗑</button>`:''}
+      </div>
+    </div>`;}).join('')}
+  </div></div>`:'';
   list.innerHTML=dupBtn+mainHtml+hiddenHtml;
 }
 
 function populateAdminCategorySelect(){
   const sel=document.getElementById('new-product-category');
-  const cats=getAllCategories();
-  sel.innerHTML='<option value="">Select category</option>'+cats.map(c=>`<option value="${escA(c)}">${escH(c)}</option>`).join('');
+  sel.innerHTML='<option value="">Select category</option>'+getAllCategories().map(c=>`<option value="${escA(c)}">${escH(c)}</option>`).join('');
 }
 
-// ── EDIT MODAL ────────────────────────────────────────────────
 function openEditModal(id){
   const p=getAllProducts().find(x=>x.product_id===id);if(!p)return;
-  pendingEditImg = null; pendingEditImgNew = false;
+  pendingEditImg=null;pendingEditImgNew=false;
   document.getElementById('edit-img-file').value='';
   document.getElementById('edit-product-id').value=id;
   document.getElementById('edit-product-name').value=p.name||'';
   document.getElementById('edit-product-price').value=parseFloat(p.final_price_php)||'';
   document.getElementById('edit-product-description').value=p.description||'';
-  const storedBase64 = imageStorage[p.product_id];
-  const urlImg = (productOverrides[p.product_id]?.imageUrl) || p.image_url || p.image || p.img || '';
-  const curImg = storedBase64 || urlImg;
+  const storedBase64=imageStorage[p.product_id];
+  const urlImg=(productOverrides[p.product_id]?.imageUrl)||p.image_url||p.image||p.img||'';
+  const curImg=storedBase64||urlImg;
   if(storedBase64){
-    pendingEditImg = storedBase64; pendingEditImgNew = false;
-    document.getElementById('edit-product-img').value = '';
-    document.getElementById('edit-img-source-label').textContent = '📁 Desktop image (saved in browser)';
-  } else {
-    document.getElementById('edit-product-img').value = urlImg;
-    document.getElementById('edit-img-source-label').textContent = urlImg ? '🔗 URL image' : '';
+    pendingEditImg=storedBase64;pendingEditImgNew=false;
+    document.getElementById('edit-product-img').value='';
+    document.getElementById('edit-img-source-label').textContent='📁 Desktop image (saved in browser)';
+  }else{
+    document.getElementById('edit-product-img').value=urlImg;
+    document.getElementById('edit-img-source-label').textContent=urlImg?'🔗 URL image':'';
   }
-  const prev = document.getElementById('edit-img-preview');
-  const prevImg = document.getElementById('edit-img-preview-img');
-  if(curImg){ prevImg.src = curImg; prev.classList.remove('hidden'); }
-  else { prev.classList.add('hidden'); }
+  const prev=document.getElementById('edit-img-preview');
+  if(curImg){document.getElementById('edit-img-preview-img').src=curImg;prev.classList.remove('hidden');}else prev.classList.add('hidden');
   const cats=getAllCategories();
   const sel=document.getElementById('edit-product-category');
   sel.innerHTML='<option value="">— No category —</option>'+cats.map(c=>`<option value="${escA(c)}"${p.category===c?' selected':''}>${escH(c)}</option>`).join('');
-  if(p.category&&!cats.includes(p.category))
-    sel.innerHTML+=`<option value="${escA(p.category)}" selected>${escH(p.category)}</option>`;
+  if(p.category&&!cats.includes(p.category)) sel.innerHTML+=`<option value="${escA(p.category)}" selected>${escH(p.category)}</option>`;
   document.getElementById('edit-product-modal').classList.remove('hidden');
   setTimeout(()=>document.getElementById('edit-product-name').focus(),100);
 }
-
-function closeEditModal(){
-  pendingEditImg=null; pendingEditImgNew=false;
-  document.getElementById('edit-product-modal').classList.add('hidden');
-}
-
+function closeEditModal(){pendingEditImg=null;pendingEditImgNew=false;document.getElementById('edit-product-modal').classList.add('hidden');}
 function saveProductEdit(){
   const id=document.getElementById('edit-product-id').value;
   const name=document.getElementById('edit-product-name').value.trim();
@@ -1247,54 +1073,37 @@ function saveProductEdit(){
   const imgUrl=document.getElementById('edit-product-img').value.trim();
   const desc=document.getElementById('edit-product-description').value.trim();
   if(!name){alert('Product name is required.');return;}
-  if(price!==null&&(isNaN(price)||price<0)){alert('Invalid price. Enter a number.');return;}
+  if(price!==null&&(isNaN(price)||price<0)){alert('Invalid price.');return;}
   if(pendingEditImgNew){
-    if(pendingEditImg){ imageStorage[id]=pendingEditImg; saveImageStorage(); }
-    else              { delete imageStorage[id]; saveImageStorage(); }
-  } else if(imgUrl && !pendingEditImg){
-    delete imageStorage[id]; saveImageStorage();
-  }
-  const ov={};
-  ov.name=name; ov.category=cat;
+    if(pendingEditImg){imageStorage[id]=pendingEditImg;saveImageStorage();}
+    else{delete imageStorage[id];saveImageStorage();}
+  }else if(imgUrl&&!pendingEditImg){delete imageStorage[id];saveImageStorage();}
+  const ov={name,category:cat,description:desc};
   if(price!=null) ov.price=price;
-  ov.imageUrl = (pendingEditImg && !pendingEditImgNew) || (pendingEditImgNew && pendingEditImg) ? '' : imgUrl;
-  ov.description=desc;
-  productOverrides[id]=ov; saveOverrides();
+  ov.imageUrl=(pendingEditImg&&!pendingEditImgNew)||(pendingEditImgNew&&pendingEditImg)?'':imgUrl;
+  productOverrides[id]=ov;saveOverrides();
   const lIdx=localProducts.findIndex(p=>p.id===id);
   if(lIdx>=0){
-    localProducts[lIdx]={...localProducts[lIdx],name,category:cat,
-      price:price??localProducts[lIdx].price,
-      imageUrl: imageStorage[id] ? '' : imgUrl,
-      description:desc};
+    localProducts[lIdx]={...localProducts[lIdx],name,category:cat,price:price??localProducts[lIdx].price,imageUrl:imageStorage[id]?'':imgUrl,description:desc};
     localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
   }
-  const syncImgUrl = pendingEditImg ? '' : imgUrl;
-  fetch(APPS_SCRIPT_URL,{
-    method:'POST',mode:'no-cors',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({action:'update_product',product_id:id,name,category:cat,final_price_php:price!=null?String(price):'',image_url:syncImgUrl,description:desc})
-  }).catch(e=>console.warn('Sheet update failed:',e));
-  pendingEditImg=null; pendingEditImgNew=false;
-  closeEditModal(); renderCategoryPills(); applyFilters(); renderAdminProducts();
+  fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify({action:'update_product',product_id:id,name,category:cat,final_price_php:price!=null?String(price):'',image_url:pendingEditImg?'':imgUrl,description:desc})
+  }).catch(()=>{});
+  pendingEditImg=null;pendingEditImgNew=false;
+  closeEditModal();renderCategoryPills();applyFilters();renderAdminProducts();
 }
-
 function clearProductOverrides(id){
   if(!confirm('Reset this product to its original data?'))return;
-  delete productOverrides[id]; delete imageStorage[id];
-  saveOverrides(); saveImageStorage();
-  renderCategoryPills();applyFilters();renderAdminProducts();
+  delete productOverrides[id];delete imageStorage[id];
+  saveOverrides();saveImageStorage();renderCategoryPills();applyFilters();renderAdminProducts();
 }
-
 function clearAddProductForm(){
-  document.getElementById('new-product-name').value='';
-  document.getElementById('new-product-price').value='';
-  document.getElementById('new-product-img').value='';
-  document.getElementById('new-product-desc').value='';
+  ['new-product-name','new-product-price','new-product-img','new-product-desc'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('new-img-file').value='';
   document.getElementById('new-img-preview').classList.add('hidden');
   pendingNewImg=null;
 }
-
 async function addLocalProduct(){
   const name=document.getElementById('new-product-name').value.trim();
   const cat=document.getElementById('new-product-category').value;
@@ -1303,199 +1112,116 @@ async function addLocalProduct(){
   const desc=document.getElementById('new-product-desc').value.trim();
   if(!name){alert('Product name is required.');return;}
   if(isNaN(price)||price<=0){alert('A valid price is required.');return;}
-  const btn=document.getElementById('add-product-btn');
-  const statusEl=document.getElementById('add-product-status');
-  btn.disabled=true; btn.textContent='Adding...';
-  statusEl.textContent='⏳ Saving to Google Sheet...'; statusEl.style.color='#6b7280';
-  if(pendingNewImg){
-    const nameKey='byname_'+name.toLowerCase().trim();
-    imageStorage[nameKey]=pendingNewImg; saveImageStorage();
-  }
-  let sheetSuccess=false;
-  try{
-    const payload={name, category:cat, final_price_php:String(price), image_url:pendingNewImg?'':img, description:desc};
-    await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
-    sheetSuccess=true;
-  }catch(e){ sheetSuccess=false; console.warn('Apps Script POST failed:', e); }
-  if(sheetSuccess){
-    statusEl.textContent='⏳ Sent! Refreshing product list...'; statusEl.style.color='#6b7280';
-    clearAddProductForm();
-    await new Promise(r=>setTimeout(r,3000));
-    await loadProducts(); renderCategoryPills(); renderAdminProducts();
-    statusEl.textContent='✅ Added to Google Sheet!'; statusEl.style.color='#16a34a';
-    setTimeout(()=>{ statusEl.textContent=''; },4000);
-  } else {
+  const btn=document.getElementById('add-product-btn');const statusEl=document.getElementById('add-product-status');
+  btn.disabled=true;btn.textContent='Adding...';statusEl.textContent='⏳ Saving to Google Sheet...';statusEl.style.color='#6b7280';
+  if(pendingNewImg){imageStorage['byname_'+name.toLowerCase().trim()]=pendingNewImg;saveImageStorage();}
+  let ok=false;
+  try{await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({name,category:cat,final_price_php:String(price),image_url:pendingNewImg?'':img,description:desc})});ok=true;}catch(e){}
+  if(ok){
+    statusEl.textContent='⏳ Sent! Refreshing...';statusEl.style.color='#6b7280';clearAddProductForm();
+    await new Promise(r=>setTimeout(r,3000));await loadProducts();renderCategoryPills();renderAdminProducts();
+    statusEl.textContent='✅ Added to Google Sheet!';statusEl.style.color='#16a34a';setTimeout(()=>statusEl.textContent='',4000);
+  }else{
     const newId='local_'+Date.now();
     localProducts.push({id:newId,name,category:cat,price,imageUrl:pendingNewImg?'':img,description:desc});
     localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
-    if(pendingNewImg){ imageStorage[newId]=pendingNewImg; saveImageStorage(); }
-    statusEl.textContent='⚠️ Sheet sync failed — saved locally. Check Apps Script deployment.'; statusEl.style.color='#d97706';
-    clearAddProductForm(); renderCategoryPills(); applyFilters(); renderAdminProducts();
-    setTimeout(()=>{ statusEl.textContent=''; },6000);
+    if(pendingNewImg){imageStorage[newId]=pendingNewImg;saveImageStorage();}
+    statusEl.textContent='⚠️ Sheet sync failed — saved locally.';statusEl.style.color='#d97706';
+    clearAddProductForm();renderCategoryPills();applyFilters();renderAdminProducts();setTimeout(()=>statusEl.textContent='',6000);
   }
-  btn.disabled=false; btn.textContent='+ Add Product';
+  btn.disabled=false;btn.textContent='+ Add Product';
 }
-
 function deleteLocalProduct(id){
   if(!confirm('Delete this product permanently?'))return;
-  localProducts=localProducts.filter(p=>p.id!==id);
-  localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
-  delete productOverrides[id]; saveOverrides();
-  delete imageStorage[id]; saveImageStorage();
+  localProducts=localProducts.filter(p=>p.id!==id);localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
+  delete productOverrides[id];saveOverrides();delete imageStorage[id];saveImageStorage();
   renderCategoryPills();applyFilters();renderAdminProducts();
 }
-
 function findAndRemoveDuplicates(){
-  const all=getAllProducts();
-  const seen=new Map(); const dupes=[];
-  for(const p of all){
-    const k=(p.name||'').toLowerCase().trim();
-    if(!k) continue;
-    if(seen.has(k)) dupes.push(p);
-    else seen.set(k,p);
-  }
-  if(!dupes.length){alert('\u2705 No duplicate products found!');return;}
-  const preview=dupes.slice(0,10).map(p=>' \u2022 '+p.name).join('\n')+(dupes.length>10?'\n  ...and '+(dupes.length-10)+' more':'');
-  if(!confirm('Found '+dupes.length+' duplicate product'+(dupes.length>1?'s':'')+' (same name as another item):\n\n'+preview+'\n\nThe FIRST occurrence of each name is kept.\nRemove the duplicates?')) return;
+  const all=getAllProducts();const seen=new Map();const dupes=[];
+  for(const p of all){const k=(p.name||'').toLowerCase().trim();if(!k)continue;if(seen.has(k))dupes.push(p);else seen.set(k,p);}
+  if(!dupes.length){alert('✅ No duplicate products found!');return;}
+  const preview=dupes.slice(0,10).map(p=>' • '+p.name).join('\n')+(dupes.length>10?'\n  ...and '+(dupes.length-10)+' more':'');
+  if(!confirm('Found '+dupes.length+' duplicate(s):\n\n'+preview+'\n\nThe FIRST occurrence of each name is kept.\nRemove the duplicates?'))return;
   dupes.forEach(p=>{
-    if(p._local){
-      localProducts=localProducts.filter(lp=>lp.id!==p.product_id);
-      localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
-      delete productOverrides[p.product_id]; delete imageStorage[p.product_id];
-    } else {
-      productOverrides[p.product_id]={...(productOverrides[p.product_id]||{}),_hidden:true};
-    }
+    if(p._local){localProducts=localProducts.filter(lp=>lp.id!==p.product_id);localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));delete productOverrides[p.product_id];delete imageStorage[p.product_id];}
+    else productOverrides[p.product_id]={...(productOverrides[p.product_id]||{}),_hidden:true};
   });
-  saveOverrides(); saveImageStorage();
-  renderCategoryPills(); applyFilters(); renderAdminProducts();
-  alert('\u2705 Done! Removed '+dupes.length+' duplicate'+(dupes.length>1?'s':'')+'. Sheet duplicates are hidden (use Restore to bring them back).');
+  saveOverrides();saveImageStorage();renderCategoryPills();applyFilters();renderAdminProducts();
+  alert('✅ Done! Removed '+dupes.length+' duplicate(s). Sheet duplicates are hidden (use Restore to bring back).');
 }
-
 function restoreHiddenProduct(id){
-  if(!productOverrides[id]) return;
+  if(!productOverrides[id])return;
   delete productOverrides[id]._hidden;
-  if(!Object.keys(productOverrides[id]).length) delete productOverrides[id];
-  saveOverrides();
-  renderCategoryPills(); applyFilters(); renderAdminProducts();
+  if(!Object.keys(productOverrides[id]).length)delete productOverrides[id];
+  saveOverrides();renderCategoryPills();applyFilters();renderAdminProducts();
 }
 
-// ── ADMIN — CATEGORIES ────────────────────────────────────────
 function renderAdminCategories(){
-  const cats=getAllCategories();
-  const fromProds=[...new Set(sheetProducts.map(p=>p.category||'').filter(Boolean))];
+  const cats=getAllCategories();const fromProds=[...new Set(sheetProducts.map(p=>p.category||'').filter(Boolean))];
   const list=document.getElementById('admin-category-list');
-  if(!cats.length){list.innerHTML='<p class="text-gray-400 text-sm text-center py-8">No categories yet. Add one above.</p>';return;}
+  if(!cats.length){list.innerHTML='<p class="text-gray-400 text-sm text-center py-8">No categories yet.</p>';return;}
   list.innerHTML=cats.map(c=>{
-    const inSheet=sheetCategories.includes(c);
-    const inLocal=localCategories.includes(c);
-    const inProds=fromProds.includes(c);
-    const badge=inSheet
-      ?'<span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full ml-2">✓ Synced</span>'
-      :inLocal
-        ?'<span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full ml-2">Local only</span>'
-        :'';
-    const action=inProds&&!inSheet&&!inLocal
-      ?`<span class="text-xs text-gray-400 italic">From Products</span>`
-      :`<button onclick="deleteCategory('${escA(c)}')" class="text-red-400 hover:text-red-600 text-sm font-semibold transition">Delete</button>`;
-    return `<div class="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between mb-2">
-      <div class="flex items-center gap-3 flex-wrap"><span class="text-xl">🏷</span><span class="font-semibold text-gray-800">${escH(c)}</span>${badge}</div>
-      ${action}
-    </div>`;
+    const inSheet=sheetCategories.includes(c);const inLocal=localCategories.includes(c);const inProds=fromProds.includes(c);
+    const badge=inSheet?'<span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full ml-2">✓ Synced</span>':inLocal?'<span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full ml-2">Local only</span>':'';
+    const action=inProds&&!inSheet&&!inLocal?`<span class="text-xs text-gray-400 italic">From Products</span>`:`<button onclick="deleteCategory('${escA(c)}')" class="text-red-400 hover:text-red-600 text-sm font-semibold transition">Delete</button>`;
+    return `<div class="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between mb-2"><div class="flex items-center gap-3 flex-wrap"><span class="text-xl">🏷</span><span class="font-semibold text-gray-800">${escH(c)}</span>${badge}</div>${action}</div>`;
   }).join('');
 }
 async function addCategory(){
   const name=document.getElementById('new-category-name').value.trim();
   if(!name){alert('Category name is required.');return;}
   if(getAllCategories().includes(name)){alert('This category already exists.');return;}
-  const inp=document.getElementById('new-category-name');
-  inp.disabled=true;
-  let synced=false;
-  try{
-    await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'add_category',category_name:name})});
-    synced=true;
-  }catch(e){ console.warn('Category sync failed:',e); }
-  if(synced){
-    await new Promise(r=>setTimeout(r,2000));
-    await loadCategories();
-    localCategories=localCategories.filter(c=>c!==name);
-    localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));
-  } else {
-    localCategories.push(name);
-    localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));
-  }
-  inp.disabled=false; inp.value='';
-  renderCategoryPills();renderAdminCategories();populateAdminCategorySelect();
+  const inp=document.getElementById('new-category-name');inp.disabled=true;
+  try{await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'add_category',category_name:name})});
+    await new Promise(r=>setTimeout(r,2000));await loadCategories();
+    localCategories=localCategories.filter(c=>c!==name);localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));
+  }catch(e){localCategories.push(name);localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));}
+  inp.disabled=false;inp.value='';renderCategoryPills();renderAdminCategories();populateAdminCategorySelect();
 }
 async function deleteCategory(name){
   if(!confirm(`Delete category "${name}"?`))return;
-  try{
-    await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'delete_category',category_name:name})});
-    await new Promise(r=>setTimeout(r,2000));
-    await loadCategories();
-  }catch(e){ console.warn('Category delete sync failed:',e); }
-  localCategories=localCategories.filter(c=>c!==name);
-  localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));
+  try{await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'delete_category',category_name:name})});
+    await new Promise(r=>setTimeout(r,2000));await loadCategories();
+  }catch(e){}
+  localCategories=localCategories.filter(c=>c!==name);localStorage.setItem('ig3-local-categories',JSON.stringify(localCategories));
   renderCategoryPills();renderAdminCategories();
 }
 
-// ── ADMIN — ORDERS ────────────────────────────────────────────
 async function loadAndRenderOrders(){
   document.getElementById('admin-order-list').innerHTML='<div class="text-center py-8 text-gray-400">⏳ Loading orders...</div>';
-  await loadSheetOrders();
-  renderAdminOrders();
+  await loadSheetOrders();renderAdminOrders();
 }
-
 function renderAdminOrders(){
   const statusFilter=document.getElementById('order-status-filter').value;
   let allOrders=getAllOrders();
   if(statusFilter) allOrders=allOrders.filter(o=>o.status===statusFilter);
-
   const list=document.getElementById('admin-order-list');
   document.getElementById('orders-count-label').textContent=`Orders (${getAllOrders().length})`;
-
-  if(!allOrders.length){
-    list.innerHTML='<div class="text-center py-16 text-gray-400"><div class="text-5xl mb-4">📋</div><p>No orders found.</p><p class="text-sm mt-1">Orders placed on the site will appear here.</p></div>';
-    return;
-  }
+  if(!allOrders.length){list.innerHTML='<div class="text-center py-16 text-gray-400"><div class="text-5xl mb-4">📋</div><p>No orders found.</p></div>';return;}
   list.innerHTML=allOrders.map(o=>{
-    const statusClass=statusBadgeClass(o.status);
     const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');
-    return `
-    <div class="bg-white rounded-2xl shadow-sm p-5 mb-4">
+    return `<div class="bg-white rounded-2xl shadow-sm p-5 mb-4">
       <div class="flex items-start justify-between mb-3 flex-wrap gap-2">
-        <div>
-          <h4 class="font-bold text-gray-900 text-base">${escH(o.name)}</h4>
+        <div><h4 class="font-bold text-gray-900 text-base">${escH(o.name)}</h4>
           <p class="text-xs text-gray-400 font-mono">${escH(o.id)} · ${escH(o.date)}</p>
           ${o._fromSheet?'<span class="text-xs text-green-600 font-semibold">✓ In Sheet</span>':'<span class="text-xs text-orange-500 font-semibold">⚠ Local only</span>'}
         </div>
-        <div class="text-right">
-          <span class="font-extrabold text-yellow-600 text-lg">${fmtPrice(o.total)}</span>
-          <div><span class="text-xs font-bold px-2 py-0.5 rounded-full ${statusClass}">${STATUS_ICONS[o.status]||''} ${escH(o.status)}</span></div>
+        <div class="text-right"><span class="font-extrabold text-yellow-600 text-lg">${fmtPrice(o.total)}</span>
+          <div><span class="text-xs font-bold px-2 py-0.5 rounded-full ${statusBadgeClass(o.status)}">${STATUS_ICONS[o.status]||''} ${escH(o.status)}</span></div>
         </div>
       </div>
       <div class="flex items-center gap-2 mb-3 flex-wrap">
         <span class="text-xs font-semibold text-gray-500">Update Status:</span>
-        ${ORDER_STATUSES.concat(['Cancelled']).map(s=>
-          `<button onclick="updateOrderStatus('${escA(o.id)}','${s}')"
-            class="text-xs font-bold px-2.5 py-1 rounded-full border transition ${o.status===s?statusBadgeClass(s)+' border-current':'border-gray-200 text-gray-500 hover:bg-gray-50'}">
-            ${STATUS_ICONS[s]||'❌'} ${s}
-          </button>`
-        ).join('')}
+        ${ORDER_STATUSES.concat(['Cancelled']).map(s=>`<button onclick="updateOrderStatus('${escA(o.id)}','${s}')" class="text-xs font-bold px-2.5 py-1 rounded-full border transition ${o.status===s?statusBadgeClass(s)+' border-current':'border-gray-200 text-gray-500 hover:bg-gray-50'}">${STATUS_ICONS[s]||'❌'} ${s}</button>`).join('')}
       </div>
       <div class="text-sm text-gray-600 space-y-1 mb-3 border-t pt-3">
-        <p>📱 ${escH(o.phone)}</p>
-        <p>✉️ ${escH(o.email)}</p>
-        <p>📍 ${escH(o.address)}</p>
+        <p>📱 ${escH(o.phone)}</p><p>✉️ ${escH(o.email)}</p><p>📍 ${escH(o.address)}</p>
         ${o.notes?`<p>📝 ${escH(o.notes)}</p>`:''}
       </div>
       <div class="border-t pt-3 mb-4">
         <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">Items Ordered</p>
-        <div class="space-y-1">
-          ${items.map(i=>`<div class="flex justify-between text-sm">
-            <span class="text-gray-700 flex-1 truncate mr-2">${escH(i.name)} <span class="text-gray-400">×${i.qty}</span></span>
-            <span class="font-semibold text-gray-800">${fmtPrice(i.price*i.qty)}</span>
-          </div>`).join('')}
-        </div>
+        <div class="space-y-1">${items.map(i=>`<div class="flex justify-between text-sm"><span class="text-gray-700 flex-1 truncate mr-2">${escH(i.name)} <span class="text-gray-400">×${i.qty}</span></span><span class="font-semibold text-gray-800">${fmtPrice(i.price*i.qty)}</span></div>`).join('')}</div>
       </div>
       <div class="flex gap-2">
         <button onclick="printOrder('${escA(o.id)}')" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold py-2.5 rounded-xl text-sm transition">🖨 Print</button>
@@ -1504,37 +1230,19 @@ function renderAdminOrders(){
     </div>`;
   }).join('');
 }
-
 async function updateOrderStatus(orderId, newStatus){
-  const so=sheetOrders.find(o=>o.order_id===orderId);
-  if(so) so.status=newStatus;
-  const lo=orders.find(o=>o.id===orderId);
-  if(lo){ lo.status=newStatus; localStorage.setItem('ig3-orders',JSON.stringify(orders)); }
+  const so=sheetOrders.find(o=>o.order_id===orderId);if(so)so.status=newStatus;
+  const lo=orders.find(o=>o.id===orderId);if(lo){lo.status=newStatus;localStorage.setItem('ig3-orders',JSON.stringify(orders));}
   renderAdminOrders();
-  fetch(APPS_SCRIPT_URL,{
-    method:'POST',mode:'no-cors',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({action:'update_order_status',order_id:orderId,status:newStatus})
-  }).catch(e=>console.warn('Status update failed:',e));
+  fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'update_order_status',order_id:orderId,status:newStatus})}).catch(()=>{});
 }
-
-function printOrder(id){
-  const o=getAllOrders().find(x=>x.id===id);
-  if(!o)return;buildPrintArea([o]);window.print();clearPrintArea();
-}
-function printAllOrders(){
-  const allOrders=getAllOrders();
-  if(!allOrders.length){alert('No orders to print.');return;}
-  buildPrintArea(allOrders);window.print();clearPrintArea();
-}
-
+function printOrder(id){const o=getAllOrders().find(x=>x.id===id);if(!o)return;buildPrintArea([o]);window.print();clearPrintArea();}
+function printAllOrders(){const a=getAllOrders();if(!a.length){alert('No orders to print.');return;}buildPrintArea(a);window.print();clearPrintArea();}
 function buildPrintArea(list){
-  const el=document.getElementById('print-area');
-  el.classList.remove('hidden');
+  const el=document.getElementById('print-area');el.classList.remove('hidden');
   el.innerHTML=list.map(o=>{
     const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');
-    return `
-    <div style="font-family:sans-serif;max-width:600px;margin:0 auto 40px;padding-bottom:40px;border-bottom:2px dashed #ddd;page-break-after:always">
+    return `<div style="font-family:sans-serif;max-width:600px;margin:0 auto 40px;padding-bottom:40px;border-bottom:2px dashed #ddd;page-break-after:always">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
         <div><h1 style="font-size:18px;font-weight:900;margin:0">IG3 Dubai Pasabuy</h1><p style="color:#888;font-size:11px;margin:2px 0 0">Packed Fresh from Dubai</p></div>
         <div style="text-align:right"><p style="font-size:11px;color:#888;margin:0">Order #${escH(o.id)}</p><p style="font-size:11px;color:#888;margin:0">${escH(o.date)}</p><p style="font-size:11px;font-weight:700;margin:2px 0 0">Status: ${escH(o.status||'Pending')}</p></div>
@@ -1558,281 +1266,82 @@ function buildPrintArea(list){
   }).join('');
 }
 function clearPrintArea(){const el=document.getElementById('print-area');el.classList.add('hidden');el.innerHTML='';}
-
 function printReport(){
   const el=document.getElementById('reports-content');
   if(!el||!el.innerHTML.trim()){alert('Report is empty. Please wait for it to load.');return;}
-  const area=document.getElementById('print-area');
-  area.classList.remove('hidden');
-  area.innerHTML=`
-    <div style="font-family:sans-serif;max-width:700px;margin:0 auto;padding:24px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <div>
-          <h1 style="font-size:20px;font-weight:900;margin:0">IG3 Dubai Pasabuy</h1>
-          <p style="color:#888;font-size:12px;margin:3px 0 0">Sales Report — printed ${new Date().toLocaleString('en-PH',{timeZone:'Asia/Manila',dateStyle:'medium',timeStyle:'short'})}</p>
-        </div>
-        <div style="font-size:28px">📊</div>
-      </div>
-      <hr style="margin-bottom:16px">
-      ${el.innerHTML}
-    </div>`;
-  window.print();
-  clearPrintArea();
+  const area=document.getElementById('print-area');area.classList.remove('hidden');
+  area.innerHTML=`<div style="font-family:sans-serif;max-width:700px;margin:0 auto;padding:24px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div><h1 style="font-size:20px;font-weight:900;margin:0">IG3 Dubai Pasabuy</h1>
+        <p style="color:#888;font-size:12px;margin:3px 0 0">Sales Report — printed ${new Date().toLocaleString('en-PH',{timeZone:'Asia/Manila',dateStyle:'medium',timeStyle:'short'})}</p>
+      </div><div style="font-size:28px">📊</div>
+    </div><hr style="margin-bottom:16px">${el.innerHTML}
+  </div>`;
+  window.print();clearPrintArea();
 }
-
 function deleteOrder(id){
   if(!confirm('Delete this order? This cannot be undone.'))return;
-  orders=orders.filter(o=>o.id!==id);
-  localStorage.setItem('ig3-orders',JSON.stringify(orders));
+  orders=orders.filter(o=>o.id!==id);localStorage.setItem('ig3-orders',JSON.stringify(orders));
   sheetOrders=sheetOrders.filter(o=>o.order_id!==id);
-  fetch(APPS_SCRIPT_URL,{
-    method:'POST',mode:'no-cors',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({action:'delete_order',order_id:id})
-  }).catch(e=>console.warn('Order delete failed:',e));
+  fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'delete_order',order_id:id})}).catch(()=>{});
   renderAdminOrders();
 }
 
-// ── ADMIN — REPORTS ───────────────────────────────────────────
 async function loadAndRenderReports(){
   document.getElementById('reports-content').innerHTML='<div class="text-center py-8 text-gray-400">⏳ Loading report data...</div>';
-  await loadSheetOrders();
-  renderSalesReport();
+  await loadSheetOrders();renderSalesReport();
 }
-
 function renderSalesReport(){
   const allOrders=getAllOrders().filter(o=>o.status!=='Cancelled');
   const totalRevenue=allOrders.reduce((s,o)=>s+o.total,0);
   const totalOrders=allOrders.length;
   const avgOrder=totalOrders>0?totalRevenue/totalOrders:0;
-
   const now=new Date();
-  const thisMonth=allOrders.filter(o=>{
-    try{ const d=new Date(o.date); return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear(); }
-    catch{ return false; }
-  });
+  const thisMonth=allOrders.filter(o=>{try{const d=new Date(o.date);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}catch{return false;}});
   const thisMonthRevenue=thisMonth.reduce((s,o)=>s+o.total,0);
-
-  const productRevMap={};
-  const productQtyMap={};
-  allOrders.forEach(o=>{
-    const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');
-    items.forEach(i=>{
-      if(!i.name) return;
-      productRevMap[i.name]=(productRevMap[i.name]||0)+(i.price*i.qty);
-      productQtyMap[i.name]=(productQtyMap[i.name]||0)+i.qty;
-    });
-  });
+  const productRevMap={},productQtyMap={};
+  allOrders.forEach(o=>{const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');items.forEach(i=>{if(!i.name)return;productRevMap[i.name]=(productRevMap[i.name]||0)+(i.price*i.qty);productQtyMap[i.name]=(productQtyMap[i.name]||0)+i.qty;});});
   const topProducts=Object.entries(productRevMap).sort((a,b)=>b[1]-a[1]).slice(0,10);
-
   const catRevMap={};
-  allOrders.forEach(o=>{
-    const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');
-    items.forEach(i=>{
-      const prod=getAllProducts().find(p=>p.name===i.name);
-      const cat=prod?.category||'Uncategorized';
-      catRevMap[cat]=(catRevMap[cat]||0)+(i.price*i.qty);
-    });
-  });
+  allOrders.forEach(o=>{const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');items.forEach(i=>{const prod=getAllProducts().find(p=>p.name===i.name);catRevMap[prod?.category||'Uncategorized']=(catRevMap[prod?.category||'Uncategorized']||0)+(i.price*i.qty);});});
   const topCats=Object.entries(catRevMap).sort((a,b)=>b[1]-a[1]);
-
-  const allIncCancelled=getAllOrders();
-  const statusCount={};
-  allIncCancelled.forEach(o=>{ statusCount[o.status]=(statusCount[o.status]||0)+1; });
-
+  const statusCount={};getAllOrders().forEach(o=>{statusCount[o.status]=(statusCount[o.status]||0)+1;});
   document.getElementById('reports-content').innerHTML=`
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-      <div class="report-card text-center">
-        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Total Revenue</p>
-        <p class="text-2xl font-extrabold text-yellow-600">${fmtPrice(totalRevenue)}</p>
-        <p class="text-xs text-gray-400 mt-1">All time</p>
-      </div>
-      <div class="report-card text-center">
-        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Total Orders</p>
-        <p class="text-2xl font-extrabold text-blue-600">${totalOrders}</p>
-        <p class="text-xs text-gray-400 mt-1">Completed/active</p>
-      </div>
-      <div class="report-card text-center">
-        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Avg Order Value</p>
-        <p class="text-2xl font-extrabold text-purple-600">${fmtPrice(avgOrder)}</p>
-        <p class="text-xs text-gray-400 mt-1">Per order</p>
-      </div>
-      <div class="report-card text-center">
-        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">This Month</p>
-        <p class="text-2xl font-extrabold text-green-600">${fmtPrice(thisMonthRevenue)}</p>
-        <p class="text-xs text-gray-400 mt-1">${thisMonth.length} order(s)</p>
-      </div>
+      <div class="report-card text-center"><p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Total Revenue</p><p class="text-2xl font-extrabold text-yellow-600">${fmtPrice(totalRevenue)}</p><p class="text-xs text-gray-400 mt-1">All time</p></div>
+      <div class="report-card text-center"><p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Total Orders</p><p class="text-2xl font-extrabold text-blue-600">${totalOrders}</p><p class="text-xs text-gray-400 mt-1">Completed/active</p></div>
+      <div class="report-card text-center"><p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Avg Order Value</p><p class="text-2xl font-extrabold text-purple-600">${fmtPrice(avgOrder)}</p><p class="text-xs text-gray-400 mt-1">Per order</p></div>
+      <div class="report-card text-center"><p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">This Month</p><p class="text-2xl font-extrabold text-green-600">${fmtPrice(thisMonthRevenue)}</p><p class="text-xs text-gray-400 mt-1">${thisMonth.length} order(s)</p></div>
     </div>
-
-    <div class="report-card mb-6">
-      <h3 class="font-bold text-base mb-4">Order Status Breakdown</h3>
-      <div class="flex flex-wrap gap-3">
-        ${ORDER_STATUSES.concat(['Cancelled']).map(s=>{
-          const count=statusCount[s]||0;
-          return `<div class="flex items-center gap-2 ${statusBadgeClass(s)} px-3 py-2 rounded-xl">
-            <span class="text-lg">${STATUS_ICONS[s]||''}</span>
-            <div>
-              <p class="font-extrabold text-lg leading-none">${count}</p>
-              <p class="text-xs font-semibold">${s}</p>
-            </div>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>
-
-    <div class="report-card mb-6">
-      <h3 class="font-bold text-base mb-4">Top Products by Revenue</h3>
-      ${topProducts.length===0?'<p class="text-gray-400 text-sm text-center py-4">No order data yet.</p>':
-        `<div class="space-y-2">
-          ${topProducts.map(([name,rev],i)=>{
-            const qty=productQtyMap[name]||0;
-            const pct=totalRevenue>0?Math.round(rev/totalRevenue*100):0;
-            return `<div>
-              <div class="flex items-center justify-between mb-1">
-                <span class="text-sm font-semibold text-gray-800 flex-1 truncate mr-2">${i+1}. ${escH(name)}</span>
-                <div class="text-right flex-shrink-0">
-                  <span class="text-sm font-bold text-yellow-700">${fmtPrice(rev)}</span>
-                  <span class="text-xs text-gray-400 ml-1">${qty} sold</span>
-                </div>
-              </div>
-              <div class="w-full bg-gray-100 rounded-full h-1.5">
-                <div class="bg-yellow-400 h-1.5 rounded-full" style="width:${pct}%"></div>
-              </div>
-            </div>`;
-          }).join('')}
-        </div>`}
-    </div>
-
-    <div class="report-card mb-6">
-      <h3 class="font-bold text-base mb-4">Revenue by Category</h3>
-      ${topCats.length===0?'<p class="text-gray-400 text-sm text-center py-4">No order data yet.</p>':
-        `<div class="space-y-2">
-          ${topCats.map(([cat,rev])=>{
-            const pct=totalRevenue>0?Math.round(rev/totalRevenue*100):0;
-            return `<div>
-              <div class="flex items-center justify-between mb-1">
-                <span class="text-sm font-semibold text-gray-700">${escH(cat)}</span>
-                <span class="text-sm font-bold text-purple-700">${fmtPrice(rev)} <span class="text-xs text-gray-400">(${pct}%)</span></span>
-              </div>
-              <div class="w-full bg-gray-100 rounded-full h-1.5">
-                <div class="bg-purple-400 h-1.5 rounded-full" style="width:${pct}%"></div>
-              </div>
-            </div>`;
-          }).join('')}
-        </div>`}
-    </div>
-
-    <div class="report-card">
-      <h3 class="font-bold text-base mb-4">Recent Orders</h3>
-      ${getAllOrders().length===0?'<p class="text-gray-400 text-sm text-center py-4">No orders yet.</p>':
-        `<div class="overflow-x-auto">
-          <table class="w-full text-sm">
-            <thead><tr class="border-b text-left text-xs text-gray-400 uppercase tracking-wide">
-              <th class="pb-2 pr-4">Order ID</th>
-              <th class="pb-2 pr-4">Customer</th>
-              <th class="pb-2 pr-4">Date</th>
-              <th class="pb-2 pr-4">Total</th>
-              <th class="pb-2">Status</th>
-            </tr></thead>
-            <tbody>
-              ${getAllOrders().slice(0,20).map(o=>`<tr class="border-b last:border-0">
-                <td class="py-2 pr-4 font-mono text-xs text-blue-600">${escH(o.id)}</td>
-                <td class="py-2 pr-4 font-semibold">${escH(o.name)}</td>
-                <td class="py-2 pr-4 text-gray-500 text-xs">${escH(o.date)}</td>
-                <td class="py-2 pr-4 font-bold text-yellow-700">${fmtPrice(o.total)}</td>
-                <td class="py-2"><span class="text-xs font-bold px-2 py-0.5 rounded-full ${statusBadgeClass(o.status)}">${STATUS_ICONS[o.status]||''} ${escH(o.status||'Pending')}</span></td>
-              </tr>`).join('')}
-            </tbody>
-          </table>
-        </div>`}
-    </div>
+    <div class="report-card mb-6"><h3 class="font-bold text-base mb-4">Order Status Breakdown</h3><div class="flex flex-wrap gap-3">${ORDER_STATUSES.concat(['Cancelled']).map(s=>`<div class="flex items-center gap-2 ${statusBadgeClass(s)} px-3 py-2 rounded-xl"><span class="text-lg">${STATUS_ICONS[s]||''}</span><div><p class="font-extrabold text-lg leading-none">${statusCount[s]||0}</p><p class="text-xs font-semibold">${s}</p></div></div>`).join('')}</div></div>
+    <div class="report-card mb-6"><h3 class="font-bold text-base mb-4">Top Products by Revenue</h3>${topProducts.length===0?'<p class="text-gray-400 text-sm text-center py-4">No order data yet.</p>':`<div class="space-y-2">${topProducts.map(([name,rev],i)=>{const qty=productQtyMap[name]||0;const pct=totalRevenue>0?Math.round(rev/totalRevenue*100):0;return`<div><div class="flex items-center justify-between mb-1"><span class="text-sm font-semibold text-gray-800 flex-1 truncate mr-2">${i+1}. ${escH(name)}</span><div class="text-right flex-shrink-0"><span class="text-sm font-bold text-yellow-700">${fmtPrice(rev)}</span><span class="text-xs text-gray-400 ml-1">${qty} sold</span></div></div><div class="w-full bg-gray-100 rounded-full h-1.5"><div class="bg-yellow-400 h-1.5 rounded-full" style="width:${pct}%"></div></div></div>`;}).join('')}</div>`}</div>
+    <div class="report-card mb-6"><h3 class="font-bold text-base mb-4">Revenue by Category</h3>${topCats.length===0?'<p class="text-gray-400 text-sm text-center py-4">No order data yet.</p>':`<div class="space-y-2">${topCats.map(([cat,rev])=>{const pct=totalRevenue>0?Math.round(rev/totalRevenue*100):0;return`<div><div class="flex items-center justify-between mb-1"><span class="text-sm font-semibold text-gray-700">${escH(cat)}</span><span class="text-sm font-bold text-purple-700">${fmtPrice(rev)} <span class="text-xs text-gray-400">(${pct}%)</span></span></div><div class="w-full bg-gray-100 rounded-full h-1.5"><div class="bg-purple-400 h-1.5 rounded-full" style="width:${pct}%"></div></div></div>`;}).join('')}</div>`}</div>
+    <div class="report-card"><h3 class="font-bold text-base mb-4">Recent Orders</h3>${getAllOrders().length===0?'<p class="text-gray-400 text-sm text-center py-4">No orders yet.</p>':`<div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr class="border-b text-left text-xs text-gray-400 uppercase tracking-wide"><th class="pb-2 pr-4">Order ID</th><th class="pb-2 pr-4">Customer</th><th class="pb-2 pr-4">Date</th><th class="pb-2 pr-4">Total</th><th class="pb-2">Status</th></tr></thead><tbody>${getAllOrders().slice(0,20).map(o=>`<tr class="border-b last:border-0"><td class="py-2 pr-4 font-mono text-xs text-blue-600">${escH(o.id)}</td><td class="py-2 pr-4 font-semibold">${escH(o.name)}</td><td class="py-2 pr-4 text-gray-500 text-xs">${escH(o.date)}</td><td class="py-2 pr-4 font-bold text-yellow-700">${fmtPrice(o.total)}</td><td class="py-2"><span class="text-xs font-bold px-2 py-0.5 rounded-full ${statusBadgeClass(o.status)}">${STATUS_ICONS[o.status]||''} ${escH(o.status||'Pending')}</span></td></tr>`).join('')}</tbody></table></div>`}</div>
   `;
 }
 
-// ── LIGHTBOX ──────────────────────────────────────────────────
-let lbScale = 1;
-let lbDragging = false, lbStartX = 0, lbStartY = 0, lbOffX = 0, lbOffY = 0, lbCurX = 0, lbCurY = 0;
-
-function openLightbox(src, name){
-  if(!src) return;
-  lbScale=1; lbCurX=0; lbCurY=0;
-  const img=document.getElementById('lb-img');
-  img.src=src; img.alt=name||'';
-  img.style.transform=`scale(1) translate(0px,0px)`;
-  document.getElementById('lb-zoom-label').textContent='100%';
-  document.getElementById('lightbox').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeLightbox(){
-  document.getElementById('lightbox').classList.remove('open');
-  document.body.style.overflow='';
-}
-function lbBgClick(e){
-  if(e.target===document.getElementById('lightbox')) closeLightbox();
-}
-function lbZoom(dir){
-  lbScale = Math.min(5, Math.max(0.5, lbScale + dir*0.25));
-  applyLbTransform();
-}
-function lbReset(){
-  lbScale=1; lbCurX=0; lbCurY=0;
-  applyLbTransform();
-}
-function applyLbTransform(){
-  document.getElementById('lb-img').style.transform=`scale(${lbScale}) translate(${lbCurX/lbScale}px,${lbCurY/lbScale}px)`;
-  document.getElementById('lb-zoom-label').textContent=Math.round(lbScale*100)+'%';
-}
+// LIGHTBOX
+let lbScale=1,lbDragging=false,lbStartX=0,lbStartY=0,lbCurX=0,lbCurY=0;
+function openLightbox(src,name){if(!src)return;lbScale=1;lbCurX=0;lbCurY=0;const img=document.getElementById('lb-img');img.src=src;img.alt=name||'';img.style.transform='scale(1) translate(0px,0px)';document.getElementById('lb-zoom-label').textContent='100%';document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden';}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
+function lbBgClick(e){if(e.target===document.getElementById('lightbox'))closeLightbox();}
+function lbZoom(dir){lbScale=Math.min(5,Math.max(0.5,lbScale+dir*0.25));applyLbTransform();}
+function lbReset(){lbScale=1;lbCurX=0;lbCurY=0;applyLbTransform();}
+function applyLbTransform(){document.getElementById('lb-img').style.transform=`scale(${lbScale}) translate(${lbCurX/lbScale}px,${lbCurY/lbScale}px)`;document.getElementById('lb-zoom-label').textContent=Math.round(lbScale*100)+'%';}
 const lbWrap=document.getElementById('lb-img-wrap');
-lbWrap.addEventListener('mousedown',e=>{
-  if(lbScale<=1) return;
-  lbDragging=true; lbStartX=e.clientX-lbCurX; lbStartY=e.clientY-lbCurY;
-  lbWrap.classList.add('grabbing');
-});
-window.addEventListener('mousemove',e=>{
-  if(!lbDragging) return;
-  lbCurX=e.clientX-lbStartX; lbCurY=e.clientY-lbStartY;
-  applyLbTransform();
-});
-window.addEventListener('mouseup',()=>{ lbDragging=false; lbWrap.classList.remove('grabbing'); });
+lbWrap.addEventListener('mousedown',e=>{if(lbScale<=1)return;lbDragging=true;lbStartX=e.clientX-lbCurX;lbStartY=e.clientY-lbCurY;lbWrap.classList.add('grabbing');});
+window.addEventListener('mousemove',e=>{if(!lbDragging)return;lbCurX=e.clientX-lbStartX;lbCurY=e.clientY-lbStartY;applyLbTransform();});
+window.addEventListener('mouseup',()=>{lbDragging=false;lbWrap.classList.remove('grabbing');});
 let lbLastDist=0;
-lbWrap.addEventListener('touchstart',e=>{
-  if(e.touches.length===2){
-    lbLastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
-  } else if(e.touches.length===1){
-    lbDragging=true; lbStartX=e.touches[0].clientX-lbCurX; lbStartY=e.touches[0].clientY-lbCurY;
-  }
-},{passive:true});
-lbWrap.addEventListener('touchmove',e=>{
-  if(e.touches.length===2){
-    const dist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
-    lbScale=Math.min(5,Math.max(0.5,lbScale*(dist/lbLastDist)));
-    lbLastDist=dist; applyLbTransform();
-  } else if(e.touches.length===1&&lbDragging){
-    lbCurX=e.touches[0].clientX-lbStartX; lbCurY=e.touches[0].clientY-lbStartY;
-    applyLbTransform();
-  }
-},{passive:true});
-lbWrap.addEventListener('touchend',()=>{ lbDragging=false; });
-lbWrap.addEventListener('wheel',e=>{
-  e.preventDefault();
-  lbScale=Math.min(5,Math.max(0.5,lbScale-(e.deltaY>0?0.15:-0.15)));
-  applyLbTransform();
-},{passive:false});
-document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeLightbox(); closeTrackOrder(); } });
+lbWrap.addEventListener('touchstart',e=>{if(e.touches.length===2){lbLastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}else if(e.touches.length===1){lbDragging=true;lbStartX=e.touches[0].clientX-lbCurX;lbStartY=e.touches[0].clientY-lbCurY;}},{passive:true});
+lbWrap.addEventListener('touchmove',e=>{if(e.touches.length===2){const dist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);lbScale=Math.min(5,Math.max(0.5,lbScale*(dist/lbLastDist)));lbLastDist=dist;applyLbTransform();}else if(e.touches.length===1&&lbDragging){lbCurX=e.touches[0].clientX-lbStartX;lbCurY=e.touches[0].clientY-lbStartY;applyLbTransform();}},{passive:true});
+lbWrap.addEventListener('touchend',()=>{lbDragging=false;});
+lbWrap.addEventListener('wheel',e=>{e.preventDefault();lbScale=Math.min(5,Math.max(0.5,lbScale-(e.deltaY>0?0.15:-0.15)));applyLbTransform();},{passive:false});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();closeTrackOrder();}});
 
-// ── IMAGE PLACEHOLDER ────────────────────────────────────────
-function noImgHtml(h){
-  return '<div class="no-img-placeholder" style="height:'+h+'px"><div class="noimg-icon">📷</div><div class="noimg-label">No Image</div></div>';
-}
-function handleImgError(img){
-  const wrap=img.parentElement;
-  if(!wrap) return;
-  wrap.style.cursor='default';
-  wrap.onclick=null;
-  wrap.innerHTML=noImgHtml(160);
-}
+function noImgHtml(h){return '<div class="no-img-placeholder" style="height:'+h+'px"><div class="noimg-icon">📷</div><div class="noimg-label">No Image</div></div>';}
+function handleImgError(img){const wrap=img.parentElement;if(!wrap)return;wrap.style.cursor='default';wrap.onclick=null;wrap.innerHTML=noImgHtml(160);}
 
-// ── INIT ──────────────────────────────────────────────────────
 updateCartBadge();
 loadProducts();
 if(window.location.hash==='#admin') openAdmin();
