@@ -70,6 +70,7 @@
 </head>
 <body class="text-gray-900">
 
+<!-- HEADER -->
 <header class="bg-white shadow-sm sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
     <div onclick="handleLogoClick()" class="cursor-pointer select-none flex items-center gap-2 flex-shrink-0">
@@ -101,6 +102,7 @@
   </div>
 </header>
 
+<!-- HERO -->
 <div class="py-16 px-4 text-center relative overflow-hidden" style="background:linear-gradient(135deg,#ff6eb4 0%,#c084fc 38%,#818cf8 68%,#38bdf8 100%);">
   <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 15% 55%,rgba(255,255,255,0.18) 0%,transparent 50%),radial-gradient(ellipse at 85% 25%,rgba(255,255,255,0.14) 0%,transparent 45%),radial-gradient(ellipse at 50% 90%,rgba(255,255,255,0.10) 0%,transparent 40%);"></div>
   <div class="relative z-10">
@@ -111,10 +113,12 @@
   </div>
 </div>
 
+<!-- CATEGORY PILLS -->
 <div class="max-w-7xl mx-auto px-4 pt-6 pb-2">
   <div id="category-pills" class="flex flex-wrap gap-2 justify-center"></div>
 </div>
 
+<!-- Mobile search -->
 <div class="sm:hidden max-w-7xl mx-auto px-4 pt-3 pb-1">
   <div class="relative">
     <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xl pointer-events-none">🔍</span>
@@ -126,6 +130,7 @@
   </div>
 </div>
 
+<!-- SORT -->
 <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
   <span class="text-sm font-extrabold" style="color:#ff4d94;">🍬 Sort by</span>
   <select id="sort-filter" onchange="applyFilters()"
@@ -137,6 +142,7 @@
   <span id="product-count" class="text-sm text-gray-400 ml-auto"></span>
 </div>
 
+<!-- PRODUCTS -->
 <main class="max-w-7xl mx-auto px-4 pb-20">
   <div id="loading" class="text-center py-20 text-gray-400">
     <div class="text-5xl mb-4">🍭</div>
@@ -150,8 +156,10 @@
   <div id="products-grid" class="hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
 </main>
 
+<!-- CART OVERLAY -->
 <div id="cart-overlay" class="hidden fixed inset-0 bg-black bg-opacity-40 z-40" onclick="toggleCart()"></div>
 
+<!-- CART SIDEBAR -->
 <div id="cart-sidebar" class="fixed right-0 top-0 h-full w-full max-w-sm bg-white shadow-2xl z-50 transform translate-x-full flex flex-col">
   <div class="p-4 border-b flex items-center justify-between">
     <h3 class="text-lg font-bold">Your Order 🛒</h3>
@@ -169,6 +177,7 @@
   </div>
 </div>
 
+<!-- ORDER MODAL -->
 <div id="order-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
   <div class="bg-white rounded-2xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto shadow-2xl">
     <h3 class="text-xl font-bold mb-5">Complete Your Order 📦</h3>
@@ -236,6 +245,7 @@
   </div>
 </div>
 
+<!-- TRACK ORDER MODAL -->
 <div id="track-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-[150] flex items-center justify-center p-4">
   <div class="bg-white rounded-2xl max-w-lg w-full p-6 max-h-[92vh] overflow-y-auto shadow-2xl">
     <div class="flex items-center justify-between mb-5">
@@ -283,6 +293,7 @@
   </div>
 </div>
 
+<!-- EDIT PRODUCT MODAL -->
 <div id="edit-product-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-[200] flex items-center justify-center p-4">
   <div class="bg-white rounded-2xl max-w-lg w-full p-6 max-h-[92vh] overflow-y-auto shadow-2xl">
     <div class="flex items-center justify-between mb-5">
@@ -337,7 +348,7 @@
             </button>
           </div>
         </div>
-        <p class="text-xs text-gray-400 mt-1.5">Paste a URL <em>or</em> click <strong>📁 Desktop</strong> to upload from your computer.</p>
+        <p class="text-xs text-gray-400 mt-1.5">Paste a URL <em>or</em> click <strong>📁 Desktop</strong> to upload a photo directly from your computer.</p>
       </div>
       <div>
         <label class="block text-sm font-semibold text-gray-700 mb-1">Description <span class="font-normal text-gray-400">(shown under product name)</span></label>
@@ -346,7 +357,7 @@
       </div>
     </div>
     <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 mt-4 text-xs text-blue-700">
-      <strong>Note:</strong> These edits are saved in your browser. Sheet products will show "(edited)" label. To reset, use the ↺ button in the product list.
+      <strong>Note:</strong> These edits are saved in your browser. Sheet products will show "(edited)" label. To reset to original, use the ↺ button in the product list.
     </div>
     <div class="flex gap-3 mt-5">
       <button type="button" onclick="closeEditModal()"
@@ -357,6 +368,7 @@
   </div>
 </div>
 
+<!-- LIGHTBOX -->
 <div id="lightbox" onclick="lbBgClick(event)">
   <button id="lb-close" onclick="closeLightbox()">×</button>
   <div id="lb-img-wrap">
@@ -370,6 +382,7 @@
   </div>
 </div>
 
+<!-- ADMIN PANEL -->
 <div id="admin-panel" class="hidden fixed inset-0 z-[100] bg-gray-100 overflow-y-auto">
   <div id="admin-login" class="flex items-center justify-center min-h-screen p-4">
     <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm">
@@ -404,6 +417,8 @@
     </div>
 
     <div class="max-w-5xl mx-auto px-4 py-6">
+
+      <!-- PRODUCTS TAB -->
       <div id="admin-products-tab">
         <div class="bg-white rounded-2xl shadow-sm p-5 mb-5">
           <h3 class="font-bold text-base mb-4">+ Add New Product</h3>
@@ -445,6 +460,7 @@
         <div id="admin-product-list"></div>
       </div>
 
+      <!-- CATEGORIES TAB -->
       <div id="admin-categories-tab" class="hidden">
         <div class="bg-white rounded-2xl shadow-sm p-5 mb-5">
           <h3 class="font-bold text-base mb-4">+ Add Category</h3>
@@ -459,6 +475,7 @@
         <div id="admin-category-list"></div>
       </div>
 
+      <!-- ORDERS TAB -->
       <div id="admin-orders-tab" class="hidden">
         <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
           <h3 class="font-bold text-base" id="orders-count-label">Orders</h3>
@@ -475,6 +492,7 @@
         <div id="admin-order-list"></div>
       </div>
 
+      <!-- REPORTS TAB -->
       <div id="admin-reports-tab" class="hidden">
         <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
           <h3 class="font-bold text-base">📊 Sales Report</h3>
@@ -490,6 +508,7 @@
   </div>
 </div>
 
+<!-- Print area -->
 <div id="print-area" class="hidden"></div>
 
 <script>
@@ -553,20 +572,23 @@ function compressImage(file, callback){
       if(w > maxW){ h = Math.round(h * maxW / w); w = maxW; }
       canvas.width = w; canvas.height = h;
       canvas.getContext('2d').drawImage(image, 0, 0, w, h);
-      callback(canvas.toDataURL('image/jpeg', 0.75));
+      const base64 = canvas.toDataURL('image/jpeg', 0.75);
+      callback(base64);
     };
     image.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
+
 function handleEditImgUpload(input){
   const file = input.files[0]; if(!file) return;
   compressImage(file, function(base64){
     pendingEditImg = base64; pendingEditImgNew = true;
     document.getElementById('edit-product-img').value = '';
+    const prev = document.getElementById('edit-img-preview');
     document.getElementById('edit-img-preview-img').src = base64;
     document.getElementById('edit-img-source-label').textContent = '📁 ' + file.name + ' (from your computer)';
-    document.getElementById('edit-img-preview').classList.remove('hidden');
+    prev.classList.remove('hidden');
   });
 }
 function handleNewImgUpload(input){
@@ -657,8 +679,7 @@ function getAllOrders(){
     let total=parseFloat(String(o.total||'0').replace(/[₱,\s]/g,''))||0;
     if(!total&&items.length) total=items.reduce((s,i)=>s+(parseFloat(i.price)||0)*(parseInt(i.qty)||0),0);
     if(!total&&localFallback) total=localFallback.total||0;
-    return { id:o.order_id||'', date:o.date||'', name:o.name||'', email:o.email||'', phone:o.phone||'',
-      address:o.address||'', notes:o.notes||'', items, total, status:o.status||'Pending', _fromSheet:true };
+    return { id:o.order_id||'', date:o.date||'', name:o.name||'', email:o.email||'', phone:o.phone||'', address:o.address||'', notes:o.notes||'', items, total, status:o.status||'Pending', _fromSheet:true };
   });
   const sheetIds=new Set(fromSheet.map(o=>o.id));
   const localOnly=orders.filter(o=>!sheetIds.has(o.id)&&!deletedOrderIds.includes(o.id));
@@ -752,6 +773,7 @@ function clearSearch(){
   applyFilters();
   if(d) d.focus();
 }
+
 function applyFilters(){
   const sort=document.getElementById('sort-filter').value;
   const query=(document.getElementById('search-input')?.value||'').toLowerCase().trim();
@@ -772,6 +794,7 @@ function applyFilters(){
   renderProducts(list);
   document.getElementById('product-count').textContent=list.length+' items';
 }
+
 function renderProducts(list){
   const grid=document.getElementById('products-grid');
   const query=(document.getElementById('search-input')?.value||'').trim();
@@ -782,8 +805,10 @@ function renderProducts(list){
     const bg=CARD_BG[i%CARD_BG.length];
     const desc=p.description||'';
     return `<div class="product-card rounded-2xl overflow-hidden flex flex-col" style="background:${bg}">
-      <div class="prod-img-wrap"${img?` onclick="openLightbox('${escA(img)}','${escA(p.name)}')"`+' style="cursor:default"':' style="cursor:default"'}>
-        ${img ? `<img src="${escH(img)}" alt="${escH(p.name)}" loading="lazy" onerror="handleImgError(this)">` : noImgHtml(160)}
+      <div class="prod-img-wrap"${img?` onclick="openLightbox('${escA(img)}','${escA(p.name)}')"`:' style="cursor:default"'}>
+        ${img
+          ? `<img src="${escH(img)}" alt="${escH(p.name)}" loading="lazy" onerror="handleImgError(this)">`
+          : noImgHtml(160)}
       </div>
       <div class="p-3 flex flex-col flex-1">
         ${p.category?`<p class="text-xs text-gray-500 mb-0.5">${escH(p.category)}</p>`:''}
@@ -923,12 +948,9 @@ document.getElementById('order-form').addEventListener('submit',async function(e
     const fd=new FormData(this);
     const res=await fetch(this.action,{method:'POST',body:fd,headers:{Accept:'application/json'}});
     if(res.ok){
-      const orderPayload={action:'save_order',order_id:orderId,date:orderDate,name:orderName,email:orderEmail,
-        phone:orderPhone,address:orderAddress,notes:orderNotes,items_json:JSON.stringify(orderItems),
-        total:String(orderTotal),status:'Pending'};
+      const orderPayload={action:'save_order',order_id:orderId,date:orderDate,name:orderName,email:orderEmail,phone:orderPhone,address:orderAddress,notes:orderNotes,items_json:JSON.stringify(orderItems),total:String(orderTotal),status:'Pending'};
       fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(orderPayload)}).catch(e=>console.warn('Order sheet save failed:',e));
-      const localOrder={id:orderId,date:orderDate,name:orderName,email:orderEmail,phone:orderPhone,
-        address:orderAddress,notes:orderNotes,items:orderItems,total:orderTotal,status:'Pending'};
+      const localOrder={id:orderId,date:orderDate,name:orderName,email:orderEmail,phone:orderPhone,address:orderAddress,notes:orderNotes,items:orderItems,total:orderTotal,status:'Pending'};
       orders.unshift(localOrder);
       localStorage.setItem('ig3-orders',JSON.stringify(orders));
       lastOrderId=orderId;
@@ -957,14 +979,16 @@ async function lookupOrder(){
   if(!raw){errEl.textContent='Please enter an Order ID.';errEl.classList.remove('hidden');return;}
   const btn=document.getElementById('track-btn');
   btn.textContent='Searching...';btn.disabled=true;
-  errEl.classList.add('hidden');resultEl.classList.add('hidden');
+  errEl.classList.add('hidden');
+  resultEl.classList.add('hidden');
   await loadSheetOrders();
   const all=getAllOrders();
   const order=all.find(o=>o.id.toUpperCase()===raw || o.id.toUpperCase().replace('IG3-','')===raw.replace('IG3-',''));
   btn.textContent='Search';btn.disabled=false;
-  if(!order){errEl.textContent='Order not found. Check your Order ID and try again.';errEl.classList.remove('hidden');return;}
+  if(!order){ errEl.textContent='Order not found. Check your Order ID and try again.'; errEl.classList.remove('hidden'); return; }
   renderTrackingResult(order);
 }
+
 function renderTrackingResult(order){
   const steps=ORDER_STATUSES;
   const curIdx=steps.indexOf(order.status);
@@ -973,7 +997,10 @@ function renderTrackingResult(order){
     const done=i<curIdx||(order.status==='Delivered'&&i<=curIdx);
     const current=i===curIdx&&order.status!=='Cancelled';
     const cls=done?'done':current?'current':'';
-    return `<div class="track-step ${cls}"><div class="track-dot">${STATUS_ICONS[s]||'•'}</div><div class="track-label">${s}</div></div>`;
+    return `<div class="track-step ${cls}">
+      <div class="track-dot">${STATUS_ICONS[s]||'•'}</div>
+      <div class="track-label">${s}</div>
+    </div>`;
   }).join('');
   document.getElementById('tr-name').textContent=order.name;
   document.getElementById('tr-id').textContent='Order ID: '+order.id;
@@ -1043,7 +1070,7 @@ function renderAdminProducts(){
       🔍 ${dupCount>0?dupCount+' Duplicate'+(dupCount>1?'s':'')+' Found':'No Duplicates'}
     </button>
   </div>`;
-  if(!all.length && !hidden.length){list.innerHTML=dupBtn+'<p class="text-gray-400 text-sm text-center py-8">No products yet.</p>';return;}
+  if(!all.length && !hidden.length){ list.innerHTML=dupBtn+'<p class="text-gray-400 text-sm text-center py-8">No products yet.</p>'; return; }
   const cats=[...new Set(all.map(p=>p.category||'Uncategorized'))].sort();
   const mainHtml=cats.map(cat=>{
     const prods=all.filter(p=>(p.category||'Uncategorized')===cat);
@@ -1055,7 +1082,9 @@ function renderAdminProducts(){
           const img=getImg(p);
           const hasOv=p._edited||(p._local&&productOverrides[p.product_id]);
           return `<div class="bg-white rounded-xl shadow-sm p-3 flex items-center gap-3">
-            ${img?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="w-12 h-12 rounded-xl bg-yellow-100 items-center justify-center text-xl flex-shrink-0 hidden">🛍️</div>`:`<div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}
+            ${img
+              ?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="w-12 h-12 rounded-xl bg-yellow-100 items-center justify-center text-xl flex-shrink-0 hidden">🛍️</div>`
+              :`<div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}
             <div class="flex-1 min-w-0">
               <p class="text-sm font-semibold text-gray-800 truncate">${escH(p.name)}</p>
               <p class="text-xs text-gray-400 truncate">
@@ -1171,16 +1200,11 @@ function saveProductEdit(){
   productOverrides[id]=ov; saveOverrides();
   const lIdx=localProducts.findIndex(p=>p.id===id);
   if(lIdx>=0){
-    localProducts[lIdx]={...localProducts[lIdx],name,category:cat,
-      price:price??localProducts[lIdx].price,
-      imageUrl: imageStorage[id] ? '' : imgUrl,
-      description:desc};
+    localProducts[lIdx]={...localProducts[lIdx],name,category:cat,price:price??localProducts[lIdx].price,imageUrl: imageStorage[id] ? '' : imgUrl,description:desc};
     localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
   }
   const syncImgUrl = pendingEditImg ? '' : imgUrl;
-  fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({action:'update_product',product_id:id,name,category:cat,aed_price:aed!=null?String(aed):'',final_price_php:price!=null?String(price):'',image_url:syncImgUrl,description:desc})
-  }).catch(e=>console.warn('Sheet update failed:',e));
+  fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'update_product',product_id:id,name,category:cat,aed_price:aed!=null?String(aed):'',final_price_php:price!=null?String(price):'',image_url:syncImgUrl,description:desc})}).catch(e=>console.warn('Sheet update failed:',e));
   pendingEditImg=null; pendingEditImgNew=false;
   closeEditModal(); renderCategoryPills(); applyFilters(); renderAdminProducts();
 }
@@ -1215,10 +1239,7 @@ async function addLocalProduct(){
   const statusEl=document.getElementById('add-product-status');
   btn.disabled=true; btn.textContent='Adding...';
   statusEl.textContent='⏳ Saving to Google Sheet...'; statusEl.style.color='#6b7280';
-  if(pendingNewImg){
-    const nameKey='byname_'+name.toLowerCase().trim();
-    imageStorage[nameKey]=pendingNewImg; saveImageStorage();
-  }
+  if(pendingNewImg){ const nameKey='byname_'+name.toLowerCase().trim(); imageStorage[nameKey]=pendingNewImg; saveImageStorage(); }
   let sheetSuccess=false;
   try{
     const payload={name, category:cat, aed_price:aed!=null?String(aed):'', final_price_php:price!=null?String(price):'', image_url:pendingNewImg?'':img, description:desc};
@@ -1237,7 +1258,7 @@ async function addLocalProduct(){
     localProducts.push({id:newId,name,category:cat,price,imageUrl:pendingNewImg?'':img,description:desc});
     localStorage.setItem('ig3-local-products',JSON.stringify(localProducts));
     if(pendingNewImg){ imageStorage[newId]=pendingNewImg; saveImageStorage(); }
-    statusEl.textContent='⚠️ Sheet sync failed — saved locally.'; statusEl.style.color='#d97706';
+    statusEl.textContent='⚠️ Sheet sync failed — saved locally. Check Apps Script deployment.'; statusEl.style.color='#d97706';
     clearAddProductForm(); renderCategoryPills(); applyFilters(); renderAdminProducts();
     setTimeout(()=>{ statusEl.textContent=''; },6000);
   }
@@ -1353,10 +1374,7 @@ function renderAdminOrders(){
   if(statusFilter) allOrders=allOrders.filter(o=>o.status===statusFilter);
   const list=document.getElementById('admin-order-list');
   document.getElementById('orders-count-label').textContent=`Orders (${getAllOrders().length})`;
-  if(!allOrders.length){
-    list.innerHTML='<div class="text-center py-16 text-gray-400"><div class="text-5xl mb-4">📋</div><p>No orders found.</p><p class="text-sm mt-1">Orders placed on the site will appear here.</p></div>';
-    return;
-  }
+  if(!allOrders.length){ list.innerHTML='<div class="text-center py-16 text-gray-400"><div class="text-5xl mb-4">📋</div><p>No orders found.</p><p class="text-sm mt-1">Orders placed on the site will appear here.</p></div>'; return; }
   list.innerHTML=allOrders.map(o=>{
     const statusClass=statusBadgeClass(o.status);
     const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');
@@ -1407,18 +1425,14 @@ function renderAdminOrders(){
     </div>`;
   }).join('');
 }
-
 async function updateOrderStatus(orderId, newStatus){
   const so=sheetOrders.find(o=>o.order_id===orderId);
   if(so) so.status=newStatus;
   const lo=orders.find(o=>o.id===orderId);
   if(lo){ lo.status=newStatus; localStorage.setItem('ig3-orders',JSON.stringify(orders)); }
   renderAdminOrders();
-  fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({action:'update_order_status',order_id:orderId,status:newStatus})
-  }).catch(e=>console.warn('Status update failed:',e));
+  fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'update_order_status',order_id:orderId,status:newStatus})}).catch(e=>console.warn('Status update failed:',e));
 }
-
 function printOrder(id){
   const o=getAllOrders().find(x=>x.id===id);
   if(!o)return;buildPrintArea([o]);window.print();clearPrintArea();
@@ -1472,11 +1486,6 @@ function printReport(){
   const productRevMap={},productQtyMap={};
   nonCancelled.forEach(o=>{const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');items.forEach(i=>{if(!i.name)return;productRevMap[i.name]=(productRevMap[i.name]||0)+(i.price*i.qty);productQtyMap[i.name]=(productQtyMap[i.name]||0)+i.qty;});});
   const topProducts=Object.entries(productRevMap).sort((a,b)=>b[1]-a[1]).slice(0,20);
-  const allItems=[];
-  nonCancelled.forEach(o=>{
-    const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');
-    items.forEach(i=>allItems.push({order_id:o.id,date:o.date,customer:o.name,item:i.name||'',qty:i.qty||1,price:parseFloat(i.price)||0,total:(parseFloat(i.price)||0)*(parseInt(i.qty)||1),status:o.status}));
-  });
   const printedOn=new Date().toLocaleString('en-PH',{timeZone:'Asia/Manila',dateStyle:'long',timeStyle:'short'});
   const thStyle='border:1px solid #ccc;padding:7px 10px;background:#f0f0f0;font-weight:700;font-size:11px;text-align:left;white-space:nowrap;';
   const tdStyle='border:1px solid #ddd;padding:6px 10px;font-size:11px;vertical-align:top;';
@@ -1484,38 +1493,34 @@ function printReport(){
   const tdCStyle='border:1px solid #ddd;padding:6px 10px;font-size:11px;text-align:center;vertical-align:top;';
   const area=document.getElementById('print-area');
   area.classList.remove('hidden');
-  area.innerHTML=`<div style="font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:24px;font-size:12px;">
-    <table style="width:100%;border-collapse:collapse;margin-bottom:20px;"><tr>
-      <td style="padding:0;vertical-align:top;"><div style="font-size:22px;font-weight:900;margin:0;">IG3 Dubai Pasabuy</div><div style="color:#666;font-size:12px;margin-top:4px;">Packed Fresh from Dubai</div></td>
-      <td style="padding:0;text-align:right;vertical-align:top;"><div style="font-size:16px;font-weight:700;color:#333;">SALES REPORT</div><div style="color:#888;font-size:11px;margin-top:4px;">Printed: ${printedOn}</div></td>
-    </tr></table>
-    <hr style="border:none;border-top:2px solid #333;margin-bottom:20px;">
-    <div style="font-size:13px;font-weight:700;margin-bottom:8px;text-transform:uppercase;color:#333;">Summary</div>
-    <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
-      <thead><tr><th style="${thStyle}">Total Revenue</th><th style="${thStyle}">Total Orders</th><th style="${thStyle}">Avg Order Value</th><th style="${thStyle}">This Month Revenue</th><th style="${thStyle}">This Month Orders</th></tr></thead>
-      <tbody><tr><td style="${tdStyle}font-weight:700;">${fmtPrice(totalRevenue)}</td><td style="${tdCStyle}font-weight:700;">${totalOrders}</td><td style="${tdStyle}font-weight:700;">${fmtPrice(avgOrder)}</td><td style="${tdStyle}font-weight:700;">${fmtPrice(thisMonthRevenue)}</td><td style="${tdCStyle}font-weight:700;">${thisMonth.length}</td></tr></tbody>
+  area.innerHTML=`
+  <div style="font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:24px;font-size:12px;">
+    <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+      <tr>
+        <td style="padding:0;vertical-align:top;"><div style="font-size:22px;font-weight:900;margin:0;">IG3 Dubai Pasabuy</div><div style="color:#666;font-size:12px;margin-top:4px;">Packed Fresh from Dubai</div></td>
+        <td style="padding:0;text-align:right;vertical-align:top;"><div style="font-size:16px;font-weight:700;color:#333;">SALES REPORT</div><div style="color:#888;font-size:11px;margin-top:4px;">Printed: ${printedOn}</div></td>
+      </tr>
     </table>
-    <div style="font-size:13px;font-weight:700;margin-bottom:8px;text-transform:uppercase;color:#333;">Order Status Breakdown</div>
+    <hr style="border:none;border-top:2px solid #333;margin-bottom:20px;">
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em;color:#333;">Summary</div>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
+      <thead><tr>
+        <th style="${thStyle}">Total Revenue</th><th style="${thStyle}">Total Orders</th><th style="${thStyle}">Avg Order Value</th><th style="${thStyle}">This Month Revenue</th><th style="${thStyle}">This Month Orders</th>
+      </tr></thead>
+      <tbody><tr>
+        <td style="${tdStyle}font-weight:700;">${fmtPrice(totalRevenue)}</td>
+        <td style="${tdCStyle}font-weight:700;">${totalOrders}</td>
+        <td style="${tdStyle}font-weight:700;">${fmtPrice(avgOrder)}</td>
+        <td style="${tdStyle}font-weight:700;">${fmtPrice(thisMonthRevenue)}</td>
+        <td style="${tdCStyle}font-weight:700;">${thisMonth.length}</td>
+      </tr></tbody>
+    </table>
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em;color:#333;">Order Status Breakdown</div>
     <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
       <thead><tr>${ORDER_STATUSES.concat(['Cancelled']).map(s=>`<th style="${thStyle}">${s}</th>`).join('')}<th style="${thStyle}">TOTAL</th></tr></thead>
       <tbody><tr>${ORDER_STATUSES.concat(['Cancelled']).map(s=>`<td style="${tdCStyle}">${statusCount[s]||0}</td>`).join('')}<td style="${tdCStyle}font-weight:700;">${allOrders.length}</td></tr></tbody>
     </table>
-    <div style="font-size:13px;font-weight:700;margin-bottom:8px;text-transform:uppercase;color:#333;">All Orders (${allOrders.length})</div>
-    <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
-      <thead><tr><th style="${thStyle}">#</th><th style="${thStyle}">Order ID</th><th style="${thStyle}">Date</th><th style="${thStyle}">Customer</th><th style="${thStyle}">Phone</th><th style="${thStyle}">Email</th><th style="${thStyle}">Address</th><th style="${thStyle}">Items</th><th style="${thStyle}">Total</th><th style="${thStyle}">Status</th></tr></thead>
-      <tbody>
-        ${allOrders.length===0?`<tr><td colspan="10" style="${tdStyle}text-align:center;color:#888;">No orders yet.</td></tr>`:
-          allOrders.map((o,idx)=>{
-            const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');
-            const itemStr=items.length>0?items.map(i=>`${i.name||'?'} ×${i.qty||1} @ ${fmtPrice(parseFloat(i.price)||0)}`).join('\n'):'—';
-            const rowBg=idx%2===0?'background:#fff;':'background:#f9f9f9;';
-            return`<tr style="${rowBg}"><td style="${tdCStyle}">${idx+1}</td><td style="${tdStyle}font-family:monospace;font-size:10px;">${escH(o.id)}</td><td style="${tdStyle}white-space:nowrap;">${escH(o.date)}</td><td style="${tdStyle}font-weight:600;">${escH(o.name)}</td><td style="${tdStyle}white-space:nowrap;">${escH(o.phone)}</td><td style="${tdStyle}">${escH(o.email)}</td><td style="${tdStyle}max-width:140px;">${escH(o.address)}</td><td style="${tdStyle}white-space:pre-line;max-width:180px;">${escH(itemStr)}</td><td style="${tdRStyle}font-weight:700;">${fmtPrice(o.total)}</td><td style="${tdCStyle}">${escH(o.status||'Pending')}</td></tr>`;
-          }).join('')
-        }
-        ${allOrders.length>0?`<tr style="background:#f0f0f0;"><td colspan="8" style="${tdStyle}font-weight:700;text-align:right;">GRAND TOTAL</td><td style="${tdRStyle}font-weight:900;font-size:13px;">${fmtPrice(allOrders.filter(o=>o.status!=='Cancelled').reduce((s,o)=>s+o.total,0))}</td><td style="${tdStyle}"></td></tr>`:''}
-      </tbody>
-    </table>
-    <div style="font-size:13px;font-weight:700;margin-bottom:8px;text-transform:uppercase;color:#333;">Top Products by Revenue</div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em;color:#333;">Top Products by Revenue</div>
     <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
       <thead><tr><th style="${thStyle}">#</th><th style="${thStyle}">Product Name</th><th style="${thStyle}">Qty Sold</th><th style="${thStyle}">Revenue</th><th style="${thStyle}">% of Total</th></tr></thead>
       <tbody>
@@ -1525,18 +1530,6 @@ function printReport(){
             const pct=totalRevenue>0?(rev/totalRevenue*100).toFixed(1):'0.0';
             const rowBg=i%2===0?'background:#fff;':'background:#f9f9f9;';
             return`<tr style="${rowBg}"><td style="${tdCStyle}">${i+1}</td><td style="${tdStyle}font-weight:600;">${escH(name)}</td><td style="${tdCStyle}">${qty}</td><td style="${tdRStyle}font-weight:700;">${fmtPrice(rev)}</td><td style="${tdCStyle}">${pct}%</td></tr>`;
-          }).join('')
-        }
-      </tbody>
-    </table>
-    <div style="font-size:13px;font-weight:700;margin-bottom:8px;text-transform:uppercase;color:#333;">All Line Items (${allItems.length} items)</div>
-    <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
-      <thead><tr><th style="${thStyle}">#</th><th style="${thStyle}">Order ID</th><th style="${thStyle}">Date</th><th style="${thStyle}">Customer</th><th style="${thStyle}">Item</th><th style="${thStyle}">Qty</th><th style="${thStyle}">Unit Price</th><th style="${thStyle}">Line Total</th><th style="${thStyle}">Status</th></tr></thead>
-      <tbody>
-        ${allItems.length===0?`<tr><td colspan="9" style="${tdStyle}text-align:center;color:#888;">No items.</td></tr>`:
-          allItems.map((row,i)=>{
-            const rowBg=i%2===0?'background:#fff;':'background:#f9f9f9;';
-            return`<tr style="${rowBg}"><td style="${tdCStyle}">${i+1}</td><td style="${tdStyle}font-family:monospace;font-size:10px;">${escH(row.order_id)}</td><td style="${tdStyle}white-space:nowrap;">${escH(row.date)}</td><td style="${tdStyle}">${escH(row.customer)}</td><td style="${tdStyle}font-weight:600;">${escH(row.item)}</td><td style="${tdCStyle}">${row.qty}</td><td style="${tdRStyle}">${fmtPrice(row.price)}</td><td style="${tdRStyle}font-weight:700;">${fmtPrice(row.total)}</td><td style="${tdCStyle}">${escH(row.status)}</td></tr>`;
           }).join('')
         }
       </tbody>
@@ -1567,15 +1560,10 @@ async function exportReportToSheet(){
   const productRevMap={},productQtyMap={};
   nonCancelled.forEach(o=>{const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');items.forEach(i=>{if(!i.name)return;productRevMap[i.name]=(productRevMap[i.name]||0)+(parseFloat(i.price)||0)*(parseInt(i.qty)||1);productQtyMap[i.name]=(productQtyMap[i.name]||0)+(parseInt(i.qty)||1);});});
   const topProducts=Object.entries(productRevMap).sort((a,b)=>b[1]-a[1]);
-  const allItems=[];
-  nonCancelled.forEach(o=>{
-    const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');
-    items.forEach(i=>allItems.push({order_id:o.id,date:o.date,customer:o.name,item:i.name||'',qty:parseInt(i.qty)||1,price:parseFloat(i.price)||0,total:(parseFloat(i.price)||0)*(parseInt(i.qty)||1),status:o.status}));
-  });
   const printedOn=new Date().toLocaleString('en-PH',{timeZone:'Asia/Manila',dateStyle:'long',timeStyle:'short'});
   const rows=[];
-  rows.push(['IG3 Dubai Pasabuy — SALES REPORT','','','','','','','','','']);
-  rows.push(['Printed: '+printedOn,'','','','','','','','','']);
+  rows.push(['IG3 Dubai Pasabuy — SALES REPORT','','','','']);
+  rows.push(['Printed: '+printedOn,'','','','']);
   rows.push([]);
   rows.push(['SUMMARY','','','','']);
   rows.push(['Total Revenue','Total Orders','Avg Order Value','This Month Revenue','This Month Orders']);
@@ -1586,15 +1574,6 @@ async function exportReportToSheet(){
   rows.push([...statuses,'TOTAL']);
   rows.push([...statuses.map(s=>statusCount[s]||0),allOrders.length]);
   rows.push([]);
-  rows.push(['ALL ORDERS ('+allOrders.length+')']);
-  rows.push(['#','Order ID','Date','Customer','Phone','Email','Address','Items','Total','Status']);
-  allOrders.forEach((o,idx)=>{
-    const items=Array.isArray(o.items)?o.items:safeParseJSON(o.items,'[]');
-    const itemStr=items.length>0?items.map(i=>`${i.name||'?'} x${i.qty||1} @ ${fmtPrice(parseFloat(i.price)||0)}`).join('; '):'—';
-    rows.push([idx+1,o.id,o.date,o.name,o.phone,o.email,o.address,itemStr,o.total,o.status||'Pending']);
-  });
-  if(allOrders.length>0) rows.push(['','','','','','','','GRAND TOTAL',nonCancelled.reduce((s,o)=>s+o.total,0),'']);
-  rows.push([]);
   rows.push(['TOP PRODUCTS BY REVENUE']);
   rows.push(['#','Product Name','Qty Sold','Revenue','% of Total']);
   topProducts.forEach(([name,rev],i)=>{
@@ -1603,12 +1582,10 @@ async function exportReportToSheet(){
     rows.push([i+1,name,qty,rev,pct]);
   });
   rows.push([]);
-  rows.push(['ALL LINE ITEMS ('+allItems.length+' items)']);
-  rows.push(['#','Order ID','Date','Customer','Item','Qty','Unit Price','Line Total','Status']);
-  allItems.forEach((row,i)=>{ rows.push([i+1,row.order_id,row.date,row.customer,row.item,row.qty,row.price,row.total,row.status]); });
+  const payload={action:'export_report',rows};
   try{
     statusEl.textContent='⏳ Sending to Google Sheet...';
-    await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'export_report',rows})});
+    await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
     statusEl.textContent='✅ Report exported! Check the "Sales Report" tab in your Google Sheet.';
     statusEl.style.background='#f0fdf4'; statusEl.style.color='#15803d';
     setTimeout(()=>statusEl.classList.add('hidden'),7000);
@@ -1627,9 +1604,7 @@ function deleteOrder(id){
   orders=orders.filter(o=>o.id!==id);
   localStorage.setItem('ig3-orders',JSON.stringify(orders));
   sheetOrders=sheetOrders.filter(o=>o.order_id!==id);
-  fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({action:'delete_order',order_id:id})
-  }).catch(e=>console.warn('Order delete failed:',e));
+  fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'delete_order',order_id:id})}).catch(e=>console.warn('Order delete failed:',e));
   renderAdminOrders();
 }
 
@@ -1654,7 +1629,7 @@ function renderSalesReport(){
   const topCats=Object.entries(catRevMap).sort((a,b)=>b[1]-a[1]);
   const allIncCancelled=getAllOrders();
   const statusCount={};
-  allIncCancelled.forEach(o=>{ statusCount[o.status]=(statusCount[o.status]||0)+1; });
+  allIncCancelled.forEach(o=>{statusCount[o.status]=(statusCount[o.status]||0)+1;});
   document.getElementById('reports-content').innerHTML=`
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
       <div class="report-card text-center"><p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Total Revenue</p><p class="text-2xl font-extrabold text-yellow-600">${fmtPrice(totalRevenue)}</p><p class="text-xs text-gray-400 mt-1">All time</p></div>
@@ -1662,11 +1637,24 @@ function renderSalesReport(){
       <div class="report-card text-center"><p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Avg Order Value</p><p class="text-2xl font-extrabold text-purple-600">${fmtPrice(avgOrder)}</p><p class="text-xs text-gray-400 mt-1">Per order</p></div>
       <div class="report-card text-center"><p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">This Month</p><p class="text-2xl font-extrabold text-green-600">${fmtPrice(thisMonthRevenue)}</p><p class="text-xs text-gray-400 mt-1">${thisMonth.length} order(s)</p></div>
     </div>
-    <div class="report-card mb-6"><h3 class="font-bold text-base mb-4">Order Status Breakdown</h3><div class="flex flex-wrap gap-3">${ORDER_STATUSES.concat(['Cancelled']).map(s=>{const count=statusCount[s]||0;return `<div class="flex items-center gap-2 ${statusBadgeClass(s)} px-3 py-2 rounded-xl"><span class="text-lg">${STATUS_ICONS[s]||''}</span><div><p class="font-extrabold text-lg leading-none">${count}</p><p class="text-xs font-semibold">${s}</p></div></div>`;}).join('')}</div></div>
-    <div class="report-card mb-6"><h3 class="font-bold text-base mb-4">Top Products by Revenue</h3>${topProducts.length===0?'<p class="text-gray-400 text-sm text-center py-4">No order data yet.</p>':`<div class="space-y-2">${topProducts.map(([name,rev],i)=>{const qty=productQtyMap[name]||0;const pct=totalRevenue>0?Math.round(rev/totalRevenue*100):0;return `<div><div class="flex items-center justify-between mb-1"><span class="text-sm font-semibold text-gray-800 flex-1 truncate mr-2">${i+1}. ${escH(name)}</span><div class="text-right flex-shrink-0"><span class="text-sm font-bold text-yellow-700">${fmtPrice(rev)}</span><span class="text-xs text-gray-400 ml-1">${qty} sold</span></div></div><div class="w-full bg-gray-100 rounded-full h-1.5"><div class="bg-yellow-400 h-1.5 rounded-full" style="width:${pct}%"></div></div></div>`;}).join('')}</div>`}</div>
-    <div class="report-card mb-6"><h3 class="font-bold text-base mb-4">Revenue by Category</h3>${topCats.length===0?'<p class="text-gray-400 text-sm text-center py-4">No order data yet.</p>':`<div class="space-y-2">${topCats.map(([cat,rev])=>{const pct=totalRevenue>0?Math.round(rev/totalRevenue*100):0;return `<div><div class="flex items-center justify-between mb-1"><span class="text-sm font-semibold text-gray-700">${escH(cat)}</span><span class="text-sm font-bold text-purple-700">${fmtPrice(rev)} <span class="text-xs text-gray-400">(${pct}%)</span></span></div><div class="w-full bg-gray-100 rounded-full h-1.5"><div class="bg-purple-400 h-1.5 rounded-full" style="width:${pct}%"></div></div></div>`;}).join('')}</div>`}</div>
-    <div class="report-card"><h3 class="font-bold text-base mb-4">Recent Orders</h3>${getAllOrders().length===0?'<p class="text-gray-400 text-sm text-center py-4">No orders yet.</p>':`<div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr class="border-b text-left text-xs text-gray-400 uppercase tracking-wide"><th class="pb-2 pr-4">Order ID</th><th class="pb-2 pr-4">Customer</th><th class="pb-2 pr-4">Date</th><th class="pb-2 pr-4">Total</th><th class="pb-2">Status</th></tr></thead><tbody>${getAllOrders().slice(0,20).map(o=>`<tr class="border-b last:border-0"><td class="py-2 pr-4 font-mono text-xs text-blue-600">${escH(o.id)}</td><td class="py-2 pr-4 font-semibold">${escH(o.name)}</td><td class="py-2 pr-4 text-gray-500 text-xs">${escH(o.date)}</td><td class="py-2 pr-4 font-bold text-yellow-700">${fmtPrice(o.total)}</td><td class="py-2"><span class="text-xs font-bold px-2 py-0.5 rounded-full ${statusBadgeClass(o.status)}">${STATUS_ICONS[o.status]||''} ${escH(o.status||'Pending')}</span></td></tr>`).join('')}</tbody></table></div>`}</div>
-  `;
+    <div class="report-card mb-6">
+      <h3 class="font-bold text-base mb-4">Order Status Breakdown</h3>
+      <div class="flex flex-wrap gap-3">
+        ${ORDER_STATUSES.concat(['Cancelled']).map(s=>{const count=statusCount[s]||0;return `<div class="flex items-center gap-2 ${statusBadgeClass(s)} px-3 py-2 rounded-xl"><span class="text-lg">${STATUS_ICONS[s]||''}</span><div><p class="font-extrabold text-lg leading-none">${count}</p><p class="text-xs font-semibold">${s}</p></div></div>`;}).join('')}
+      </div>
+    </div>
+    <div class="report-card mb-6">
+      <h3 class="font-bold text-base mb-4">Top Products by Revenue</h3>
+      ${topProducts.length===0?'<p class="text-gray-400 text-sm text-center py-4">No order data yet.</p>':`<div class="space-y-2">${topProducts.map(([name,rev],i)=>{const qty=productQtyMap[name]||0;const pct=totalRevenue>0?Math.round(rev/totalRevenue*100):0;return `<div><div class="flex items-center justify-between mb-1"><span class="text-sm font-semibold text-gray-800 flex-1 truncate mr-2">${i+1}. ${escH(name)}</span><div class="text-right flex-shrink-0"><span class="text-sm font-bold text-yellow-700">${fmtPrice(rev)}</span><span class="text-xs text-gray-400 ml-1">${qty} sold</span></div></div><div class="w-full bg-gray-100 rounded-full h-1.5"><div class="bg-yellow-400 h-1.5 rounded-full" style="width:${pct}%"></div></div></div>`;}).join('')}</div>`}
+    </div>
+    <div class="report-card mb-6">
+      <h3 class="font-bold text-base mb-4">Revenue by Category</h3>
+      ${topCats.length===0?'<p class="text-gray-400 text-sm text-center py-4">No order data yet.</p>':`<div class="space-y-2">${topCats.map(([cat,rev])=>{const pct=totalRevenue>0?Math.round(rev/totalRevenue*100):0;return `<div><div class="flex items-center justify-between mb-1"><span class="text-sm font-semibold text-gray-700">${escH(cat)}</span><span class="text-sm font-bold text-purple-700">${fmtPrice(rev)} <span class="text-xs text-gray-400">(${pct}%)</span></span></div><div class="w-full bg-gray-100 rounded-full h-1.5"><div class="bg-purple-400 h-1.5 rounded-full" style="width:${pct}%"></div></div></div>`;}).join('')}</div>`}
+    </div>
+    <div class="report-card">
+      <h3 class="font-bold text-base mb-4">Recent Orders</h3>
+      ${getAllOrders().length===0?'<p class="text-gray-400 text-sm text-center py-4">No orders yet.</p>':`<div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr class="border-b text-left text-xs text-gray-400 uppercase tracking-wide"><th class="pb-2 pr-4">Order ID</th><th class="pb-2 pr-4">Customer</th><th class="pb-2 pr-4">Date</th><th class="pb-2 pr-4">Total</th><th class="pb-2">Status</th></tr></thead><tbody>${getAllOrders().slice(0,20).map(o=>`<tr class="border-b last:border-0"><td class="py-2 pr-4 font-mono text-xs text-blue-600">${escH(o.id)}</td><td class="py-2 pr-4 font-semibold">${escH(o.name)}</td><td class="py-2 pr-4 text-gray-500 text-xs">${escH(o.date)}</td><td class="py-2 pr-4 font-bold text-yellow-700">${fmtPrice(o.total)}</td><td class="py-2"><span class="text-xs font-bold px-2 py-0.5 rounded-full ${statusBadgeClass(o.status)}">${STATUS_ICONS[o.status]||''} ${escH(o.status||'Pending')}</span></td></tr>`).join('')}</tbody></table></div>`}
+    </div>`;
 }
 
 let lbScale = 1;
