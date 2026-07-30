@@ -305,7 +305,7 @@
           </div>
         </div>
         <div class="flex gap-2 mb-4 flex-wrap">
-          <select id="order-status-filter" onchange="renderAdminOrders()" class="border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"><option value="">All Statuses</option></select>
+          <select id="order-status-filter" onchange="renderAdminOrders()" class="border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"><option value="">All Status</option></select>
         </div>
         <div id="admin-order-list"></div>
       </div>
@@ -329,7 +329,7 @@ const ADMIN_PW        = 'Zakizayayeye2026';
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzu4LVN0CFiTeYssk1P-1JwtsBgy-k_zB6kGKMOIEkEeobNrp4ZXmvaOpH6OHdIVnTDNw/exec';
 const CARD_BG    = ['#ffd6e7','#c7f9cc','#e8d5f5','#fef08a','#fed7aa','#bae6fd','#fecdd3','#d1fae5'];
 const PILL_COLORS= ['#ff4d94','#ff9f43','#f9ca24','#a29bfe','#00b894','#74b9ff','#fd79a8','#55efc4'];
-const ORDER_STATUSES = ['Pending','Confirmed','Packed','Shipped','Delivered'];
+const ORDER_STATUS = ['Pending','Confirmed','Packed','Shipped','Delivered'];
 const STATUS_ICONS   = {Pending:'⏳',Confirmed:'✅',Packed:'📦',Shipped:'🚚',Delivered:'🎉',Cancelled:'❌'};
 
 let sheetProducts    = [];
