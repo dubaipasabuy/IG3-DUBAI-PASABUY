@@ -93,7 +93,7 @@
   <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 15% 55%,rgba(255,255,255,0.18) 0%,transparent 50%),radial-gradient(ellipse at 85% 25%,rgba(255,255,255,0.14) 0%,transparent 45%),radial-gradient(ellipse at 50% 90%,rgba(255,255,255,0.10) 0%,transparent 40%);"></div>
   <div class="relative z-10">
     <div class="text-5xl mb-4 select-none" style="letter-spacing:0.15em;">🍭 🍬 🌈 🎀</div>
-    <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-3" style="font-family:'Fredoka One',cursive;text-shadow:3px 5px 0 rgba(0,0,0,0.15);">Snacks, Sweets &amp; Treats</h2>
+    <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-3" style="font-family:'Fredoka One',cursive;text-shadow:3px 5px 0 rgba(0,0,0,0.15);">Snacks, sweets &amp; treats</h2>
     <p class="text-white text-xl opacity-95 mb-1 font-extrabold">🎀 Packed Fresh from Dubai 🎀</p>
     <p class="text-white text-sm opacity-85 font-semibold">Pick your favorites — tell us where to send them! 🛍️</p>
   </div>
@@ -265,6 +265,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <input type="text" id="new-product-name" placeholder="Product name *" class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
             <select id="new-product-category" class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"><option value="">Select category</option></select>
+            <input type="number" id="new-product-aed" placeholder="AED Price (optional)" min="0" step="0.01" class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
             <input type="number" id="new-product-price" placeholder="Price in ₱ *" min="0" step="0.01" class="border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
             <div class="sm:col-span-1 flex flex-col gap-1">
               <div class="flex gap-2 items-stretch">
@@ -304,9 +305,7 @@
           </div>
         </div>
         <div class="flex gap-2 mb-4 flex-wrap">
-          <select id="order-status-filter" onchange="renderAdminOrders()" class="border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
-            <option value="">All Status</option>
-          </select>
+          <select id="order-status-filter" onchange="renderAdminOrders()" class="border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"><option value="">All Statuses</option></select>
         </div>
         <div id="admin-order-list"></div>
       </div>
@@ -350,12 +349,7 @@ let pendingEditImg = null, pendingEditImgNew = false, pendingNewImg = null;
 
 function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function escA(s){ return String(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
-function getImg(p){
-  if(imageStorage[p.product_id]) return imageStorage[p.product_id];
-  const nameKey='byname_'+(p.name||'').toLowerCase().trim();
-  if(imageStorage[nameKey]) return imageStorage[nameKey];
-  return p.image_url||p.image||p.img||p.photo||p.thumbnail||p.picture||'';
-}
+function getImg(p){ if(imageStorage[p.product_id]) return imageStorage[p.product_id]; const nameKey='byname_'+(p.name||'').toLowerCase().trim(); if(imageStorage[nameKey]) return imageStorage[nameKey]; return p.image_url||p.image||p.img||p.photo||p.thumbnail||p.picture||''; }
 function parsePrice(v){ if(v===null||v===undefined||v==='') return 0; var s=String(v).replace(/[₱,\s]/g,'').trim(); var n=parseFloat(s); return isNaN(n)?0:n; }
 function fmtPrice(n){ return '₱'+Number(n).toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function saveOverrides(){ localStorage.setItem('ig3-product-overrides',JSON.stringify(productOverrides)); }
@@ -364,7 +358,6 @@ function genOrderId(){ const c='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; let s='';
 function statusBadgeClass(s){ return {Pending:'badge-pending',Confirmed:'badge-confirmed',Packed:'badge-packed',Shipped:'badge-shipped',Delivered:'badge-delivered',Cancelled:'badge-cancelled'}[s]||'badge-pending'; }
 
 function compressImage(file,cb){ const r=new FileReader(); r.onload=e=>{ const i=new Image(); i.onload=()=>{ const c=document.createElement('canvas'),mW=800; let w=i.width,h=i.height; if(w>mW){h=Math.round(h*mW/w);w=mW;} c.width=w;c.height=h;c.getContext('2d').drawImage(i,0,0,w,h); cb(c.toDataURL('image/jpeg',0.75)); }; i.src=e.target.result; }; r.readAsDataURL(file); }
-
 function handleEditImgUpload(input){ const f=input.files[0]; if(!f)return; compressImage(f,b64=>{ pendingEditImg=b64; pendingEditImgNew=true; document.getElementById('edit-product-img').value=''; document.getElementById('edit-img-preview-img').src=b64; document.getElementById('edit-img-source-label').textContent='📁 '+f.name+' (from your computer)'; document.getElementById('edit-img-preview').classList.remove('hidden'); }); }
 function handleNewImgUpload(input){ const f=input.files[0]; if(!f)return; compressImage(f,b64=>{ pendingNewImg=b64; document.getElementById('new-product-img').value=''; document.getElementById('new-img-preview-img').src=b64; document.getElementById('new-img-preview').classList.remove('hidden'); }); }
 function onEditUrlInput(){ if(pendingEditImgNew){pendingEditImg=null;pendingEditImgNew=false;} const url=document.getElementById('edit-product-img').value.trim(); const prev=document.getElementById('edit-img-preview'); if(url){document.getElementById('edit-img-preview-img').src=url; document.getElementById('edit-img-source-label').textContent='🔗 URL image'; prev.classList.remove('hidden');}else prev.classList.add('hidden'); }
@@ -383,7 +376,6 @@ async function loadSheetOrders(){
   try{ const r=await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Orders`); if(!r.ok){sheetOrders=[];return;} const csv=await r.text(); sheetOrders=parseCSV(csv).filter(o=>o.order_id&&o.order_id.trim()); }
   catch(e){ console.warn('Could not load orders:',e); sheetOrders=[]; }
 }
-
 function getAllOrders(){
   const fromSheet=sheetOrders.filter(o=>!deletedOrderIds.includes(o.order_id)).map(o=>{
     const lf=orders.find(lo=>lo.id===o.order_id);
@@ -398,7 +390,6 @@ function getAllOrders(){
   const localOnly=orders.filter(o=>!sheetIds.has(o.id)&&!deletedOrderIds.includes(o.id));
   return [...fromSheet,...localOnly].sort((a,b)=>String(b.id).localeCompare(String(a.id)));
 }
-
 function safeParseJSON(str,fallback){ try{return JSON.parse(str||fallback);}catch{return typeof fallback==='string'?JSON.parse(fallback):fallback;} }
 
 async function loadCategories(){
@@ -422,31 +413,15 @@ function csvToRows(text){
   const rows=[];let row=[],cell='',inQ=false;
   for(let i=0;i<text.length;i++){
     const c=text[i];
-    if(inQ){
-      if(c==='"'&&text[i+1]==='"'){cell+='"';i++;}
-      else if(c==='"'){inQ=false;}
-      else{cell+=c;}
-    }else{
-      if(c==='"'){inQ=true;}
-      else if(c===','){row.push(cell);cell='';}
-      else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell='';}
-      else if(c!=='\r'){cell+=c;}
-    }
+    if(inQ){ if(c==='"'&&text[i+1]==='"'){cell+='"';i++;} else if(c==='"'){inQ=false;} else{cell+=c;} }
+    else{ if(c==='"'){inQ=true;} else if(c===','){row.push(cell);cell='';} else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell='';} else if(c!=='\r'){cell+=c;} }
   }
   if(row.length||cell){row.push(cell);rows.push(row);}
   return rows;
 }
-function parseCSV(text){
-  const rows=csvToRows(text.trim());
-  if(rows.length<2) return [];
-  const headers=rows[0].map(h=>h.trim().toLowerCase().replace(/\s+/g,'_'));
-  return rows.slice(1).filter(r=>r.some(v=>v.trim())).map(vals=>{
-    const obj={};
-    headers.forEach((h,i)=>{obj[h]=(vals[i]||'').trim();});
-    return obj;
-  });
-}
+function parseCSV(text){ const rows=csvToRows(text.trim()); if(rows.length<2) return []; const headers=rows[0].map(h=>h.trim().toLowerCase().replace(/\s+/g,'_')); return rows.slice(1).filter(r=>r.some(v=>v.trim())).map(vals=>{ const obj={}; headers.forEach((h,i)=>{obj[h]=(vals[i]||'').trim();}); return obj; }); }
 function parseCSVLine(line){return csvToRows(line)[0]||[];}
+
 function renderCategoryPills(){
   const cats=getAllCategories(),el=document.getElementById('category-pills'),allActive=activeCategory==='';
   el.innerHTML=`<button class="cat-pill rounded-full px-5 py-2 text-sm transition" style="border:2.5px solid #ff4d94;background:${allActive?'#ff4d94':'white'};color:${allActive?'white':'#ff4d94'};font-weight:800;" onclick="setCategory('')">🍭 All</button>`
@@ -599,7 +574,7 @@ function renderAdminProducts(){
   const dupBtn=`<div class="flex items-center justify-between mb-4"><span class="text-sm text-gray-500 font-medium">${all.length} product(s)${hidden.length?' · <span class="text-gray-400">'+hidden.length+' hidden</span>':''}</span><button onclick="findAndRemoveDuplicates()" class="flex items-center gap-1.5 ${dupCount>0?'bg-red-50 hover:bg-red-100 text-red-600 border border-red-200':'bg-gray-100 hover:bg-gray-200 text-gray-500 border border-gray-200'} font-semibold px-4 py-2 rounded-xl text-sm transition">🔍 ${dupCount>0?dupCount+' Duplicate'+(dupCount>1?'s':'')+' Found':'No Duplicates'}</button></div>`;
   if(!all.length&&!hidden.length){list.innerHTML=dupBtn+'<p class="text-gray-400 text-sm text-center py-8">No products yet.</p>';return;}
   const cats=[...new Set(all.map(p=>p.category||'Uncategorized'))].sort();
-  const mainHtml=cats.map(cat=>{ const prods=all.filter(p=>(p.category||'Uncategorized')===cat); return `<div class="mb-5"><h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">${escH(cat)}</h4><div class="space-y-2">${prods.map(p=>{ const price=parsePrice(p.final_price_php),img=getImg(p),hasOv=p._edited||(p._local&&productOverrides[p.product_id]); return `<div class="bg-white rounded-xl shadow-sm p-3 flex items-center gap-3">${img?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="w-12 h-12 rounded-xl bg-yellow-100 items-center justify-center text-xl flex-shrink-0 hidden">🛍️</div>`:`<div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}<div class="flex-1 min-w-0"><p class="text-sm font-semibold text-gray-800 truncate">${escH(p.name)}</p><p class="text-xs text-gray-400 truncate">${escH(p.category||'No category')} · ${price>0?fmtPrice(price):'No price'}${p._edited?' <span style="color:#3b82f6">(edited)</span>':''}${p._local?' <span style="color:#22c55e">(manual)</span>':''}${imageStorage[p.product_id]?' <span style="color:#f59e0b">📁 desktop image</span>':''}</p>${p.description?`<p class="text-xs text-gray-400 italic truncate mt-0.5">${escH(p.description)}</p>`:''}</div><div class="flex items-center gap-1.5 flex-shrink-0"><button onclick="openEditModal('${escA(p.product_id)}')" class="bg-yellow-400 hover:bg-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full transition">Edit</button>${hasOv||imageStorage[p.product_id]?`<button onclick="clearProductOverrides('${escA(p.product_id)}')" title="Reset to original" class="text-gray-400 hover:text-red-500 text-sm px-1.5 py-1 rounded-lg hover:bg-red-50 transition">↺</button>`:''}${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="text-gray-400 hover:text-red-500 text-lg px-1 transition" title="Delete">🗑</button>`:''}</div></div>`; }).join('')}</div></div>`; }).join('');
+  const mainHtml=cats.map(cat=>{ const prods=all.filter(p=>(p.category||'Uncategorized')===cat); return `<div class="mb-5"><h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">${escH(cat)}</h4><div class="space-y-2">${prods.map(p=>{ const price=parsePrice(p.final_price_php),img=getImg(p),hasOv=p._edited||(p._local&&productOverrides[p.product_id]); return `<div class="bg-white rounded-xl shadow-sm p-3 flex items-center gap-3">${img?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="w-12 h-12 rounded-xl bg-yellow-100 items-center justify-center text-xl flex-shrink-0 hidden">🛍️</div>`:`<div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}<div class="flex-1 min-w-0"><p class="text-sm font-semibold text-gray-800 truncate">${escH(p.name)}</p><p class="text-xs text-gray-400 truncate">${escH(p.category||'No category')} · ${price>0?fmtPrice(price):'No price'}${p.aed_price?` · <span style="color:#0284c7">AED ${escH(p.aed_price)}</span>`:''}${p._edited?' <span style="color:#3b82f6">(edited)</span>':''}${p._local?' <span style="color:#22c55e">(manual)</span>':''}${imageStorage[p.product_id]?' <span style="color:#f59e0b">📁 desktop image</span>':''}</p>${p.description?`<p class="text-xs text-gray-400 italic truncate mt-0.5">${escH(p.description)}</p>`:''}</div><div class="flex items-center gap-1.5 flex-shrink-0"><button onclick="openEditModal('${escA(p.product_id)}')" class="bg-yellow-400 hover:bg-yellow-500 text-black text-xs font-bold px-3 py-1.5 rounded-full transition">Edit</button>${hasOv||imageStorage[p.product_id]?`<button onclick="clearProductOverrides('${escA(p.product_id)}')" title="Reset to original" class="text-gray-400 hover:text-red-500 text-sm px-1.5 py-1 rounded-lg hover:bg-red-50 transition">↺</button>`:''}${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="text-gray-400 hover:text-red-500 text-lg px-1 transition" title="Delete">🗑</button>`:''}</div></div>`; }).join('')}</div></div>`; }).join('');
   const hiddenHtml=hidden.length?`<div class="mt-8 mb-5"><h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">🚫 Hidden / Removed Duplicates (${hidden.length})</h4><div class="space-y-2">${hidden.map(p=>{ const price=parsePrice(p.final_price_php),img=getImg(p); return `<div class="bg-gray-50 rounded-xl shadow-sm p-3 flex items-center gap-3 opacity-60">${img?`<img src="${escH(img)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none'">`:`<div class="w-12 h-12 rounded-xl bg-gray-200 flex items-center justify-center text-xl flex-shrink-0">🛍️</div>`}<div class="flex-1 min-w-0"><p class="text-sm font-semibold text-gray-400 truncate line-through">${escH(p.name)}</p><p class="text-xs text-gray-400 truncate">${escH(p.category||'No category')} · ${price>0?fmtPrice(price):'No price'} · <em>duplicate removed</em></p></div><div class="flex items-center gap-1.5 flex-shrink-0"><button onclick="restoreHiddenProduct('${escA(p.product_id)}')" class="bg-green-50 hover:bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full transition">↩ Restore</button>${p._local?`<button onclick="deleteLocalProduct('${escA(p.product_id)}')" class="text-gray-400 hover:text-red-500 text-lg px-1 transition" title="Delete permanently">🗑</button>`:''}</div></div>`; }).join('')}</div></div>`:'';
   list.innerHTML=dupBtn+mainHtml+hiddenHtml;
 }
@@ -647,19 +622,20 @@ function saveProductEdit(){
   closeEditModal();renderCategoryPills();applyFilters();renderAdminProducts();
 }
 function clearProductOverrides(id){ if(!confirm('Reset this product to its original data?'))return; delete productOverrides[id];delete imageStorage[id]; saveOverrides();saveImageStorage(); renderCategoryPills();applyFilters();renderAdminProducts(); }
-function clearAddProductForm(){ ['new-product-name','new-product-price','new-product-img','new-product-desc'].forEach(id=>document.getElementById(id).value=''); document.getElementById('new-img-file').value=''; document.getElementById('new-img-preview').classList.add('hidden'); pendingNewImg=null; }
+function clearAddProductForm(){ ['new-product-name','new-product-aed','new-product-price','new-product-img','new-product-desc'].forEach(id=>document.getElementById(id).value=''); document.getElementById('new-img-file').value=''; document.getElementById('new-img-preview').classList.add('hidden'); pendingNewImg=null; }
 
 async function addLocalProduct(){
   const name=document.getElementById('new-product-name').value.trim(),cat=document.getElementById('new-product-category').value;
+  const aedVal=document.getElementById('new-product-aed').value,aed=aedVal!==''?parseFloat(aedVal):null;
   const price=parseFloat(document.getElementById('new-product-price').value),img=document.getElementById('new-product-img').value.trim();
   const desc=document.getElementById('new-product-desc').value.trim();
   if(!name){alert('Product name is required.');return;}
-  if(isNaN(price)||price<=0){alert('A valid price is required.');return;}
+  if(isNaN(price)||price<=0){alert('A valid PHP price is required.');return;}
   const btn=document.getElementById('add-product-btn'),statusEl=document.getElementById('add-product-status');
   btn.disabled=true;btn.textContent='Adding...';statusEl.textContent='⏳ Saving to Google Sheet...';statusEl.style.color='#6b7280';
   if(pendingNewImg){imageStorage['byname_'+name.toLowerCase().trim()]=pendingNewImg;saveImageStorage();}
   let ok=false;
-  try{ await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({name,category:cat,final_price_php:String(price),image_url:pendingNewImg?'':img,description:desc})}); ok=true; }catch(e){ console.warn(e); }
+  try{ await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({name,category:cat,aed_price:aed!=null?String(aed):'',final_price_php:String(price),image_url:pendingNewImg?'':img,description:desc})}); ok=true; }catch(e){ console.warn(e); }
   if(ok){ statusEl.textContent='⏳ Sent! Refreshing...';statusEl.style.color='#6b7280'; clearAddProductForm(); await new Promise(r=>setTimeout(r,3000)); await loadProducts();renderCategoryPills();renderAdminProducts(); statusEl.textContent='✅ Added to Google Sheet!';statusEl.style.color='#16a34a'; setTimeout(()=>statusEl.textContent='',4000); }
   else{ const newId='local_'+Date.now(); localProducts.push({id:newId,name,category:cat,price,imageUrl:pendingNewImg?'':img,description:desc}); localStorage.setItem('ig3-local-products',JSON.stringify(localProducts)); if(pendingNewImg){imageStorage[newId]=pendingNewImg;saveImageStorage();} statusEl.textContent='⚠️ Sheet sync failed — saved locally.';statusEl.style.color='#d97706'; clearAddProductForm();renderCategoryPills();applyFilters();renderAdminProducts(); setTimeout(()=>statusEl.textContent='',6000); }
   btn.disabled=false;btn.textContent='+ Add Product';
