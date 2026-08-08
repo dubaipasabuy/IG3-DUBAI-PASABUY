@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IG3 Dubai Pasabuy — Packed Fresh from Dubai</title>
-  <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/dubaipasabuy/IG3-DUBAI-PASABUY/master/logo.jpg">
-  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/dubaipasabuy/IG3-DUBAI-PASABUY/master/logo.jpg">
+  <link rel="icon" type="image/jpeg" href="https://github.com/dubaipasabuy/IG3-DUBAI-PASABUY/blob/main/logo.jpeg">
+  <link rel="apple-touch-icon" href="https://github.com/dubaipasabuy/IG3-DUBAI-PASABUY/blob/main/logo.jpeg">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
@@ -73,8 +73,8 @@
 <!-- HEADER -->
 <header class="bg-white shadow-sm sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
-    <div onclick="handleLogoClick()" class="cursor-pointer select-none flex items-center gap-2 flex-shrink-0">
-      <img src="https://raw.githubusercontent.com/owencelestino19-arch/IG3-DUBAI-PASABUY/main/logo.jpg"
+    <div onclick="handleClick()" class="cursor-pointer select-none flex items-center gap-2 flex-shrink-0">
+      <img src="https://raw.githubusercontent.com/owencelestino19-arch/IG3-DUBAI-PASABUY/main/.jpg"
            alt="IG3 Dubai Pasabuy" class="h-12 w-12 rounded-full object-cover"
            onerror="this.style.display='none'">
       <div>
@@ -107,9 +107,9 @@
   <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 15% 55%,rgba(255,255,255,0.18) 0%,transparent 50%),radial-gradient(ellipse at 85% 25%,rgba(255,255,255,0.14) 0%,transparent 45%),radial-gradient(ellipse at 50% 90%,rgba(255,255,255,0.10) 0%,transparent 40%);"></div>
   <div class="relative z-10">
     <div class="text-5xl mb-4 select-none" style="letter-spacing:0.15em;">🍭 🍬 🌈 🎀</div>
-    <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-3" style="font-family:'Fredoka One',cursive;text-shadow:3px 5px 0 rgba(0,0,0,0.15);">Snacks, sweets &amp; treats</h2>
+    <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-3" style="font-family:'Fredoka One',cursive;text-shadow:3px 5px 0 rgba(0,0,0,0.15);">Snacks, Sweets &amp; Treats</h2>
     <p class="text-white text-xl opacity-95 mb-1 font-extrabold">🎀 Packed Fresh from Dubai 🎀</p>
-    <p class="text-white text-sm opacity-85 font-semibold">Pick your favorites — tell us where to send them! 🛍️</p>
+    <p class="text-white text-sm opacity-85 font-semibold">Pick your favorites — tell us where to send them! </p>
   </div>
 </div>
 
@@ -532,7 +532,7 @@ let orders           = JSON.parse(localStorage.getItem('ig3-orders')            
 let deletedOrderIds  = JSON.parse(localStorage.getItem('ig3-deleted-orders')    || '[]');
 let cart             = (JSON.parse(localStorage.getItem('ig3-cart') || '[]')).map(c=>({...c,price:parseFloat(String(c.price||'0').replace(/[₱,\s]/g,''))||0}));
 let activeCategory   = '';
-let logoClicks       = 0, logoTimer = null;
+let Clicks       = 0, Timer = null;
 let lastOrderId      = null;
 let pendingEditImg    = null;
 let pendingEditImgNew = false;
@@ -1021,10 +1021,10 @@ function renderTrackingResult(order){
   document.getElementById('track-result').classList.remove('hidden');
 }
 
-function handleLogoClick(){
-  logoClicks++;clearTimeout(logoTimer);
-  if(logoClicks>=5){logoClicks=0;openAdmin();}
-  else logoTimer=setTimeout(()=>logoClicks=0,2000);
+function handleClick(){
+  Clicks++;clearTimeout(Timer);
+  if(Clicks>=5){Clicks=0;openAdmin();}
+  else Timer=setTimeout(()=>Clicks=0,2000);
 }
 function openAdmin(){
   document.getElementById('admin-panel').classList.remove('hidden');
